@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<!-- Welcome Section -->
+<div class="container text-center mt-5">
+    <h1 class="display-4">Welcome to Admin Page</h1>
+    <p class="lead">Manage rooms, tenants, reports, and more from your control panel.</p>
+    <a class="btn btn-primary btn-lg mt-3" asp-action="Room" asp-controller="AdminPage">Manage Rooms</a>
+</div>
+
+<!-- Feature Cards -->
+<div class="container mt-5">
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Rooms</h5>
+                    <p class="card-text">Add, edit, or delete available rooms.</p>
+                    <a class="btn btn-outline-primary" asp-action="Room" asp-controller="AdminPage">View Rooms</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Tenants</h5>
+                    <p class="card-text">Manage tenant info and track occupancy.</p>
+                    <a class="btn btn-outline-primary" asp-action="Tenants" asp-controller="AdminPage">View Tenants</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Reports</h5>
+                    <p class="card-text">Generate rental, payment, or activity reports.</p>
+                    <a class="btn btn-outline-primary" asp-action="Reports" asp-controller="AdminPage">Generate Reports</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

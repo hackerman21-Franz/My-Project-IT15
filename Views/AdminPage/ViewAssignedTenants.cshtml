@@ -1,0 +1,61 @@
+﻿@model IEnumerable<MyProjectIT15.Models.UserRoom>
+
+@{
+    ViewBag.Title = "Assigned Tenants to Rooms";
+}
+
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+
+    <div class="d-flex justify-content mb-3">
+        <a class="btn btn-primary" asp-controller="AdminPage" asp-action="AssignTenant">
+            <i class="bi bi-plus-lg"></i> Assign Tenant
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>Tenant Name</th>
+                    <th>Room Number</th>
+                    <th>Assigned By</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th style="width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var userRoom in Model)
+                {
+                    <tr>
+                        <td>@userRoom.Tenant.FirstName @userRoom.Tenant.LastName</td>
+                        <td>@userRoom.Room.Room_Number</td>
+                        <td>@userRoom.Admin.FirstName @userRoom.Admin.LastName</td>
+                        <td>@userRoom.StartDate?.ToString("MMM dd, yyyy")</td>
+                        <td>@userRoom.EndDate?.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            <span class="badge bg-@(userRoom.Status.ToLower() == "active" ? "success" : "secondary")">
+                                @userRoom.Status
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="AdminPage" asp-action="Update"
+                                   asp-route-id="@userRoom.Id">
+                                    <i class="bi bi-pencil-square"></i> Update
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="AdminPage" asp-action="Deactivate"
+                                   asp-route-id="@userRoom.Id"
+                                   onclick="return confirm('Are you sure you want to deactivate this room assignment?');">
+                                    <i class="bi bi-x-circle"></i> Deactivate
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

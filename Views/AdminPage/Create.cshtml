@@ -1,0 +1,65 @@
+﻿@model RoomDto
+@{
+}
+<div class="row">
+	<div class="col-md-8 mx-auto rounded border p-3">
+		<h2 class="text-center mb-5">New Room</h2>
+
+		<form method="post" enctype="multipart/form-data">
+			<div class="row mb-3">
+				<label class="col-sm-4 col-form-label">Room Number</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="Room_Number" type="number" />
+					<span asp-validation-for="Room_Number" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label class="col-sm-4 col-form-label">Room Type</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="Room_Type" />
+					<span asp-validation-for="Room_Type" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label class="col-sm-4 col-form-label">Monthly Rent</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="Monthly_Rent" type="number" />
+					<span asp-validation-for="Monthly_Rent" class="text-danger"></span>
+				</div>
+			</div>
+
+			<div class="row mb-3">
+				<label class="col-sm-4 col-form-label">Image</label>
+				<div class="col-sm-8">
+					<input class="form-control" asp-for="ImageFile" />
+					<span asp-validation-for="ImageFile" class="text-danger"></span>
+				</div>
+			</div>
+
+
+			<div class="row mb-3">
+				<label class="col-sm-4 col-form-label">Status</label>
+				<div class="col-sm-8">
+					<select class="form-select" asp-for="Status">
+						<option value="Available">Available</option>
+						<option value="Occupied">Occupied</option>
+						<option value="Inactive">Inactive</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="offset-sm-4 col-sm-4 d-grid">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+				<div class=" col-sm-4 d-grid">
+					<a class="btn btn-outline-primary" asp-action="room" asp-controller="AdminPage">
+						Cancel
+					</a>
+				</div>
+
+			</div>
+		</form>
+	</div>
+</div>
+

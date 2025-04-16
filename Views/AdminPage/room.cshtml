@@ -1,0 +1,70 @@
+﻿@model List<Room>
+
+@{
+    ViewBag.Title = "List of Rooms";
+}
+
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a class="btn btn-primary me-2" asp-controller="AdminPage" asp-action="Create">
+                <i class="bi bi-plus-lg"></i> New Room
+            </a>
+            <a class="btn btn-outline-primary" asp-controller="AdminPage" asp-action="ViewAssignedTenants">
+                <i class="bi bi-people"></i> View Assigned Tenants
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Created By</th>
+                    <th>Room Number</th>
+                    <th>Room Type</th>
+                    <th>Monthly Rent</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th style="width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var room in Model)
+                {
+                    <tr>
+                        <td>@room.Id</td>
+                        <td>@room.UserId</td>
+                        <td>@room.Room_Number</td>
+                        <td>@room.Room_Type</td>
+                        <td>₱@room.Monthly_Rent.ToString("N0")</td>
+                        <td>
+                            <img src="/rooms/@room.ImageFileName" alt="Room Image" class="img-thumbnail" style="width: 100px;" />
+                        </td>
+                        <td>
+                            <span class="badge bg-@(room.Status.ToLower() == "available" ? "success" : "secondary")">
+                                @room.Status
+                            </span>
+                        </td>
+                        <td>@room.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="AdminPage" asp-action="Edit" asp-route-id="@room.Id">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a class="btn btn-sm btn-outline-danger" asp-controller="AdminPage" asp-action="Delete" asp-route-id="@room.Id"
+                                   onclick="return confirm('Are you sure you want to delete this room?');">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
