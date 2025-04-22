@@ -73,8 +73,14 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                       "Reset Your Password",
+                         $@"
+                            <p>Hello,</p>
+                            <p>We received a request to reset your password.</p>
+                            <p><a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Click here to reset it</a></p>
+                            <p>If you didn’t request this, you can ignore this email.</p>
+                            <p>Thanks,<br/>Your App Team</p>
+                        ");
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

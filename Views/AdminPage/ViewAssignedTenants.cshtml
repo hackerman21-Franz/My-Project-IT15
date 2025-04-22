@@ -8,10 +8,13 @@
     <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
 
     <div class="d-flex justify-content mb-3">
-        <a class="btn btn-primary" asp-controller="AdminPage" asp-action="AssignTenant">
+        <a id="assignTenantBtn" class="btn btn-primary" asp-controller="AdminPage" asp-action="AssignTenant">
+            <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true" id="spinner"></span>
             <i class="bi bi-plus-lg"></i> Assign Tenant
         </a>
     </div>
+
+ 
 
     <div class="table-responsive">
         <table class="table table-hover table-bordered align-middle shadow-sm">
@@ -30,9 +33,9 @@
                 @foreach (var userRoom in Model)
                 {
                     <tr>
-                        <td>@userRoom.Tenant.FirstName @userRoom.Tenant.LastName</td>
-                        <td>@userRoom.Room.Room_Number</td>
-                        <td>@userRoom.Admin.FirstName @userRoom.Admin.LastName</td>
+                        <td>@userRoom.Tenant?.FirstName @userRoom.Tenant?.LastName</td>
+                        <td>@userRoom.Room?.Room_Number</td>
+                        <td>@userRoom.Admin?.FirstName @userRoom.Admin?.LastName</td>
                         <td>@userRoom.StartDate?.ToString("MMM dd, yyyy")</td>
                         <td>@userRoom.EndDate?.ToString("MMM dd, yyyy")</td>
                         <td>
@@ -42,15 +45,59 @@
                         </td>
                         <td>
                             <div class="btn-group">
-                                <a class="btn btn-sm btn-outline-primary" asp-controller="AdminPage" asp-action="Update"
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="AdminPage" asp-action="EditAssignedTenant"
                                    asp-route-id="@userRoom.Id">
                                     <i class="bi bi-pencil-square"></i> Update
                                 </a>
-                                <a class="btn btn-sm btn-outline-danger" asp-controller="AdminPage" asp-action="Deactivate"
-                                   asp-route-id="@userRoom.Id"
-                                   onclick="return confirm('Are you sure you want to deactivate this room assignment?');">
-                                    <i class="bi bi-x-circle"></i> Deactivate
-                                </a>
+                                <form asp-controller="AdminPage" asp-action="DeactivateAssignedTenant" asp-route-id="@userRoom.Id" method="post" style="display:inline">
+                                    @Html.AntiForgeryToken()
+
+                                    <!-- Trigger the modal with the button -->
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal_@userRoom.Id">
+                                        <i class="bi bi-x-circle"></i> Deactivate
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deactivateModal_@userRoom.Id" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deactivateModalLabel">Confirm Deactivation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to deactivate this room assignment?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <!-- Cancel button to close the modal -->
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <!-- Confirm button to submit the form -->
+                                                    <button type="submit" class="btn btn-danger">Confirm Deactivation</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="deactivateModalLabel">Confirm Deactivation</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to deactivate this room assignment?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!-- Cancel button to close the modal -->
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <!-- Confirm button to submit the form -->
+                                                <button type="submit" class="btn btn-danger">Confirm Deactivation</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -59,3 +106,5 @@
         </table>
     </div>
 </div>
+
+

@@ -39,6 +39,43 @@
             @RenderBody()
         </main>
     </div>
+    @{
+        var showSuccess = TempData["ShowSuccess"] as bool?;
+        var successMessage = TempData["Success"] as string;
+
+        var showError = TempData["ShowError"] as bool?;
+        var errorMessage = TempData["Error"] as string;
+    }
+    @if (showSuccess == true && !string.IsNullOrEmpty(successMessage))
+    {
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="successToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-success text-white">
+                    <strong class="me-auto">Success</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    @successMessage
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (showError == true && !string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div id="errorToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="toast-header bg-danger text-white">
+                    <strong class="me-auto">Error</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    @errorMessage
+                </div>
+            </div>
+        </div>
+    }
+
 
     <footer class="border-top footer text-muted">
         <div class="container">

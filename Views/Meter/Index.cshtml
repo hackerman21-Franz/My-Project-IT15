@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "OCR Upload";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+    <!-- Form to upload image -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form enctype="multipart/form-data" method="post" action="@Url.Action("Upload", "Meter")">
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Image for OCR:</label>
+                    <input type="file" class="form-control" name="image" id="image" />
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Display OCR result -->
+    @if (ViewBag.OcrResult != null)
+    {
+        <div class="alert alert-info mt-4">
+            <strong>OCR Result:</strong>
+            <pre>@ViewBag.OcrResult</pre>
+        </div>
+    }
+
+
+</div>

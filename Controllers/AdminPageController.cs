@@ -136,6 +136,7 @@ namespace MyProjectIT15.Controllers
 
 			return RedirectToAction("room", "AdminPage");
 		}
+
 		[Authorize(Roles = "admin")]
 		public IActionResult Edit(int Id)
 		{
@@ -229,11 +230,16 @@ namespace MyProjectIT15.Controllers
 
         // GET: AdminPage/AssignTenant
         [HttpGet]
-        public IActionResult AssignTenant()
+        public async Task<IActionResult> AssignTenant()
         {
             ViewBag.Title = "Assign Tenant to Room";
-            ViewBag.Rooms = _context.Rooms.ToList();
-            ViewBag.Users = _context.Users.ToList();
+            ViewBag.Rooms = _context.Rooms
+                    .Where(r => r.Status == "Available")
+                    .ToList();
+            //ViewBag.Users = _context.Users.ToList();
+
+            var tenants = await _userManager.GetUsersInRoleAsync("Tenant");
+            ViewBag.Users = tenants.ToList();
             return View();
         }
 
@@ -244,8 +250,13 @@ namespace MyProjectIT15.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Title = "Assign Tenant to Room";
-                ViewBag.Rooms = _context.Rooms.ToList();
-                ViewBag.Users = _context.Users.ToList();
+                ViewBag.Rooms = _context.Rooms
+                    .Where(r => r.Status == "Available")
+					.ToList();
+                //ViewBag.Users = _context.Users.ToList();
+
+                var tenants = await _userManager.GetUsersInRoleAsync("Tenant");
+                ViewBag.Users = tenants.ToList();
                 return View(dto);
             }
 
@@ -276,6 +287,7 @@ namespace MyProjectIT15.Controllers
             _context.UserRooms.Add(userRoom);
             await _context.SaveChangesAsync();  // Save changes asynchronously
 
+            TempData["ShowSuccess"] = true;
             TempData["Success"] = "Tenant successfully assigned to room.";
             return RedirectToAction("ViewAssignedTenants");
         }
@@ -290,7 +302,105 @@ namespace MyProjectIT15.Controllers
 
 			return View(assignedTenants);
 		}
-	}
+
+        public async Task<IActionResult> EditAssignedTenant(int id)
+        {
+            var userRoom = await _context.UserRooms.FindAsync(id);
+            if (userRoom == null)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "Assigned tenant not found.";
+                return RedirectToAction("ViewAssignedTenants");
+            }
+
+            var dto = new UserRoomDto
+            {
+                RoomId = userRoom.RoomId,
+                TenantId = userRoom.TenantId,
+                StartDate = userRoom.StartDate.GetValueOrDefault(),
+                EndDate = userRoom.EndDate.GetValueOrDefault(),
+                Status = userRoom.Status
+            };
+
+            ViewBag.Title = "Edit Assigned Tenant";
+
+            // Load room options – if you want all rooms (not just "Available")
+            ViewBag.Rooms = _context.Rooms.ToList();
+
+            // Load tenants
+            var tenants = await _userManager.GetUsersInRoleAsync("Tenant");
+            ViewBag.Users = tenants.ToList();
+
+            ViewData["UserRoomId"] = id;
+
+            return View(dto);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAssignedTenant(int UserRoomId, UserRoomDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Title = "Edit Assigned Tenant";
+                ViewBag.Rooms = _context.Rooms.ToList(); // You may filter this as needed
+
+                var tenants = await _userManager.GetUsersInRoleAsync("Tenant");
+                ViewBag.Users = tenants.ToList();
+
+                ViewData["UserRoomId"] = UserRoomId;
+                return View(dto);
+            }
+
+            var userRoom = await _context.UserRooms.FindAsync(UserRoomId);
+            if (userRoom == null)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "Assignment not found.";
+                return RedirectToAction("ViewAssignedTenants");
+            }
+
+            // Optional: Update only certain fields (exclude RoomId/TenantId if they shouldn't change)
+            userRoom.RoomId = dto.RoomId;
+			userRoom.TenantId = dto.TenantId;
+            userRoom.StartDate = dto.StartDate;
+            userRoom.EndDate = dto.EndDate;
+            userRoom.Status = dto.Status;
+
+            _context.UserRooms.Update(userRoom);
+            await _context.SaveChangesAsync();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Assignment successfully updated.";
+            return RedirectToAction("ViewAssignedTenants");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeactivateAssignedTenant(int id)
+        {
+            var userRoom = await _context.UserRooms.FindAsync(id);
+            if (userRoom == null)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "Assigned tenant not found.";
+                return RedirectToAction("ViewAssignedTenants");
+            }
+
+            userRoom.Status = "Inactive";
+
+            _context.UserRooms.Update(userRoom);
+            await _context.SaveChangesAsync();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Tenant assignment has been deactivated.";
+            return RedirectToAction("ViewAssignedTenants");
+        }
+
+
+
+
+    }
 
 
 }
