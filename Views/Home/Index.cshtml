@@ -8,6 +8,15 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/landingpage.css" asp-append-version="true" />
+}
+
+
+
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="container py-5 min-vh-100 d-flex justify-content-center align-items-center">
@@ -68,61 +77,19 @@
     </div>
 }
 else
+
 {
-        <div class="container-fluid bg-gradient py-5" style="background: linear-gradient(to right, #0d6efd, #4e91ff); min-height: 100vh;">
-        <div class="container py-5">
-            <div class="text-center mb-5">
-                <h1 class="display-3 fw-bold">Welcome to <span class="text-primary">Roomify</span></h1>
-                <p class="lead fw-medium">Smart, sleek, and seamless room management</p>
-            </div>
 
-            <div class="row justify-content-center g-4">
-                <!-- Tenant Card -->
-                <div class="col-12 col-md-4">
-                    <div class="card bg-white bg-opacity-10 border-0 shadow-lg h-100 backdrop-blur card-hover" style="border-radius: 1rem;">
-                        <div class="card-body text-center p-4">
-                            <h5 class="fw-bold text-info mb-2">For Tenants</h5>
-                            <p class="small">Check room availability, stay updated on announcements, and manage payments from anywhere.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Owner Card -->
-                <div class="col-12 col-md-4">
-                    <div class="card bg-white bg-opacity-10 border-0 shadow-lg h-100 backdrop-blur card-hover" style="border-radius: 1rem;">
-                        <div class="card-body text-center p-4">
-                            <h5 class="fw-bold text-warning mb-2">For Owners</h5>
-                            <p class="small">Track occupancy, respond to tenant requests, and manage dorm facilities with ease.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Admin Card -->
-                <div class="col-12 col-md-4">
-                    <div class="card bg-white bg-opacity-10 border-0 shadow-lg h-100 backdrop-blur card-hover" style="border-radius: 1rem;">
-                        <div class="card-body text-center p-4">
-                                <h5 class="fw-bold text-primary mb-2">For Admins</h5>
-                            <p class="small">Oversee the platform, generate reports, and ensure smooth operations across the system.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Call to Action Buttons -->
-            <div class="text-center mt-5">
-                <p class="fw-semibold mb-3">Ready to simplify your dorm experience?</p>
-                <div class="d-grid gap-3 d-md-flex justify-content-center">
-                    <a class="btn btn-primary btn-lg px-5 fw-bold shadow" asp-area="Identity" asp-page="/Account/Register">Get Started</a>
-                    <a class="btn btn-outline-primary btn-lg px-5 fw-bold shadow" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="text-center mt-5">
-                <hr class="border-light" />
-                <small>&copy; 2025 Roomify — Dorm life, organized beautifully.</small>
-            </div>
-        </div>
+    //CONTENTS
+   
+    <div class="content">
+        <div class="logo"></div>
+        <h1>Organize, plan, and track</h1>
+        <p>
+            all your dorm life in one handy utility.
+            Generate Audio Overview
+        </p>
+        <button>Get Started</button>
     </div>
 
 }
