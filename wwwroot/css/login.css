@@ -1,0 +1,145 @@
+﻿body {
+    
+}
+
+
+.contents{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+}
+
+.top-texts{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:5px;;
+}
+
+.top-texts h1 {
+    width: 300px;
+    color: #2571FF;
+    font-family: Pacifico;
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+
+}
+
+.top-texts h2 {
+    width: 390px;
+    color: #000;
+    font-family: Inter;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+    .top-texts p {
+        color: #696969;
+        font-family: Inter;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+.link-createaccount {
+    width: 213px;
+    color: #2571FF;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-decoration: none;
+    cursor:pointer;
+}
+
+.texts-inputs {
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+
+#email,
+#password {
+    padding-left:30px;
+    padding-right:20px;
+    width: 472px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    border: 1px solid #D0D0D0;
+    background: #FFF;
+    color: #888;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.texts-inputs h1 {
+    width: 58px;
+    color: #2C2C2C;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+.lower-texts{
+    display:flex;
+    flex-direction:row;
+    gap:180px;
+   
+}
+
+.checkboxx {
+    width: 17px;
+    height: 16px;
+    border-radius: 2px;
+    border: 1px solid #D0D0D0;
+    background: #FFF;
+    flex-shrink: 0;
+    color: #2C2C2C;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 300;
+}
+
+.link-forgotpassword {
+    text-decoration: none;
+    width: 179px;
+    height: 14px;
+    flex-shrink: 0;
+    color: #2571FF;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+
+#signin-button {
+    width: 472px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    border: 1px solid #D0D0D0;
+    background: #2571FF;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+

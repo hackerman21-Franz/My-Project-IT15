@@ -94,4 +94,11 @@ body {
     font-style: normal;
     font-weight: 300;
     line-height: 24px; /* 120% */
+    transition: all 0.3s ease-in;
+}
+
+.content button:hover{
+    cursor: pointer;
+    background-color: black;
+    transform:scale(1.03);
 }
