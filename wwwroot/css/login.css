@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ﻿﻿body {
 }
 
@@ -11,11 +11,6 @@
     gap: 50px;
 }
 
-.top-texts {
-=======
-﻿body {
-    
-}
 
 
 .contents{
@@ -27,14 +22,11 @@
 }
 
 .top-texts{
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-<<<<<<< HEAD
     gap: 5px;
-    ;
 }
 
     .top-texts h1 {
@@ -55,9 +47,8 @@
         font-weight: 500;
         line-height: normal;
     }
-=======
-    gap:5px;;
-}
+
+
 
 .top-texts h1 {
     width: 300px;
@@ -78,7 +69,7 @@
     font-weight: 500;
     line-height: normal;
 }
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
+
 
     .top-texts p {
         color: #696969;
@@ -98,21 +89,13 @@
     font-weight: 400;
     line-height: normal;
     text-decoration: none;
-<<<<<<< HEAD
-    cursor: pointer;
-=======
     cursor:pointer;
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
 }
 
 .texts-inputs {
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    gap: 10px;
-=======
     gap:10px;
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
 }
 
 #email,
@@ -135,11 +118,7 @@
 }
 
     #email:focus,
-<<<<<<< HEAD
     #password:focus {
-=======
-    #password:focus{
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
         border: 1px solid #2571FF;
         box-shadow: 0 0 0 3px rgba(37, 113, 255, 0.3); /* soft blue glow */
         outline: none;
@@ -157,21 +136,15 @@
     font-weight: 400;
 }
 
-<<<<<<< HEAD
+
 .lower-texts {
     display: flex;
     flex-direction: row;
     gap: 180px;
-=======
-.lower-texts{
-    display:flex;
-    flex-direction:row;
-    gap:180px;
-   
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
 }
+    .checkboxx{
 
-.checkboxx {
+
     width: 17px;
     height: 16px;
     border-radius: 2px;
@@ -213,7 +186,3 @@
     font-weight: 400;
     line-height: normal;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
