@@ -68,8 +68,8 @@
 
 #email,
 #password {
-    padding-left:30px;
-    padding-right:20px;
+    padding-left: 30px;
+    padding-right: 20px;
     width: 472px;
     height: 46px;
     flex-shrink: 0;
@@ -82,7 +82,18 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
 }
+
+    #email:focus,
+    #password:focus{
+        border: 1px solid #2571FF;
+        box-shadow: 0 0 0 3px rgba(37, 113, 255, 0.3); /* soft blue glow */
+        outline: none;
+    }
+
+
+
 
 .texts-inputs h1 {
     width: 58px;
