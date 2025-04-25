@@ -75,6 +75,9 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
            public string FirstName { get; set; }
 
             [Required]
+            public string MiddleName { get; set; }
+
+            [Required]
             public string LastName { get; set; }
 
             /// <summary>
@@ -97,7 +100,7 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 12)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
@@ -128,6 +131,7 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
                 var user = new User()
                 {
                     FirstName = Input.FirstName,
+                    MiddleName = Input.MiddleName,
                     LastName = Input.LastName,
                     UserName = Input.Email,
                     Email = Input.Email,
@@ -157,7 +161,19 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        $@"<div style='font-family: Arial, sans-serif; font-size: 16px; color: #333;'>
+                            <p>Hello,</p>
+                            <p>Welcome to <strong>Roomify</strong> — your smart solution for managing rooms and tenants with ease. We're excited to have you on board!</p>
+                            <p>To complete your registration, please confirm your email address by clicking the button below:</p>
+                            <p>
+                                <a href='{HtmlEncoder.Default.Encode(callbackUrl)}' 
+                                   style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;'>
+                                   Confirm Email
+                                </a>
+                            </p>
+                            <p>If you did not sign up for Roomify, you can safely ignore this email.</p>
+                            <p>Thank you,<br>The Roomify Team</p>
+                        </div>");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

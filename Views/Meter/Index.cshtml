@@ -1,33 +1,26 @@
 ﻿@{
     ViewData["Title"] = "OCR Upload";
+    var ocrText = ViewBag.OcrResult as string;
+    var error = ViewBag.Error as string;
 }
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
-
-    <!-- Form to upload image -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form enctype="multipart/form-data" method="post" action="@Url.Action("Upload", "Meter")">
-                <div class="mb-3">
-                    <label for="image" class="form-label">Upload Image for OCR:</label>
-                    <input type="file" class="form-control" name="image" id="image" />
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
+<div class="container my-3">
+    <div class="row g-2">
+        <div class="col-12 col-md-auto">
+            <a asp-controller="Meter" asp-action="MeterReading" class="btn btn-primary w-100">
+                Meter Reading
+            </a>
+        </div>
+        <div class="col-12 col-md-auto">
+            <a asp-controller="Meter" asp-action="Index" class="btn btn-secondary w-100">
+                View Meters
+            </a>
         </div>
     </div>
-
-    <hr class="my-4" />
-
-    <!-- Display OCR result -->
-    @if (ViewBag.OcrResult != null)
-    {
-        <div class="alert alert-info mt-4">
-            <strong>OCR Result:</strong>
-            <pre>@ViewBag.OcrResult</pre>
-        </div>
-    }
-
-
 </div>
+
+
+
+
+
+

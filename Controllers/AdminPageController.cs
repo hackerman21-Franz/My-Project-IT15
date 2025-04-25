@@ -32,6 +32,11 @@ namespace MyProjectIT15.Controllers
         {
             return View();
         }
+        [Authorize(Roles = "admin")]
+        public IActionResult Tenants()
+        {
+            return View();
+        }
         [Authorize(Roles = "owner")]
         public IActionResult owner()
         {

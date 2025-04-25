@@ -1,0 +1,180 @@
+﻿@{
+    ViewData["Title"] = "Meter Reading";
+    var ocrText = ViewBag.OcrResult as string;
+    var error = ViewBag.Error as string;
+}
+
+@* <div class="container mt-5">
+    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
+
+    <!-- Form to upload image -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form enctype="multipart/form-data" method="post" action="@Url.Action("Upload", "Meter")">
+                <div class="mb-3">
+                    <label for="image" class="form-label">Upload Image for OCR:</label>
+                    <input type="file" class="form-control" name="image" id="image" />
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Display OCR result -->
+    @if (ViewBag.OcrResult != null)
+    {
+        <div class="alert alert-info mt-4">
+            <strong>OCR Result:</strong>
+            <pre>@ViewBag.OcrResult</pre>
+        </div>
+    }
+
+
+</div> *@
+
+
+@*
+
+<script src="https://js.puter.com/v2/"></script>
+
+
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">OCR File Upload</h2>
+
+    <!-- Form and Image Preview Section in Grid Layout -->
+    <div class="row">
+        <!-- Left Column: Form to upload image -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form enctype="multipart/form-data" method="post" action="#">
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Upload Image for OCR:</label>
+                            <input type="file" class="form-control" name="image" id="image" accept="image/*" />
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="processImage()">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Image Preview -->
+        <div class="col-md-6">
+            <div id="image-preview-container" class="card shadow-sm mt-4 mt-md-0" style="display: none;">
+                <div class="card-body">
+                    <h4>Image Preview</h4>
+                    <div class="d-flex justify-content-center" style="height: 300px; overflow: hidden;">
+                        <img id="preview" class="img-fluid" style="object-fit: contain; width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <!-- Display OCR result -->
+    <div id="ocr-result" class="mt-4" style="display: none;">
+        <div class="alert alert-info">
+            <strong>OCR Result:</strong>
+            <pre id="result"></pre>
+        </div>
+    </div>
+</div>
+
+<script>
+    const imageInput = document.getElementById('image');
+    const preview = document.getElementById('preview');
+    const result = document.getElementById('result');
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    const ocrResultContainer = document.getElementById('ocr-result');
+
+    imageInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            // Show image preview
+            preview.src = URL.createObjectURL(file);
+            imagePreviewContainer.style.display = 'block';
+            ocrResultContainer.style.display = 'none'; // Hide previous results
+        }
+    });
+
+    async function processImage() {
+        const file = imageInput.files[0];
+        if (!file) {
+            alert('Please select an image first');
+            return;
+        }
+
+        result.textContent = 'Processing image...';
+
+        try {
+            // Convert file to data URL
+            const dataUrl = await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.readAsDataURL(file);
+            });
+
+            // Now pass the data URL to img2txt
+            const text = await puter.ai.img2txt(dataUrl);
+            result.textContent = text || 'No text found in image';
+            ocrResultContainer.style.display = 'block';
+        } catch (error) {
+            result.textContent = 'Error: ' + error.message;
+        }
+    }
+</script> *@
+
+
+<div class="container mt-5">
+    <div class="row g-4">
+        <!-- Upload Section -->
+        <div class="col-12 col-md-6">
+            <h2>Upload Meter Image</h2>
+            <form asp-controller="Meter" asp-action="ScanMeter" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="imageFile" class="form-label">Select Image:</label>
+                    <input type="file" name="imageFile" class="form-control" required />
+                </div>
+                <button type="submit" class="btn btn-primary">Scan</button>
+            </form>
+
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-danger mt-3">@error</div>
+            }
+        </div>
+
+        <!-- OCR Result Section -->
+        <div class="col-12 col-md-6">
+            <div class="alert alert-primary">
+                <h4 class="alert-heading">Meter Reading:</h4>
+                @if (ViewBag.OcrResult != null)
+                {
+                    <pre class="bg-light p-3 border rounded text-dark">@ocrText</pre>
+                }
+                <form asp-action="readMeter" asp-controller="Meter" method="post">
+                    <div class="mb-3">
+                        <input type="text"
+                               name="name"
+                               value="@ocrText"
+                               class="form-control"
+                               placeholder="Upload an image or type here..." />
+
+                        <button class="btn-primary btn mt-2" type="submit">Submit</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
