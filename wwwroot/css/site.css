@@ -19,6 +19,7 @@ html {
 
 body {
   margin-bottom: 60px;
+  overflow:hidden;
 }
 
 .card-hover {
@@ -29,3 +30,17 @@ body {
         transform: translateY(-10px);
         box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
     }
+
+
+
+.card-container {
+   padding-bottom: 80px;
+}
+
+.card-background {
+    width: 800px;
+    height: 500px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    background: url('/images/Frame 352.png') lightgray 100% / cover no-repeat;
+}
