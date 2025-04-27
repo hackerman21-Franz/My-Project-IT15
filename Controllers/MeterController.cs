@@ -7,22 +7,347 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using System.IO;
 using OpenCvSharp;
 using Tesseract;
+using Microsoft.EntityFrameworkCore;
+using MyProjectIT15.Services;
+using Microsoft.AspNetCore.Identity;
+using MyProjectIT15.Models;
+using System;
+using Microsoft.Extensions.Hosting;
 
 namespace MyProjectIT15.Controllers
 {
     public class MeterController : Controller
     {
         private readonly IWebHostEnvironment _env;
+        private readonly ApplicationDBContext _context;
+		private readonly UserManager<User> _userManager;
 
-        public MeterController(IWebHostEnvironment env)
+		public MeterController(UserManager<User> userManager, IWebHostEnvironment env, ApplicationDBContext context)
         {
-            _env = env;
+            _context = context;
+			_userManager = userManager;
+			_env = env;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+        public IActionResult Meter()
+        {
+            var meters = _context.Meters.OrderByDescending(p => p.Id).ToList();
+            var user = _context.Meters
+                .Include(ur => ur.User)  // Include related admin details
+                .ToList();
+            return View(meters);
+        }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+		[HttpPost]
+		public async Task<IActionResult> Create(MeterDto meterDto)
+		{
+			var user = await _userManager.GetUserAsync(User);
+
+
+			if (!ModelState.IsValid)
+			{
+				return View(meterDto);
+			}
+
+
+			Meter meter = new Meter
+			{
+				Meter_Number = meterDto.Meter_Number,
+				Status = "Active",
+				CreatedAt = DateTime.Now,
+				UserId = user?.Id // optional chaining in case user is null
+			};
+
+			_context.Meters.Add(meter);
+			await _context.SaveChangesAsync();
+
+			TempData["ShowSuccess"] = true;
+			TempData["Success"] = "Meter added successfully.";
+
+			return RedirectToAction("Meter", "Meter");
+		}
+
+        public IActionResult Edit(int Id)
+        {
+            var meter = _context.Meters.Find(Id);
+
+            if (meter == null)
+            {
+                return RedirectToAction("Meter", "Meter");
+            }
+
+            var meterDto = new MeterDto()
+            {
+                Meter_Number = meter.Meter_Number,
+                Status = meter.Status,
+
+            };
+
+            ViewData["MeterId"] = meter.Id;
+            ViewData["CreatedAt"] = meter.CreatedAt.ToString("MM/dd/yyyy");
+
+            return View(meterDto);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int Id, MeterDto meterDto)
+        {
+            var meter = _context.Meters.Find(Id);
+            if (meter == null)
+            {
+                return RedirectToAction("Meter", "Meter");
+            }
+
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["MeterId"] = meter.Id;
+                ViewData["CreatedAt"] = meter.CreatedAt.ToString("MM/dd/yyyy");
+
+                return View(meterDto);
+            }
+
+            meter.Meter_Number = meterDto.Meter_Number;
+            meter.Status = meterDto.Status;
+
+            _context.SaveChanges();
+
+			TempData["ShowSuccess"] = true;
+			TempData["Success"] = "Meter updated successfully.";
+
+			return RedirectToAction("Meter", "Meter");
+        }
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Deactivate(int id)
+		{
+			var meter = await _context.Meters.FindAsync(id);
+			if (meter == null)
+			{
+				TempData["ShowError"] = true;
+				TempData["Error"] = "Meter not found.";
+				return RedirectToAction("Meter");
+			}
+
+			meter.Status = "Inactive";
+
+			_context.Meters.Update(meter);
+			await _context.SaveChangesAsync();
+
+			TempData["ShowSuccess"] = true;
+			TempData["Success"] = "Meter has been deactivated.";
+			return RedirectToAction("Meter");
+		}
+
+        public IActionResult RoomMeter()
+        {
+            var roomMeters = _context.RoomMeters.OrderByDescending(p => p.Id).ToList();
+            var room = _context.RoomMeters
+                .Include(ur => ur.Room)  
+                .ToList();
+            var meter = _context.RoomMeters
+                .Include(ur => ur.Meter)
+                .ToList();
+
+            return View(roomMeters);
+        }
+
+
+        [HttpGet]
+        public IActionResult AssignMeter()
+        {
+            ViewBag.Rooms = _context.Rooms
+                    .Where(r => r.Status == "Active")
+                    .ToList();
+            ViewBag.Meters = _context.Meters
+                    .Where(r => r.Status == "Active")
+                    .ToList();
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AssignMeter(RoomMeterDto roomMeterDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                    .Select(e => e.ErrorMessage)
+                                    .ToList();
+                Console.WriteLine("Errors: " + string.Join(", ", errors));
+                // Repopulate ViewBag!
+                ViewBag.Rooms = _context.Rooms
+                    .Where(r => r.Status == "Active")
+                    .ToList();
+                ViewBag.Meters = _context.Meters
+                    .Where(r => r.Status == "Active")
+                    .ToList();
+
+                return View(roomMeterDto);
+            }
+
+            Console.WriteLine($"RoomId: {roomMeterDto.RoomId}, MeterId: {roomMeterDto.MeterId}"); // Debugging line
+
+            RoomMeter roomMeter = new RoomMeter
+            {
+                RoomId = roomMeterDto.RoomId,
+                MeterId = roomMeterDto.MeterId,
+                Status = "Active",
+                installedDate = DateTime.UtcNow,
+            };
+
+            _context.RoomMeters.Add(roomMeter);
+            _context.SaveChanges();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Room Meter assigned successfully.";
+
+            return RedirectToAction("RoomMeter", "Meter");
+        }
+
+        public IActionResult EditRoomMeter(int id)
+        {
+            var roomMeter = _context.RoomMeters.Find(id);
+
+            if (roomMeter == null)
+            {
+                return RedirectToAction("RoomMeter", "Meter");
+            }
+
+            var roomMeterDto = new RoomMeterDto()
+            {
+                MeterId = roomMeter.MeterId,
+                RoomId = roomMeter.RoomId,
+                Status = roomMeter.Status,
+            };
+
+            ViewBag.Rooms = _context.Rooms.ToList();
+            ViewBag.Meters = _context.Meters.ToList();
+            ViewBag.Status = new List<string> { "Active", "Inactive" };
+            ViewData["InstalledDate"] = roomMeter.installedDate.ToString("MM/dd/yyyy");
+
+            return View(roomMeterDto);
+        }
+
+        [HttpPost]
+        public IActionResult EditRoomMeter(int id, RoomMeterDto roomMeterDto)
+        {
+            var roomMeter = _context.RoomMeters.Find(id);
+            if (roomMeter == null)
+            {
+                return RedirectToAction("RoomMeter", "Meter");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Rooms = _context.Rooms.ToList();
+                ViewBag.Meters = _context.Meters.ToList();
+                ViewBag.Status = new List<string> { "Active", "Inactive" };
+                ViewData["InstalledDate"] = roomMeter.installedDate.ToString("MM/dd/yyyy");
+
+                return View(roomMeterDto);
+            }
+
+            roomMeter.RoomId = roomMeterDto.RoomId;
+            roomMeter.MeterId = roomMeterDto.MeterId;
+            roomMeter.Status = roomMeterDto.Status;
+
+            _context.SaveChanges();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Room Meter updated successfully.";
+
+            return RedirectToAction("RoomMeter", "Meter");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeactivateRoomMeter(int id)
+        {
+            var roomMeter = await _context.RoomMeters.FindAsync(id);
+            if (roomMeter == null)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "Room Meter not found.";
+                return RedirectToAction("RoomMeter");
+            }
+
+            roomMeter.Status = "Inactive";
+
+            _context.RoomMeters.Update(roomMeter);
+            await _context.SaveChangesAsync();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Room Meter has been deactivated.";
+            return RedirectToAction("RoomMeter");
+        }
+
+
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> readMeter(MeterDto meterDto)
+        //{
+        //	var user = await _userManager.GetUserAsync(User);
+
+
+        //	if (!ModelState.IsValid)
+        //	{
+        //		return View(meterDto);
+        //	}
+
+
+        //	Meter meter = new Meter
+        //	{
+        //		Meter_Number = meterDto.Meter_Number,
+        //		Status = "Active",
+        //		CreatedAt = DateTime.Now,
+        //		UserId = user?.Id // optional chaining in case user is null
+        //	};
+
+        //	_context.Meters.Add(meter);
+        //	await _context.SaveChangesAsync();
+
+        //	TempData["ShowSuccess"] = true;
+        //	TempData["Success"] = "Meter added successfully.";
+
+        //	return RedirectToAction("Meter", "Meter");
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public IActionResult MeterReading()
         {

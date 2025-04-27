@@ -24,6 +24,6 @@ namespace MyProjectIT15.Models
         [ForeignKey("UserId")]
         public User? User { get; set; }
 
-        public ICollection<MeterReading> MeterReadings { get; set; } = new List<MeterReading>();
+        public ICollection<RoomMeter> RoomMeters { get; set; } = new List<RoomMeter>();
     }
 }

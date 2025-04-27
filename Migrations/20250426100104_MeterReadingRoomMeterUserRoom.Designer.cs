@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProjectIT15.Services;
 
@@ -11,9 +12,11 @@ using MyProjectIT15.Services;
 namespace MyProjectIT15.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250426100104_MeterReadingRoomMeterUserRoom")]
+    partial class MeterReadingRoomMeterUserRoom
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,19 +54,19 @@ namespace MyProjectIT15.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2b477542-3b46-4b53-9364-c42ffa049e64",
+                            Id = "9a1816ae-39ee-4898-9ab8-6287b3195e06",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "f3b1f987-cb7e-45ed-8788-7d1cfba32503",
+                            Id = "bd886912-c53a-4280-8709-8785e023f6c5",
                             Name = "tenant",
                             NormalizedName = "tenant"
                         },
                         new
                         {
-                            Id = "2c213701-4a28-4d72-a920-4a4eb0673d17",
+                            Id = "efb97baa-d40f-4f4c-91b8-000323360d20",
                             Name = "owner",
                             NormalizedName = "owner"
                         });
@@ -303,15 +306,11 @@ namespace MyProjectIT15.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("MeterId")
+                    b.Property<int?>("MeterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoomId")
+                    b.Property<int?>("RoomId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("installedDate")
                         .HasColumnType("datetime2");
@@ -541,15 +540,11 @@ namespace MyProjectIT15.Migrations
                 {
                     b.HasOne("MyProjectIT15.Models.Meter", "Meter")
                         .WithMany("RoomMeters")
-                        .HasForeignKey("MeterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MeterId");
 
                     b.HasOne("MyProjectIT15.Models.Room", "Room")
                         .WithMany("RoomMeters")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoomId");
 
                     b.Navigation("Meter");
 

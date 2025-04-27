@@ -1,0 +1,43 @@
+﻿@model RoomMeterDto
+
+<div class="row">
+    <div class="col-md-8 mx-auto rounded border p-3">
+        <h2 class="text-center mb-4">Assign Room Meters</h2>
+
+        <form method="post" asp-action="EditRoomMeter" asp-controller="Meter">
+            <div class="mb-3">
+                <label asp-for="RoomId" class="form-label"></label>
+                <select asp-for="RoomId" asp-items="@(new SelectList(ViewBag.Rooms, "Id", "Room_Number"))" class="form-select">
+                    <option value="" selected disabled>-- Select Room --</option>
+                </select>
+                <span asp-validation-for="RoomId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MeterId" class="form-label"></label>
+                <select asp-for="MeterId" asp-items="@(new SelectList(ViewBag.Meters, "Id", "Meter_Number"))" class="form-select">
+                    <option value="" selected disabled>-- Select Meter --</option>
+                </select>
+                <span asp-validation-for="MeterId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Status" class="form-label"></label>
+                <select asp-for="Status" asp-items="@(new SelectList(ViewBag.Status))" class="form-select">
+                    <option value="" selected disabled>-- Select Status --</option>
+                </select>
+                <span asp-validation-for="MeterId" class="text-danger"></span>
+            </div>
+
+            <div class="row">
+                <div class="col-6 d-grid">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="col-6 d-grid">
+                    <a asp-action="RoomMeter" asp-controller="Meter" class="btn btn-outline-primary">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

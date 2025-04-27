@@ -139,6 +139,8 @@ namespace MyProjectIT15.Controllers
 			_context.Rooms.Add(room);
 			await _context.SaveChangesAsync();
 
+			TempData["ShowSuccess"] = true;
+			TempData["Success"] = "Room added successfully.";
 			return RedirectToAction("room", "AdminPage");
 		}
 
@@ -211,6 +213,9 @@ namespace MyProjectIT15.Controllers
 
 			_context.SaveChanges();
 
+			TempData["ShowSuccess"] = true;
+			TempData["Success"] = "Room updated successfully.";
+
 			return RedirectToAction("room", "AdminPage");
 		}
 		[Authorize(Roles = "admin")]
@@ -228,6 +233,9 @@ namespace MyProjectIT15.Controllers
 			_context.Rooms.Remove(room);
 			_context.SaveChanges(true);
 
+			TempData["ShowSuccess"] = true;
+			TempData["Success"] = "Room deleted successfully.";
+
 			return RedirectToAction("room", "AdminPage");
 		}
 
@@ -239,7 +247,7 @@ namespace MyProjectIT15.Controllers
         {
             ViewBag.Title = "Assign Tenant to Room";
             ViewBag.Rooms = _context.Rooms
-                    .Where(r => r.Status == "Available")
+                    .Where(r => r.Status == "Active")
                     .ToList();
             //ViewBag.Users = _context.Users.ToList();
 
@@ -256,7 +264,7 @@ namespace MyProjectIT15.Controllers
             {
                 ViewBag.Title = "Assign Tenant to Room";
                 ViewBag.Rooms = _context.Rooms
-                    .Where(r => r.Status == "Available")
+                    .Where(r => r.Status == "Active")
 					.ToList();
                 //ViewBag.Users = _context.Users.ToList();
 

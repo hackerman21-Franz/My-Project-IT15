@@ -16,7 +16,9 @@ namespace MyProjectIT15.Services
         public DbSet<Room> Rooms { get; set; }
         public DbSet<UserRoom> UserRooms { get; set; }
         public DbSet<Meter> Meters { get; set; }
-        public DbSet<MeterReading> MeterReadings { get; set; }
+
+		public DbSet<RoomMeter> RoomMeters { get; set; }
+		public DbSet<MeterReading> MeterReadings { get; set; }
 
 
 

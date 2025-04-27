@@ -1,0 +1,85 @@
+﻿@model List<RoomMeter>
+
+@{
+    ViewBag.Title = "Room Meters";
+}
+
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="AssignMeter">
+                <i class="bi bi-plus-lg"></i> Assign Meter
+            </a>
+            <a class="btn btn-outline-primary" asp-controller="Meter" asp-action="Meter">
+                <i class="bi bi-people"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Room Number</th>
+                    <th>To</th>
+                    <th>Meter Number</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th style="width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var roomMeter in Model)
+                {
+                    <tr>
+                        <td>@roomMeter.Id</td>
+                        <td>@roomMeter.Room?.Room_Number</td>
+                        <td>---</td>
+                        <td>@roomMeter.Meter?.Meter_Number</td>
+                        <td>@roomMeter.Status</td>
+
+                        <td>@roomMeter.installedDate.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="Meter" asp-action="EditRoomMeter" asp-route-id="@roomMeter.Id">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <form asp-controller="Meter" asp-action="DeactivateRoomMeter" asp-route-id="@roomMeter.Id" method="post" style="display:inline">
+                                    @Html.AntiForgeryToken()
+
+                                    <!-- Trigger the modal with the button -->
+                                    <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal_@roomMeter.Id">
+                                        <i class="bi bi-x-circle"></i> Deactivate
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deactivateModal_@roomMeter.Id" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deactivateModalLabel">Confirm Deactivation</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to deactivate this room assignment?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <!-- Cancel button to close the modal -->
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <!-- Confirm button to submit the form -->
+                                                    <button type="submit" class="btn btn-danger">Confirm Deactivation</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

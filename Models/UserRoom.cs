@@ -21,5 +21,7 @@ namespace MyProjectIT15.Models
         public DateTime? EndDate { get; set; }
 
         public string Status { get; set; } = string.Empty;
-    }
+
+		public ICollection<MeterReading> MeterReadings { get; set; } = new List<MeterReading>();
+	}
 }

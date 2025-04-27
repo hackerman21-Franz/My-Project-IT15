@@ -1,7 +1,7 @@
 ﻿@model List<Room>
 
 @{
-    ViewBag.Title = "List of Rooms";
+    ViewBag.Title = "Rooms";
 }
 
 <div class="container py-4">
@@ -46,7 +46,7 @@
                             <img src="/rooms/@room.ImageFileName" alt="Room Image" class="img-thumbnail" style="width: 100px;" />
                         </td>
                         <td>
-                            <span class="badge bg-@(room.Status.ToLower() == "available" ? "success" : "secondary")">
+                            <span class="badge bg-@(room.Status.ToLower() == "active" ? "success" : "secondary")">
                                 @room.Status
                             </span>
                         </td>

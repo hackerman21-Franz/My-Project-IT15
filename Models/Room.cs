@@ -36,6 +36,6 @@ namespace MyProjectIT15.Models
 
         public ICollection<UserRoom> UserRooms { get; set; } = new List<UserRoom>();
 
-        public ICollection<MeterReading> MeterReadings { get; set; } = new List<MeterReading>();
+        public ICollection<RoomMeter> RoomMeters { get; set; } = new List<RoomMeter>();
     }
 }
