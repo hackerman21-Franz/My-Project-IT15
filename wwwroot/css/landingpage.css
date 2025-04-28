@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-﻿﻿html {
-=======
-﻿html {
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
-    font-size: 14px;
-}
+
 
 @media (min-width: 768px) {
     html {
@@ -16,20 +10,11 @@
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+html, body {
+    height: 100%;
+    overflow-y: auto;
 }
 
-body {
-    margin-bottom: 60px;
-    overflow: hidden;
-    background: url('/images/Frame 352.png') lightgray 100% / cover no-repeat;
-<<<<<<< HEAD
-=======
-
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
-}
 
 .card-hover {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -43,94 +28,4 @@ body {
 
 
 
-<<<<<<< HEAD
-.content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding-top: 80px;
-=======
-.content{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction:column;
-    padding-top:80px;
 
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
-}
-
-.logo {
-    width: 172px;
-    height: 155px;
-    background-color: #D9D9D9;
-    border-radius: 50%;
-<<<<<<< HEAD
-    margin-bottom: 70px;
-=======
-    margin-bottom:70px;
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
-}
-
-.content h1 {
-    width: 980px;
-    height: 55px;
-    flex-shrink: 0;
-    color: #1F1F21;
-    font-family: "Inter";
-    font-size: 80px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 24px; /* 34.286% */
-}
-
-.content p {
-    width: 652px;
-    height: 77px;
-    flex-shrink: 0;
-    aspect-ratio: 652/77;
-    color: #848484;
-    text-align: center;
-    font-family: "Plus Jakarta Sans";
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 39px; /* 111.429% */
-    margin-bottom: 70px;
-}
-
-.content button {
-    width: 197px;
-    height: 61px;
-<<<<<<< HEAD
-    border: none;
-=======
-    border:none;
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #4A98FF;
-    box-shadow: 0px 4px 40px 16px rgba(74, 152, 255, 0.27);
-    color: #FFF;
-    font-family: "Plus Jakarta Sans";
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 24px; /* 120% */
-    transition: all 0.3s ease-in;
-}
-
-<<<<<<< HEAD
-    .content button:hover {
-        cursor: pointer;
-        background-color: black;
-        transform: scale(1.03);
-    }
-=======
-.content button:hover{
-    cursor: pointer;
-    background-color: black;
-    transform:scale(1.03);
-}
->>>>>>> 6b272d21711118e3a55e7b8f0d392fdf54aad3c6
