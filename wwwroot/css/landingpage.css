@@ -26,6 +26,23 @@ html, body {
     }
 
 
+.top-texts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+}
+
+    .top-texts h1 {
+        width: 400px;
+        color: #2571FF;
+        font-family: Pacifico;
+        font-size: 70px;
+        font-style: normal;
+        font-weight: 400;
+    }
+
 
 
 
