@@ -23,6 +23,11 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
+        public IActionResult TenantDashboard()
+        {
+            return View();
+        }
+
 
         public IActionResult Privacy()
         {
