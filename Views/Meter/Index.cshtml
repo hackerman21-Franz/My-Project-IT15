@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "OCR Upload";
+    ViewData["Title"] = "Manage Meters";
     var ocrText = ViewBag.OcrResult as string;
     var error = ViewBag.Error as string;
 }
@@ -14,6 +14,16 @@
         <div class="col-12 col-md-auto">
             <a asp-controller="Meter" asp-action="Meter" class="btn btn-outline-primary w-100">
                 View Meters
+            </a>
+        </div>
+        <div class="col-12 col-md-auto">
+            <a asp-controller="Meter" asp-action="Billings" class="btn btn-success w-100">
+                View Billings
+            </a>
+        </div>
+        <div class="col-12 col-md-auto">
+            <a asp-controller="AdminPage" asp-action="Index" class="btn btn-outline-secondary w-100">
+                Back
             </a>
         </div>
     </div>

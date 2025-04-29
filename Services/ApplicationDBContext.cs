@@ -20,6 +20,8 @@ namespace MyProjectIT15.Services
 		public DbSet<RoomMeter> RoomMeters { get; set; }
 		public DbSet<MeterReading> MeterReadings { get; set; }
 
+        public DbSet<Billing> Billings { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)

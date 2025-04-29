@@ -1,8 +1,8 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Meter Reading";
     var ocrText = ViewBag.OcrResult as string;
     var error = ViewBag.Error as string;
-}
+} *@
 
 @* <div class="container mt-5">
     <h2 class="text-center mb-4">@ViewData["Title"]</h2>
@@ -130,7 +130,7 @@
 </script> *@
 
 
-<div class="container mt-5">
+@* <div class="container mt-5">
     <div class="row g-4">
         <!-- Upload Section -->
         <div class="col-12 col-md-6">
@@ -172,6 +172,80 @@
             </div>
         </div>
 
+    </div>
+</div> *@
+
+
+@model List<MyProjectIT15.Models.MeterReading>
+
+@{
+    ViewBag.Title = "Meter Reading";
+}
+
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="ReadMeter">
+                <i class="bi bi-plus-lg"></i> Read Meter
+            </a>
+            <a class="btn btn-outline-primary" asp-controller="Meter" asp-action="Index">
+                <i class="bi bi-people"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Room Number</th>
+                    <th>Tenant Name</th>
+                    <th>Reading Date</th>
+                    <th>Previous Reading</th>
+                    <th>Current Reading</th>
+                    <th>Consumption</th>
+                    <th>Done By:</th>
+                    <th style="width: 150px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var meterReading in Model)
+                    {
+                        <tr>
+                            <td>@meterReading.Id</td>
+                            <td>@meterReading.UserRoom?.Room?.Room_Number</td> <!-- assuming Room_Number property -->
+                            <td>
+                                @(
+                                    meterReading.UserRoom?.Tenant != null
+                                    ? $"{meterReading.UserRoom.Tenant.FirstName} {meterReading.UserRoom.Tenant.MiddleName} {meterReading.UserRoom.Tenant.LastName}"
+                                    : "No Tenant"
+                                    )
+                            </td>
+                            <td>@meterReading.ReadingDate.ToString("yyyy-MM-dd")</td>
+                            <td>@meterReading.PreviousReading</td>
+                            <td>@meterReading.CurrentReading</td>
+                            <td>@meterReading.Consumption</td>
+                            <td>@meterReading.User?.FirstName @meterReading.User?.MiddleName @meterReading.User?.LastName</td>
+                            <td>
+                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@meterReading.Id">Edit</a>
+                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@meterReading.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center">No meter readings found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>
 

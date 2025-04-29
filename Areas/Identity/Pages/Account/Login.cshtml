@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 }
 
-<div class="row" style="display:none;">
+<div class="row" @* style="display:none;" *@>
     <div class="col-md-4 mx-auto rounded border p-3">
         <section>
             <div class="d-flex justify-content-center">
@@ -23,7 +23,7 @@
                     <img src="/logo/roomify logo.png" width="200" />
                 </a>
             </div>
-            @*     <h2 class="text-center mb-3">Login now</h2> *@
+                <h2 class="text-center mb-3">Login now</h2>
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <form id="account" method="post">
@@ -72,7 +72,7 @@
 
 </div>
 
-
+@* 
 <div class="row">
     <div class="contents">
         <div class="top-texts">
@@ -95,7 +95,7 @@
             <button id="signin-button">Sign In</button>
         </div>
     </div>
-</div>
+</div> *@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

@@ -9,6 +9,7 @@ namespace MyProjectIT15.Models
 
 		[Required]
 		public int MeterId { get; set; }
-		public string Status { get; set; }
+
+        public string Status { get; set; } = string.Empty;
 	}
 }

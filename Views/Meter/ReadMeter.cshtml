@@ -1,0 +1,66 @@
+﻿@model MyProjectIT15.Models.MeterReadingDto
+
+@{
+    ViewBag.Title = "Read Meter";
+}
+<!-- Display all validation errors here -->
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <form asp-action="ReadMeter" method="post" class="shadow p-4 rounded bg-light">
+                <div class="mb-3">
+                    <label asp-for="RoomMeterId" class="form-label">Select Meter</label>
+                    <select asp-for="RoomMeterId" asp-items="Model.RoomMeters" class="form-select" required>
+                        <option value="">-- Select a Meter --</option>
+                    </select>
+                    <span asp-validation-for="RoomMeterId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ReadingDate" class="form-label">Reading Date</label>
+                    <input asp-for="ReadingDate" class="form-control" type="date" />
+                    <span asp-validation-for="ReadingDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PreviousReading" class="form-label">Previous Reading</label>
+                    <input asp-for="PreviousReading" class="form-control" type="number" min="0" required />
+                    <span asp-validation-for="PreviousReading" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CurrentReading" class="form-label">Current Reading</label>
+                    <input asp-for="CurrentReading" class="form-control" type="number" min="0" required />
+                    <span asp-validation-for="CurrentReading" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a asp-action="MeterReading" class="btn btn-outline-secondary">Back</a>
+                    <button type="submit" class="btn btn-primary">
+                        Submit Reading
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -32,5 +32,7 @@ namespace MyProjectIT15.Models
         // Navigation property to the ApplicationUser
         [ForeignKey("UserId")]
         public User? User { get; set; }
+
+        public ICollection<Billing> Billings { get; set; } = new List<Billing>();
     }
 }

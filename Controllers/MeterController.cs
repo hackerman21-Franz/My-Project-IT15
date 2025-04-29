@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using MyProjectIT15.Models;
 using System;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MyProjectIT15.Controllers
 {
@@ -292,69 +293,184 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("RoomMeter");
         }
 
-
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> readMeter(MeterDto meterDto)
-        //{
-        //	var user = await _userManager.GetUserAsync(User);
-
-
-        //	if (!ModelState.IsValid)
-        //	{
-        //		return View(meterDto);
-        //	}
-
-
-        //	Meter meter = new Meter
-        //	{
-        //		Meter_Number = meterDto.Meter_Number,
-        //		Status = "Active",
-        //		CreatedAt = DateTime.Now,
-        //		UserId = user?.Id // optional chaining in case user is null
-        //	};
-
-        //	_context.Meters.Add(meter);
-        //	await _context.SaveChangesAsync();
-
-        //	TempData["ShowSuccess"] = true;
-        //	TempData["Success"] = "Meter added successfully.";
-
-        //	return RedirectToAction("Meter", "Meter");
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public IActionResult MeterReading()
         {
-            ViewBag.OcrResult = TempData["OcrResult"];
-            ViewBag.Error = TempData["Error"];
-            return View();
+            var meterReadings = _context.MeterReadings
+            .OrderByDescending(p => p.Id)
+            .Include(mr => mr.RoomMeter)
+            .ThenInclude(rm => rm.Room)
+            .Include(mr => mr.UserRoom) // Only until UserRoom, no ThenInclude
+            .ThenInclude(ur => ur.Tenant)
+            .Include(mr => mr.User)
+            .ToList();
+
+            return View(meterReadings); // Pass the list of MeterReading objects to the view
         }
+
+        [HttpGet]
+        public IActionResult ReadMeter()
+        {
+            var meterReadingDto = new MeterReadingDto
+            {
+                ReadingDate = DateTime.UtcNow,
+                RoomMeters = _context.RoomMeters
+                    .Where(rm => rm.Status == "Active")
+                    .Include(rm => rm.Room)
+                    .Include(rm => rm.Meter)
+                    .Select(rm => new SelectListItem
+                    {
+                        Value = rm.Id.ToString(),
+                        Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
+                    })
+                    .ToList()
+            };
+
+            return View(meterReadingDto);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReadMeter(MeterReadingDto meterReadingDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                meterReadingDto.RoomMeters = _context.RoomMeters
+                    .Where(rm => rm.Status == "Active")
+                    .Include(rm => rm.Room)
+                    .Include(rm => rm.Meter)
+                    .Select(rm => new SelectListItem
+                    {
+                        Value = rm.Id.ToString(),
+                        Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
+                    }).ToList();
+
+                return View(meterReadingDto);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            var roomMeter = await _context.RoomMeters
+                .Include(rm => rm.Room)
+                .FirstOrDefaultAsync(rm => rm.Id == meterReadingDto.RoomMeterId);
+
+            if (roomMeter == null)
+            {
+                ModelState.AddModelError("", "Selected meter not found.");
+                return View(meterReadingDto);
+            }
+
+            var userRoom = await _context.UserRooms
+                .FirstOrDefaultAsync(ur => ur.RoomId == roomMeter.RoomId && ur.Status == "Active");
+
+            if (userRoom == null)
+            {
+                ModelState.AddModelError("", "No active user assigned to this room.");
+                return View(meterReadingDto);
+            }
+
+            var meterReading = new MeterReading
+            {
+                UserRoomId = userRoom.Id,
+                RoomMeterId = meterReadingDto.RoomMeterId,
+                ReadingDate = meterReadingDto.ReadingDate,
+                PreviousReading = meterReadingDto.PreviousReading,
+                CurrentReading = meterReadingDto.CurrentReading,
+                Consumption = meterReadingDto.CurrentReading - meterReadingDto.PreviousReading,
+                UserId = user?.Id
+            };
+
+            var calculateTotalAmount = Math.Round((meterReadingDto.CurrentReading - meterReadingDto.PreviousReading) * 13.0127m, 2);
+
+            _context.MeterReadings.Add(meterReading);
+            await _context.SaveChangesAsync();
+
+            var billing = new Billing
+            {
+                UserId = userRoom.TenantId,
+                MeterReadingId = meterReading.Id, // Link the new meter reading
+                ReadingDate = meterReadingDto.ReadingDate,
+                DueDate = meterReadingDto.ReadingDate.AddDays(14),
+                TotalAmount = calculateTotalAmount,
+                Status = "Unpaid"
+            };
+
+            _context.Billings.Add(billing);
+            await _context.SaveChangesAsync();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Meter Reading and Billing done successsfully.";
+
+            return RedirectToAction("MeterReading", "Meter");
+        }
+
+        public IActionResult Billings()
+        {
+            var billings = _context.Billings
+            .OrderByDescending(b => b.Id)
+            .Include(u => u.User)
+            .Include(mr => mr.MeterReading)
+            .ToList();
+
+            return View(billings); 
+        }
+
+        public async Task<IActionResult> UserBillings()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var currentUserId = currentUser?.Id;
+
+            var billings = await _context.Billings
+                .Where(b => b.UserId == currentUserId) // <-- Filter billings by current user ID
+                .OrderByDescending(b => b.Id)
+                .Include(b => b.User)
+                .Include(b => b.MeterReading)
+                    .ThenInclude(mr => mr.RoomMeter) // if you want RoomMeter details too
+                .ToListAsync();
+
+            return View(billings);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //public IActionResult MeterReading()
+        //{
+        //    ViewBag.OcrResult = TempData["OcrResult"];
+        //    ViewBag.Error = TempData["Error"];
+        //    return View();
+        //}
 
         [HttpPost]
         public IActionResult ScanMeter(IFormFile imageFile)

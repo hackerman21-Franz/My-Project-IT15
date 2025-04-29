@@ -18,5 +18,7 @@ namespace MyProjectIT15.Models
         public ICollection<Meter> Meters { get; set; } = new List<Meter>();
         public ICollection<MeterReading> MeterReadings { get; set; } = new List<MeterReading>();
 
+        public ICollection<Billing> Billings { get; set; } = new List<Billing>();
+
     }
 }

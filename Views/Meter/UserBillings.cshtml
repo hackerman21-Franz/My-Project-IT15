@@ -1,0 +1,72 @@
+﻿@model List<MyProjectIT15.Models.Billing>
+
+@{
+    ViewBag.Title = "Billings";
+}
+
+<div class="container py-4">
+    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="">
+                <i class="bi bi-plus-lg"></i> Billing History
+            </a>
+            <a class="btn btn-outline-primary me-2" asp-controller="Meter" asp-action="">
+                <i class="bi bi-plus-lg"></i> Payment History
+            </a>
+            <a class="btn btn-outline-primary" asp-controller="AdminPage" asp-action="tenant">
+                <i class="bi bi-people"></i> Back
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle shadow-sm">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Tenant Name</th>
+                    <th>Room Meter ID</th>
+                    <th>Reading Date</th>
+                    <th>Due Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th style="width: 150px;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var billing in Model)
+                    {
+                        <tr>
+                            <td>@billing.Id</td>
+                            <td>
+                                @(
+                                    billing.User != null
+                                    ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}"
+                                    : "No Tenant"
+                                    )
+                            </td>
+                            <td>@billing.MeterReading?.RoomMeterId</td> <!-- assuming Room_Number property -->
+                            <td>@billing.ReadingDate.ToString("yyyy-MM-dd")</td>
+                            <td>@billing.DueDate</td>
+                            <td>₱ @billing.TotalAmount.ToString("N2")</td>
+                            <td>@billing.Status</td>
+                            <td>
+                                <a class="btn btn-sm btn-success" asp-action="PayBill" asp-route-id="@billing.Id">Pay Bills</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="8" class="text-center">No billings found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
