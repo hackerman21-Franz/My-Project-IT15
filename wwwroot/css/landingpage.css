@@ -35,13 +35,20 @@ html, body {
 }
 
     .top-texts h1 {
-        width: 400px;
+        width: 1000px;
         color: #2571FF;
         font-family: Pacifico;
-        font-size: 70px;
+        font-size: 100px;
         font-style: normal;
         font-weight: 400;
     }
+
+.text-muted{
+    width:600px;
+    margin:0 auto;
+
+
+}
 
 
 

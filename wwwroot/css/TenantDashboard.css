@@ -1,0 +1,58 @@
+﻿
+html, body {
+    height: 100%;
+    overflow-y: auto;
+
+}
+
+.card-placeholder {
+    border: 2px solid #000;
+    background-color: #ffff;
+    border-radius: 2px;
+    height: 200px;
+}
+
+.card-lg {
+    height: 300px;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.header-controls input {
+    min-width: 160px;
+}
+
+.container-fluid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.header h1 {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 68.571% */
+}
+
+.text-muted{
+    margin-top:20px;
+    color: #939393;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px; /* 133.333% */
+}
+

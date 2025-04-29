@@ -1,0 +1,70 @@
+﻿@page
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Pacifico&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/TenantDashboard.css" asp-append-version="true" />
+}
+
+@model MyProjectIT15.Views.Home.TenantDashboardModel
+@{
+
+    <div class="container-fluid">
+
+
+
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div class="header">
+                <h1 class="mb-2">Tenant Dashboard</h1>
+                <small class="text-muted">Monitor and manage your utility consumption</small>
+            </div>
+            <div class="d-flex gap-2 align-items-center header-controls">
+                <input type="month" class="form-control" />
+                <button class="btn btn-primary">Download Report</button>
+            </div>
+        </div>
+
+        <!-- Row 1: Three cards -->
+        <div class="row g-4 " style="margin-bottom: 50px;">
+            <div class="col-md-4">
+                <div class="card-placeholder" style="height:250px;"></div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-placeholder" style="height:250px;"></div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-placeholder" style="height:250px;"></div>
+            </div>
+        </div>
+
+        <!-- Row 2: One large card -->
+        <div class="row g-4 " style="margin-bottom: 50px;">
+            <div class="col-12">
+                <div class="card-placeholder card-lg" style="height:500px; width:100%;"></div>
+            </div>
+        </div>
+
+        <!-- Row 3: Three medium cards -->
+        <div class="row g-4" style="margin-bottom: 50px;">
+            <div class="col-md-4">
+                <div class="card-placeholder" style="height:250px;"></div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-placeholder" style="height:250px;"></div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-placeholder" style="height:250px;"></div>
+            </div>
+        </div>
+
+        <!-- Row 4: One wide card -->
+        <div class="row g-4 mb-3">
+            <div class="col-12">
+                <div class="card-placeholder card-lg"></div>
+            </div>
+        </div>
+    </div>
+}
