@@ -29,7 +29,7 @@
                     <th>Due Date</th>
                     <th>Total Amount</th>
                     <th>Status</th>
-                    <th style="width: 150px;">Actions</th>
+              @*       <th style="width: 150px;">Actions</th> *@
                 </tr>
             </thead>
             <tbody>
@@ -51,9 +51,9 @@
                             <td>@billing.DueDate</td>
                             <td>₱ @billing.TotalAmount.ToString("N2")</td>
                             <td>@billing.Status</td>
-                            <td>
+                          @*   <td>
                                 <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@billing.Id">Void Billing</a>
-                            </td>
+                            </td> *@
                         </tr>
                     }
                 }

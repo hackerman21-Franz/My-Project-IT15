@@ -1,7 +1,7 @@
 ﻿@model List<MyProjectIT15.Models.Billing>
 
 @{
-    ViewBag.Title = "Billings";
+    ViewBag.Title = "My Bills";
 }
 
 <div class="container py-4">
@@ -50,12 +50,113 @@
                                     )
                             </td>
                             <td>@billing.MeterReading?.RoomMeterId</td> <!-- assuming Room_Number property -->
-                            <td>@billing.ReadingDate.ToString("yyyy-MM-dd")</td>
+                            <td>@billing.ReadingDate.ToString("MMM dd, yyyy")</td>
                             <td>@billing.DueDate</td>
                             <td>₱ @billing.TotalAmount.ToString("N2")</td>
                             <td>@billing.Status</td>
                             <td>
-                                <a class="btn btn-sm btn-success" asp-action="PayBill" asp-route-id="@billing.Id">Pay Bills</a>
+                                <!-- Trigger the modal with the button -->
+                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#Modal_@billing.Id">
+                                    <i class="bi bi-x-circle"></i> View Details
+                                </button>
+                                <!-- Modal -->
+                                <div class="modal fade" id="Modal_@billing.Id" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                                        <div class="modal-content border-0 shadow-lg rounded-4">
+                                            <div class="modal-header bg-light border-bottom-0">
+                                                <h5 class="modal-title fw-bold" id="deactivateModalLabel">Billing Details</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                @{
+                                                    var current = billing.MeterReading?.CurrentReading ?? 0;
+                                                    var previous = billing.MeterReading?.PreviousReading ?? 0;
+                                                    var rate = 13.0127m;
+                                                    var calculatedTotal = Math.Round((current - previous) * rate, 2);
+                                                }
+
+                                                <div class="row justify-content-center">
+                                                    <div class="col-12 col-md-10">
+                                                        <div class="card shadow-sm border-0 rounded-3">
+                                                            <div class="card-body px-4 py-3">
+
+                                                                <!-- Header -->
+                                                                <div class="mb-4 text-center">
+                                                                    <h5 class="fw-bold">Billing Statement</h5>
+                                                                    <small class="text-muted">Billing Reference #: @billing.Id</small>
+                                                                </div>
+
+                                                                <hr class="my-3" />
+
+                                                                <!-- Tenant Information -->
+                                                                <div class="mb-3">
+                                                                    <h6 class="fw-semibold">Tenant Information</h6>
+                                                                    <p class="mb-1"><strong>Name:</strong> @(billing.User != null ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}" : "No Tenant Assigned")</p>
+                                                                    <p class="mb-1"><strong>Room Meter ID:</strong> @billing.MeterReading?.RoomMeterId</p>
+                                                                </div>
+
+                                                                <hr class="my-3" />
+
+                                                                <!-- Meter Readings -->
+                                                                <div class="mb-3">
+                                                                    <h6 class="fw-semibold">Meter Reading Details</h6>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4"><strong>Reading Date:</strong><br />@billing.ReadingDate.ToString("MMM dd, yyyy")</div>
+                                                                        <div class="col-sm-4"><strong>Previous Reading:</strong><br />@previous</div>
+                                                                        <div class="col-sm-4"><strong>Current Reading:</strong><br />@current</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr class="my-3" />
+
+                                                                <!-- Billing Summary -->
+                                                                <div class="mb-3">
+                                                                    <h6 class="fw-semibold">Billing Summary</h6>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4"><strong>Rate per kWh:</strong><br />₱ @rate</div>
+                                                                        <div class="col-sm-4"><strong>Consumption:</strong><br />@(current - previous) kWh</div>
+                                                                        <div class="col-sm-4"><strong>Calculated Total:</strong><br />₱ @calculatedTotal</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr class="my-3" />
+
+                                                                <!-- Payment Details -->
+                                                                <div class="mb-3">
+                                                                    <h6 class="fw-semibold">Payment Details</h6>
+                                                                    <div class="col">
+                                                                        <div class="col-sm-6"><strong>Due Date:</strong><br />@billing.DueDate.ToString("MMM dd, yyyy")</div>
+                                                                        <div class="col-sm-6"><strong>Total Amount to Pay:</strong><br />₱ @billing.TotalAmount.ToString("N2")</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr class="my-3" />
+
+                                                                <!-- Notes -->
+                                                                <div class="mt-4">
+                                                                    <p class="text-muted">
+                                                                        <strong>Note:</strong> Please settle your payment on or before the due date to avoid service disruption or penalties.
+                                                                    </p>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="modal-footer border-top-0">
+                                                    <a class="btn btn-success" asp-action="" asp-route-id="@billing.Id">
+                                                        <i class="bi bi-wallet2"></i> Pay Bills
+                                                    </a>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </td>
                         </tr>
                     }
