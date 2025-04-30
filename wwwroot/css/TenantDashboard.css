@@ -2,7 +2,7 @@
 html, body {
     height: 100%;
     overflow-y: auto;
-
+    background: #F8FDFF;
 }
 
 .card-placeholder {
@@ -56,3 +56,80 @@ html, body {
     line-height: 24px; /* 133.333% */
 }
 
+#box1,
+#box2,
+#box3 {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+#big-box {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+
+.usage-card {
+    height: 250px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.usage-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.usage-label {
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.usage-comparison {
+    font-size: 0.9rem;
+    color: #28a745; /* Green for positive, use #dc3545 for negative */
+}
+
+#boxbottom1 {
+    color: #373737;
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 200% */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+#boxbottom2,
+#boxbottom3 {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    border: none;
+}
+
+
+#boxbottom1 h1,
+#boxbottom2 h1,
+#boxbottom3 h1{
+    width: 250px;
+    height: 25px;
+    flex-shrink: 0;
+    color: #1F1F21;
+    font-family:Inter;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 96% */
+}
+
+
+
+#big-box-bottom {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+}
