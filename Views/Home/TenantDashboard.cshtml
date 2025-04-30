@@ -39,8 +39,8 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="usage-card bg-white" id="box1">
-                    <h2 class="usage-label mb-3">Electricity</h2>
+                <div class="usage-card bg-white" id="box2">
+                    <h2 class="usage-label mb-3">Water</h2>
                     <div class="usage-value mb-2">285 kWh</div>
                     <div class="usage-comparison">
                         <span class="badge bg-success">82%</span> Last month
@@ -48,8 +48,8 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="usage-card bg-white" id="box1">
-                    <h2 class="usage-label mb-3">Electricity</h2>
+                <div class="usage-card bg-white" id="box3">
+                    <h2 class="usage-label mb-3">Internet</h2>
                     <div class="usage-value mb-2">285 kWh</div>
                     <div class="usage-comparison">
                         <span class="badge bg-success">82%</span> Last month
@@ -61,17 +61,17 @@
         <!-- Row 2: One large card -->
         <div class="row g-4 " style="margin-bottom: 50px;">
             <div class="col-12">
-                <div class="card-placeholder card-lg" style="height:500px; width:100%;" id="big-box">
+                <div class="card-placeholder card-lg" style="height:700px; width:100%;" id="big-box">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="card-title">Consumption Trends</h5>
                             <div>
                                 <button class="btn btn-sm btn-primary me-1">Daily</button>
-                                <button class="btn btn-sm btn-outline-secondary me-1">Weekly</button>
-                                <button class="btn btn-sm btn-outline-secondary">Monthly</button>
+                                <button class="btn btn-sm btn-outline-secondary me-1" style="border:none;">Weekly</button>
+                                <button class="btn btn-sm btn-outline-secondary" style="">Monthly</button>
                             </div>
                         </div>
-                        <div id="big-box" style="height: 400px; width: 100%; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;">
+                        <div id="big-box" style="height: 400px; width: 100%; background-color: black; border: 1px solid #dee2e6; border-radius: 5px;">
                         </div>
                     </div>
                 </div>
@@ -81,20 +81,74 @@
         <!-- Row 3: Three medium cards -->
         <div class="row g-4" style="margin-bottom: 50px;">
             <div class="col-md-4">
-                <div class="card-placeholder" style="height:250px;"></div>
+                <div class="card-placeholder p-3 d-flex flex-column justify-content-start" style="height:350px;" id="boxbottom1">
+                    <!-- Title -->
+                    <h1 class="" style="margin-bottom:50px; margin-top:10px;">Quick Actions</h1>
+
+                    <!-- Mini Cards Container -->
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <!-- Mini Card 1 -->
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center"
+                             style="width: 95px; height: 84px; border-radius: 5px; background: rgba(75, 150, 248, 0.08);" id="minicard1-actions">
+                            <i class="bi bi-star text-primary fs-4"></i>
+                            <small>Star</small>
+                        </div>
+
+                        <!-- Mini Card 2 -->
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center"
+                             style="width: 95px; height: 84px; border-radius: 5px; background: rgba(75, 150, 248, 0.08);" id="minicard2-actions">
+                            <i class="bi bi-heart text-danger fs-4"></i>
+                            <small>Like</small>
+                        </div>
+
+                        <!-- Mini Card 3 -->
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center"
+                             style="width: 95px; height: 84px; border-radius: 5px; background: rgba(75, 150, 248, 0.08);" id="minicard3-actions">
+                            <i class="bi bi-gear text-secondary fs-4"></i>
+                            <small>Settings</small>
+                        </div>
+
+                        <!-- Mini Card 4 -->
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center"
+                             style="width: 95px; height: 84px; border-radius: 5px; background: rgba(75, 150, 248, 0.08);" id="minicard4-actions">
+                            <i class="bi bi-chat-dots text-info fs-4"></i>
+                            <small>Chat</small>
+                        </div>
+
+                        <!-- Mini Card 5 -->
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center"
+                             style="width: 95px; height: 84px; border-radius: 5px; background: rgba(75, 150, 248, 0.08);" id="minicard5-actions">
+                            <i class="bi bi-person text-success fs-4"></i>
+                            <small>User</small>
+                        </div>
+
+                        <!-- Mini Card 6 -->
+                        <div class="d-flex flex-column align-items-center justify-content-center text-center"
+                             style="width: 95px; height: 84px; border-radius: 5px; background: rgba(75, 150, 248, 0.08);" id="minicard6-actions">
+                            <i class="bi bi-bell text-warning fs-4"></i>
+                            <small>Alert</small>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
             <div class="col-md-4">
-                <div class="card-placeholder" style="height:250px;"></div>
+                <div class="card-placeholder p-3 d-flex flex-column justify-content-start" style="height:350px;" id="boxbottom2">
+                    <h1 class="" style="margin-bottom:50px; margin-top:10px;">Quick Actions</h1>
+                </div>
             </div>
             <div class="col-md-4">
-                <div class="card-placeholder" style="height:250px;"></div>
+                <div class="card-placeholder p-3 d-flex flex-column justify-content-start" style="height:350px;" id="boxbottom3">
+                    <h1 class="" style="margin-bottom:50px; margin-top:10px;">Quick Actions</h1>
+                </div>
             </div>
         </div>
 
         <!-- Row 4: One wide card -->
         <div class="row g-4 mb-3">
             <div class="col-12">
-                <div class="card-placeholder card-lg"></div>
+                <div class="card-placeholder card-lg" id="big-box-bottom"></div>
             </div>
         </div>
     </div>
