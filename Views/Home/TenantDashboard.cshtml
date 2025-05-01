@@ -12,7 +12,7 @@
 @model MyProjectIT15.Views.Home.TenantDashboardModel
 @{
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:50px;">
 
 
 
@@ -22,8 +22,8 @@
                 <small class="text-muted">Monitor and manage your utility consumption</small>
             </div>
             <div class="d-flex gap-2 align-items-center header-controls">
-                <input type="month" class="form-control" />
-                <button class="btn btn-primary">Download Report</button>
+                <button type="button" class="btn btn-outline-primary">Download Report</button>
+                <button type="button" class="btn btn-primary">Download Current Receipt</button>
             </div>
         </div>
 
@@ -61,18 +61,18 @@
         <!-- Row 2: One large card -->
         <div class="row g-4 " style="margin-bottom: 50px;">
             <div class="col-12">
-                <div class="card-placeholder card-lg" style="height:700px; width:100%;" id="big-box">
+                <div class="card-placeholder card-lg" style="height:450px; width:100%; padding:10px;" id="big-box">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="card-title">Consumption Trends</h5>
                             <div>
-                                <button class="btn btn-sm btn-primary me-1">Daily</button>
-                                <button class="btn btn-sm btn-outline-secondary me-1" style="border:none;">Weekly</button>
-                                <button class="btn btn-sm btn-outline-secondary" style="">Monthly</button>
+                                <button type="button" class="btn" data-bs-toggle="button" id="btn-bigcard">Current</button>
+                                <button type="button" class="btn" data-bs-toggle="button" id="btn-bigcard2">Tomorrow</button>
+                                <button type="button" class="btn" data-bs-toggle="button" id="btn-bigcard3">Today</button>
                             </div>
                         </div>
-                        <div id="big-box" style="height: 400px; width: 100%; background-color: black; border: 1px solid #dee2e6; border-radius: 5px;">
-                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -148,8 +148,54 @@
         <!-- Row 4: One wide card -->
         <div class="row g-4 mb-3">
             <div class="col-12">
-                <div class="card-placeholder card-lg" id="big-box-bottom"></div>
+                <div class="card p-4 border-0" id="big-box-bottom" style="background: white;">
+
+                    <!-- Title and View All aligned on the same row -->
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0">Energy Saving Tips</h4>
+                        <a href="#" class="text-primary">View all</a>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div id="tipcard-1" class="p-3 h-100">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
+                                        <i class="bi bi-lightning-charge"></i>
+                                    </div>
+                                    <strong>Switch to LED Lighting</strong>
+                                </div>
+                                <p class="mb-0 small">LED bulbs use up to 75% less energy than traditional incandescent bulbs and last much longer.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="tipcard-2" class="p-3 h-100">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
+                                        <i class="bi bi-droplet"></i>
+                                    </div>
+                                    <strong>Short Showers</strong>
+                                </div>
+                                <p class="mb-0 small">Reducing your shower time by just 2 minutes can save up to 10 gallons of water per shower.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div id="tipcard-3" class="p-3 h-100">
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
+                                        <i class="bi bi-thermometer-half"></i>
+                                    </div>
+                                    <strong>Optimal Thermostat Settings</strong>
+                                </div>
+                                <p class="mb-0 small">Set your thermostat to 68°F (20°C) in winter and 78°F (26°C) in summer to optimize energy usage.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
+
+
     </div>
-}
+

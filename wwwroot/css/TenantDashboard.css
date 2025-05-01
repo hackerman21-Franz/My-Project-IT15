@@ -133,3 +133,33 @@ html, body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border: none;
 }
+
+
+
+#btn-bigcard,
+#btn-bigcard2,
+#btn-bigcard3{
+    transition: background-color 0.2s ease;
+    color: black;
+    font-family: Inter;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 141.176% */
+}
+
+
+    #btn-bigcard:hover,
+    #btn-bigcard2:hover,
+    #btn-bigcard3:hover {
+        background-color: gray !important;
+        color: white;
+    }
+
+#tipcard-1,
+#tipcard-2,
+#tipcard-3 {
+    border-radius: 20px;
+    border: 1px solid #D3D3D3;
+    background: #FFF;
+}
