@@ -1,0 +1,68 @@
+﻿@page
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Pacifico&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/TenantBilling.css" asp-append-version="true" />
+}
+
+@model MyProjectIT15.Views.Home.TenantBillingModel
+@{
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div class="header">
+                <h1 class="mb-2">Billing</h1>
+                <small class="text-muted">Manage your payments and billing information</small>
+            </div>
+            <div class="d-flex gap-2 align-items-center header-controls">
+                <button type="button" class="btn btn-outline-primary">Download Report</button>
+                <button type="button" class="btn btn-primary">Download Current Receipt</button>
+            </div>
+        </div>
+
+        <div class="card mb-3" style="height:450px;">
+            <div class="card-body">
+                <!-- Content for the top card -->
+            </div>
+        </div>
+        <div class="row">
+            <!-- Row 1 -->
+            <div class="col-md-4 mb-3">
+                <div class="card" style="height: 450px;">
+                    <div class="card-body">
+                        <!-- 1st small card -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 mb-3">
+                <div class="card" style="height: 450px;">
+                    <div class="card-body">
+                        <!-- 2nd wide card -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="col-md-4 mb-3">
+                <div class="card" style="height: 450px;">
+                    <div class="card-body">
+                        <!-- 3rd small card -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 mb-3">
+                <div class="card" style="height: 450px;">
+                    <div class="card-body">
+                        <!-- 4th wide card -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}

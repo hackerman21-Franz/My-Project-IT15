@@ -1,0 +1,26 @@
+﻿
+html, body {
+    height: 100%;
+    overflow-y: auto;
+    background: #F8FDFF;
+}
+
+
+#header  {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; /* 68.571% */
+}
+
+.text-muted {
+    margin-top: 20px;
+    color: #939393;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 24px; /* 133.333% */
+}

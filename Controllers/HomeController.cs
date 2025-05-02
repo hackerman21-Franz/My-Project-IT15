@@ -28,6 +28,12 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
+        public IActionResult TenantBilling()
+        {
+            return View();
+        }
+
+
 
         public IActionResult Privacy()
         {
