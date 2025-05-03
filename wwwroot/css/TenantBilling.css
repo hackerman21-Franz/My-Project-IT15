@@ -26,11 +26,32 @@ html, body {
 }
 
 
-#total-amout {
+#total-amount {
     color: #1F1F21;
     font-family: Inter;
-    font-size: 50px;
+    font-size: 40px;
     font-style: normal;
     font-weight: 700;
     line-height: 24px; /* 48% */
 }
+
+#billingtext h5 {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 120% */
+    margin-bottom:10px;
+}
+
+#due-date,
+#billing-period {
+    color: #939393;
+    font-family:Inter;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 141.176% */
+}
+
