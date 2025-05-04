@@ -1,0 +1,178 @@
+﻿@page
+
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Pacifico&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/AdminDashboard.css" asp-append-version="true" />
+}
+@model MyProjectIT15.Views.Home.AdminDashboardModel
+@{
+
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="header">
+                <h1>Admin Dashboard</h1>
+                <small class="text-muted">Manage your payments and billing information</small>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-primary  me-md-2" type="button">Button</button>
+                    <button class="btn btn-primary" type="button">Button</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Grid Layout -->
+        <div class="d-flex flex-wrap gap-3 mb-4">
+            <!-- Left Column with 4 cards -->
+            <div class="d-flex flex-column flex-wrap" style="width: 800px; gap: 20px;">
+                <div class="d-flex gap-3">
+                    <div class="card card-small p-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-medium mb-4">Total Tenants</span>
+                            <img src="~/images/people.png" alt="People Icon" class="icon-img">
+                        </div>
+                        <div class="mb-1">
+                            <h1 class="fw-bold m-0 mb-5">201</h1>
+                        </div>
+                        <div>
+                            <small class="card-text-muted">Small descriptive text</small>
+                        </div>
+                    </div>
+
+
+                    <div class="card card-small p-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-medium mb-4" >Occupied Rooms</span>
+                            <img src="~/images/House.png" alt="People Icon" class="icon-img">
+                        </div>
+                        <div class="mb-1">
+                            <h1 class="fw-bold m-0 mb-5">201</h1>
+                        </div>
+                        <div>
+                            <small class="card-text-muted">Small descriptive text</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <div class="card card-small p-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-medium mb-4">New Tenants this Month</span>
+                            <img src="~/images/calendarr.png" alt="People Icon" class="icon-img">
+                        </div>
+                        <div class="mb-1">
+                            <h1 class="fw-bold m-0 mb-5">201</h1>
+                        </div>
+                        <div>
+                            <small class="card-text-muted">Small descriptive text</small>
+                        </div>
+                    </div>
+                    <div class="card card-small p-4 shadow-sm">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-medium mb-4">Pending Payments</span>
+                            <img src="~/images/Warning.png" alt="People Icon" class="icon-img">
+                        </div>
+                        <div class="mb-1">
+                            <h1 class="fw-bold m-0 mb-5">201</h1>
+                        </div>
+                        <div>
+                            <small class="card-text-muted">Small descriptive text</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5th Large Card -->
+            <div class="card card-large p-3 shadow-sm">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
+                </button>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" id="myInput" class="form-control" placeholder="Focus me on open" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Overview -->
+        <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                    <h5>Data Overview</h5>
+                    <small class="text-muted">Manage your payments and billing information</small>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                        Data Tables Overview
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-lg-end">
+                        <li><a class="dropdown-item" href="#">Data 1</a></li>
+                        <li><a class="dropdown-item" href="#">Data 2</a></li>
+                        <li><a class="dropdown-item" href="#">Data 3</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card p-4 shadow-sm" id="dataoverview-card" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr class="table-primary rounded">
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1</td><td>Juan Dela Cruz</td><td>juan@example.com</td><td>Active</td></tr>
+                        <tr><td>2</td><td>Maria Santos</td><td>maria@example.com</td><td>Inactive</td></tr>
+                        <tr><td>3</td><td>Jose Rizal</td><td>rizal@example.com</td><td>Active</td></tr>
+                        <tr><td>4</td><td>Ana Lopez</td><td>ana@example.com</td><td>Pending</td></tr>
+                        <tr><td>5</td><td>Mark Lim</td><td>mark@example.com</td><td>Active</td></tr>
+                        <tr><td>6</td><td>Ella Reyes</td><td>ella@example.com</td><td>Inactive</td></tr>
+                        <tr><td>7</td><td>Carlos Tan</td><td>carlos@example.com</td><td>Active</td></tr>
+                        <tr><td>8</td><td>Lara Dy</td><td>lara@example.com</td><td>Pending</td></tr>
+                        <tr><td>9</td><td>Jorge Lee</td><td>jorge@example.com</td><td>Active</td></tr>
+                        <tr><td>10</td><td>Sofia Chua</td><td>sofia@example.com</td><td>Inactive</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- Overall New Tenants -->
+        <div class="mb-4 mt-5">
+            <h5>Overall New Tenants</h5>
+            <small class="text-muted">Manage your payments and billing information</small>
+            <div class="card p-4 shadow-sm mt-2" id="overallnewtenants-card"></div>
+        </div>
+    </div>
+
+
+   <script>
+        const myModal = document.getElementById('exampleModal')
+        const myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+            myInput.focus()
+        })
+</script>
+}

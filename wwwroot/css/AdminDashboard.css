@@ -1,0 +1,73 @@
+﻿body {
+
+}
+
+
+.header h1 {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 24px; /* 68.571% */
+}
+
+.card-small {
+    width: 380px;
+    height: 219px;
+    flex-shrink: 0;
+    border: 1px solid #D8D8D8;
+    border-radius: 10px;
+}
+
+.card-large {
+    width: 455px;
+    height: 460px;
+    flex-shrink: 0;
+    border: 1px solid #D8D8D8;
+    border-radius: 10px;
+}
+
+#dataoverview-card {
+    height: 500px;
+    border: 1px solid #D8D8D8;
+    border-radius: 10px;
+}
+
+#overallnewtenants-card {
+    height: 500px;
+    border: 1px solid #D8D8D8;
+    border-radius: 10px;
+}
+
+.fw-medium {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.fw-bold {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px; 
+}
+
+.card-text-muted {
+    color: #939393;
+    font-family:Inter;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px; /* 133.333% */
+}
+
+.icon-img{
+    width:60px;
+    height:60px;
+}

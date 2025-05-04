@@ -33,6 +33,11 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
+        public IActionResult AdminDashboard()
+        {
+            return View();
+        }
+
 
 
         public IActionResult Privacy()
