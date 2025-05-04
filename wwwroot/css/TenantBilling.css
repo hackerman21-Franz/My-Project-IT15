@@ -2,7 +2,7 @@
 html, body {
     height: 100%;
     overflow-y: auto;
-    background: #F8FDFF;
+    background: white;
 }
 
 
@@ -55,3 +55,17 @@ html, body {
     line-height: 24px; /* 141.176% */
 }
 
+#payment-card1 {
+    border-radius: 10px;
+    border: 1px solid #225FFB;
+    background: #F8F8F8;
+}
+
+#paymentcard1-text1 {
+    color: #1F1F21;
+    font-family: Inter;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+}
