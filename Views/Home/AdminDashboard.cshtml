@@ -28,76 +28,111 @@
         </div>
 
         <!-- Custom Grid Layout -->
-        <div class="d-flex flex-wrap gap-3 mb-4">
-            <!-- Left Column with 4 cards -->
-            <div class="d-flex flex-column flex-wrap" style="width: 800px; gap: 20px;">
-                <div class="d-flex gap-3">
-                    <div class="card card-small p-4 shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-medium mb-4">Total Tenants</span>
-                            <img src="~/images/people.png" alt="People Icon" class="icon-img">
-                        </div>
-                        <div class="mb-1">
-                            <h1 class="fw-bold m-0 mb-5">201</h1>
-                        </div>
-                        <div>
-                            <small class="card-text-muted">Small descriptive text</small>
+        <div class="d-flex flex-wrap mb-4 justify-content-start">
+            <!-- Wide Card (Single Row) -->
+            <div class="flex-grow-0" style="width: 100%; max-width: 1300px;">
+                <div class="card p-4 shadow-sm" style="width: 100%;">
+                    <!-- Wide Card Content -->
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #e0f7fa;">
+                            <img src="~/images/people.png" alt="People Icon" class="icon-img" style="width: 32px; height: 32px;">
                         </div>
                     </div>
-
-
-                    <div class="card card-small p-4 shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-medium mb-4" >Occupied Rooms</span>
-                            <img src="~/images/House.png" alt="People Icon" class="icon-img">
-                        </div>
-                        <div class="mb-1">
-                            <h1 class="fw-bold m-0 mb-5">201</h1>
-                        </div>
-                        <div>
-                            <small class="card-text-muted">Small descriptive text</small>
-                        </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Total Tenants</span>
                     </div>
-                </div>
-                <div class="d-flex gap-3">
-                    <div class="card card-small p-4 shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-medium mb-4">New Tenants this Month</span>
-                            <img src="~/images/calendarr.png" alt="People Icon" class="icon-img">
-                        </div>
-                        <div class="mb-1">
-                            <h1 class="fw-bold m-0 mb-5">201</h1>
-                        </div>
-                        <div>
-                            <small class="card-text-muted">Small descriptive text</small>
-                        </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
                     </div>
-                    <div class="card card-small p-4 shadow-sm">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="fw-medium mb-4">Pending Payments</span>
-                            <img src="~/images/Warning.png" alt="People Icon" class="icon-img">
-                        </div>
-                        <div class="mb-1">
-                            <h1 class="fw-bold m-0 mb-5">201</h1>
-                        </div>
-                        <div>
-                            <small class="card-text-muted">Small descriptive text</small>
-                        </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
                     </div>
                 </div>
             </div>
 
-            <!-- 5th Large Card -->
-            <div class="card card-large p-3 shadow-sm">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Launch demo modal
-                </button>
+            <!-- 4 Small Cards in a Single Row -->
+            <div class="d-flex " style="width: 100%; max-width: 1300px; gap:35px; margin-top:40px;">
+                <!-- First Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #ede7f6;">
+                            <img src="~/images/House.png" alt="House Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Occupied Rooms</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+
+                <!-- Second Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #f1f8e9;">
+                            <img src="~/images/calendarr.png" alt="Calendar Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">New Tenants this Month</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+
+                <!-- Third Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #fff3e0;">
+                            <img src="~/images/Warning.png" alt="Warning Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Pending Payments</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+
+                <!-- Fourth Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #e0f7fa;">
+                            <img src="~/images/people.png" alt="People Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Total Tenants</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
             </div>
+        </div>
+
+
+
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <div class="modal-header">
+                        <div class="modal-header"> 
                             <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>

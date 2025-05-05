@@ -13,8 +13,8 @@
 }
 
 .card-small {
-    width: 380px;
-    height: 219px;
+    width: 300px;
+    height: 200px;
     flex-shrink: 0;
     border: 1px solid #D8D8D8;
     border-radius: 10px;
@@ -52,7 +52,7 @@
 .fw-bold {
     color: #1F1F21;
     font-family: Inter;
-    font-size: 80px;
+    font-size: 40px;
     font-style: normal;
     font-weight: 700;
     line-height: 24px; 
@@ -67,7 +67,7 @@
     line-height: 24px; /* 133.333% */
 }
 
-.icon-img{
-    width:60px;
-    height:60px;
+.icon-img {
+    width: 40px;
+    height: 40px;
 }
