@@ -13,6 +13,10 @@ namespace MyProjectIT15.Models
         public int PreviousReading { get; set; }
         public int CurrentReading { get; set; }
         public int Consumption { get; set; }
+
+        public int WaterPreviousReading { get; set; }
+        public int WaterCurrentReading { get; set; }
+        public int WaterConsumption { get; set; }
         public string? UserId { get; set; }
 
 

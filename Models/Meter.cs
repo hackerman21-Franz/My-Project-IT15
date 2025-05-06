@@ -15,7 +15,12 @@ namespace MyProjectIT15.Models
         [MaxLength(100)]
         public string Status { get; set; } = string.Empty;
 
+        [MaxLength(100)]
+        public string MeterType { get; set; } = string.Empty;
+
         public DateTime CreatedAt { get; set; }
+
+
 
         // Foreign key to the Identity user
         public string? UserId { get; set; }

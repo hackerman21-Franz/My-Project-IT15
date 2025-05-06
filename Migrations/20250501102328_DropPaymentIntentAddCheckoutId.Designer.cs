@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProjectIT15.Services;
 
@@ -11,9 +12,11 @@ using MyProjectIT15.Services;
 namespace MyProjectIT15.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250501102328_DropPaymentIntentAddCheckoutId")]
+    partial class DropPaymentIntentAddCheckoutId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,19 +54,19 @@ namespace MyProjectIT15.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e6c5441f-5e47-44e4-aa14-27c2154e15f9",
+                            Id = "0241dca7-e90e-46b0-90d9-2377d8c1232e",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "f002d451-add2-4403-975c-28da65e7b2b3",
+                            Id = "bf133950-dbbc-42e2-980a-4a6c0f60fb83",
                             Name = "tenant",
                             NormalizedName = "tenant"
                         },
                         new
                         {
-                            Id = "2ac3464f-2311-4708-92a4-938049456156",
+                            Id = "9688a344-0fdb-40f2-8fea-c77ef3d0a385",
                             Name = "owner",
                             NormalizedName = "owner"
                         });
@@ -227,11 +230,6 @@ namespace MyProjectIT15.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MeterType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Meter_Number")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -275,23 +273,10 @@ namespace MyProjectIT15.Migrations
                     b.Property<int?>("RoomMeterId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("UserRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WaterConsumption")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WaterCurrentReading")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WaterPreviousReading")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

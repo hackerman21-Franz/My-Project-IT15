@@ -204,9 +204,12 @@
                     <th>Room Number</th>
                     <th>Tenant Name</th>
                     <th>Reading Date</th>
-                    <th>Previous Reading</th>
-                    <th>Current Reading</th>
-                    <th>Consumption</th>
+                    <th>Electric Previous Reading</th>
+                    <th>Electric Current Reading</th>
+                    <th>Electric Consumption</th>
+                    <th>Water Previous Reading</th>
+                    <th>Water Current Reading</th>
+                    <th>Water Consumption</th>
                     <th>Done By:</th>
                     <th style="width: 150px;">Actions</th>
                 </tr>
@@ -230,10 +233,13 @@
                             <td>@meterReading.PreviousReading</td>
                             <td>@meterReading.CurrentReading</td>
                             <td>@meterReading.Consumption</td>
+                            <td>@meterReading.WaterPreviousReading</td>
+                            <td>@meterReading.WaterCurrentReading</td>
+                            <td>@meterReading.WaterConsumption</td>
                             <td>@meterReading.User?.FirstName @meterReading.User?.MiddleName @meterReading.User?.LastName</td>
                             <td>
                                 <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@meterReading.Id">Edit</a>
-                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@meterReading.Id">Delete</a>
+                                <a class="btn btn-sm btn-success" asp-action="Delete" asp-route-id="@meterReading.Id">Submit</a>
                             </td>
                         </tr>
                     }

@@ -25,7 +25,7 @@
                 <div class="mb-3">
                     <label asp-for="RoomMeterId" class="form-label">Select Meter</label>
                     <select asp-for="RoomMeterId" asp-items="Model.RoomMeters" class="form-select" required>
-                        <option value="">-- Select a Meter --</option>
+                        <option value="">-- Select a Room --</option>
                     </select>
                     <span asp-validation-for="RoomMeterId" class="text-danger"></span>
                 </div>
@@ -37,15 +37,27 @@
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="PreviousReading" class="form-label">Previous Reading</label>
+                    <label asp-for="PreviousReading" class="form-label">Electricity Previous Reading</label>
                     <input asp-for="PreviousReading" class="form-control" type="number" min="0" required />
                     <span asp-validation-for="PreviousReading" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3">
-                    <label asp-for="CurrentReading" class="form-label">Current Reading</label>
+                    <label asp-for="CurrentReading" class="form-label">Electricity Current Reading</label>
                     <input asp-for="CurrentReading" class="form-control" type="number" min="0" required />
                     <span asp-validation-for="CurrentReading" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="WaterPreviousReading" class="form-label">Water Previous Reading</label>
+                    <input asp-for="WaterPreviousReading" class="form-control" type="number" min="0" required />
+                    <span asp-validation-for="WaterPreviousReading" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="WaterCurrentReading" class="form-label">Water Current Reading</label>
+                    <input asp-for="WaterCurrentReading" class="form-control" type="number" min="0" required />
+                    <span asp-validation-for="WaterCurrentReading" class="text-danger"></span>
                 </div>
 
                 <div class="d-flex justify-content-between">

@@ -246,13 +246,27 @@ namespace MyProjectIT15.Controllers
         public async Task<IActionResult> AssignTenant()
         {
             ViewBag.Title = "Assign Tenant to Room";
+
+            // Exclude rooms that are already assigned and active
+            var assignedRoomIds = _context.UserRooms
+                .Where(ur => ur.Status == "Active")
+                .Select(ur => ur.RoomId)
+                .ToList();
+
             ViewBag.Rooms = _context.Rooms
-                    .Where(r => r.Status == "Active")
-                    .ToList();
-            //ViewBag.Users = _context.Users.ToList();
+                .Where(r => r.Status == "Active" && !assignedRoomIds.Contains(r.Id))
+                .ToList();
+
+            // Exclude tenants that are already assigned and active
+            var assignedTenantIds = _context.UserRooms
+                .Where(ur => ur.Status == "Active")
+                .Select(ur => ur.TenantId)
+                .ToList();
 
             var tenants = await _userManager.GetUsersInRoleAsync("Tenant");
-            ViewBag.Users = tenants.ToList();
+            ViewBag.Users = tenants
+                .Where(t => !assignedTenantIds.Contains(t.Id))
+                .ToList();
             return View();
         }
 
@@ -263,13 +277,28 @@ namespace MyProjectIT15.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Title = "Assign Tenant to Room";
+
+                // Exclude rooms that are already assigned and active
+                var assignedRoomIds = _context.UserRooms
+                    .Where(ur => ur.Status == "Active")
+                    .Select(ur => ur.RoomId)
+                    .ToList();
+
                 ViewBag.Rooms = _context.Rooms
-                    .Where(r => r.Status == "Active")
-					.ToList();
-                //ViewBag.Users = _context.Users.ToList();
+                    .Where(r => r.Status == "Active" && !assignedRoomIds.Contains(r.Id))
+                    .ToList();
+
+                // Exclude tenants that are already assigned and active
+                var assignedTenantIds = _context.UserRooms
+                    .Where(ur => ur.Status == "Active")
+                    .Select(ur => ur.TenantId)
+                    .ToList();
 
                 var tenants = await _userManager.GetUsersInRoleAsync("Tenant");
-                ViewBag.Users = tenants.ToList();
+                ViewBag.Users = tenants
+                    .Where(t => !assignedTenantIds.Contains(t.Id))
+                    .ToList();
+
                 return View(dto);
             }
 

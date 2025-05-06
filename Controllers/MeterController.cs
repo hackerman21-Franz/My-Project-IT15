@@ -63,7 +63,8 @@ namespace MyProjectIT15.Controllers
 			Meter meter = new Meter
 			{
 				Meter_Number = meterDto.Meter_Number,
-				Status = "Active",
+                MeterType = meterDto.MeterType,
+                Status = "Active",
 				CreatedAt = DateTime.Now,
 				UserId = user?.Id // optional chaining in case user is null
 			};
@@ -89,6 +90,7 @@ namespace MyProjectIT15.Controllers
             var meterDto = new MeterDto()
             {
                 Meter_Number = meter.Meter_Number,
+                MeterType = meter.MeterType,
                 Status = meter.Status,
 
             };
@@ -118,6 +120,7 @@ namespace MyProjectIT15.Controllers
             }
 
             meter.Meter_Number = meterDto.Meter_Number;
+            meter.MeterType = meterDto.MeterType;
             meter.Status = meterDto.Status;
 
             _context.SaveChanges();
@@ -164,42 +167,111 @@ namespace MyProjectIT15.Controllers
         }
 
 
+        //[HttpGet]
+        //public IActionResult AssignMeter()
+        //{
+        //    // Get room IDs that are already assigned and active
+        //    var assignedRoomIds = _context.RoomMeters
+        //        .Where(rm => rm.Status == "Active")
+        //        .Select(rm => rm.RoomId)
+        //        .ToList();
+
+        //    // Get meter IDs that are already assigned and active
+        //    var assignedMeterIds = _context.RoomMeters
+        //        .Where(rm => rm.Status == "Active")
+        //        .Select(rm => rm.MeterId)
+        //        .ToList();
+
+        //    // Only show available rooms and meters
+        //    ViewBag.Rooms = _context.Rooms
+        //        .Where(r => r.Status == "Active" && !assignedRoomIds.Contains(r.Id))
+        //        .ToList();
+
+        //    ViewBag.Meters = _context.Meters
+        //        .Where(m => m.Status == "Active" && !assignedMeterIds.Contains(m.Id))
+        //        .ToList();
+
+        //    return View();
+        //}
+
         [HttpGet]
         public IActionResult AssignMeter()
         {
-            ViewBag.Rooms = _context.Rooms
-                    .Where(r => r.Status == "Active")
-                    .ToList();
+            // Build map of room IDs to their assigned meter types
+            var roomMeterMap = _context.RoomMeters
+                .Where(rm => rm.Status == "Active")
+                .Include(rm => rm.Meter)
+                .AsEnumerable() // switch to in-memory
+                .GroupBy(rm => rm.RoomId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(rm => rm.Meter.MeterType).ToList()
+                );
+
+            // Fetch active rooms from DB, then filter in memory
+            var allActiveRooms = _context.Rooms
+                .Where(r => r.Status == "Active")
+                .ToList();
+
+            // Filter rooms that don't have both Water and Electric meters
+            var availableRooms = allActiveRooms
+                .Where(r =>
+                    !roomMeterMap.ContainsKey(r.Id) ||
+                    !roomMeterMap[r.Id].Contains("Water") ||
+                    !roomMeterMap[r.Id].Contains("Electric"))
+                .ToList();
+
+            ViewBag.Rooms = availableRooms;
+
+            // Meters that are not yet assigned
+            var assignedMeterIds = _context.RoomMeters
+                .Where(rm => rm.Status == "Active")
+                .Select(rm => rm.MeterId)
+                .ToList();
+
             ViewBag.Meters = _context.Meters
-                    .Where(r => r.Status == "Active")
-                    .ToList();
+                .Where(m => m.Status == "Active" && !assignedMeterIds.Contains(m.Id))
+                .ToList();
 
             return View();
         }
+
+
 
         [HttpPost]
         public ActionResult AssignMeter(RoomMeterDto roomMeterDto)
         {
             if (!ModelState.IsValid)
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                    .Select(e => e.ErrorMessage)
-                                    .ToList();
-                Console.WriteLine("Errors: " + string.Join(", ", errors));
-                // Repopulate ViewBag!
-                ViewBag.Rooms = _context.Rooms
-                    .Where(r => r.Status == "Active")
-                    .ToList();
-                ViewBag.Meters = _context.Meters
-                    .Where(r => r.Status == "Active")
-                    .ToList();
-
+                SetAssignMeterViewBags();
                 return View(roomMeterDto);
             }
 
-            Console.WriteLine($"RoomId: {roomMeterDto.RoomId}, MeterId: {roomMeterDto.MeterId}"); // Debugging line
+            // Get the meter being assigned
+            var meter = _context.Meters.FirstOrDefault(m => m.Id == roomMeterDto.MeterId && m.Status == "Active");
+            if (meter == null)
+            {
+                ModelState.AddModelError("", "Selected meter is invalid or inactive.");
+                SetAssignMeterViewBags();
+                return View(roomMeterDto);
+            }
 
-            RoomMeter roomMeter = new RoomMeter
+            // Check if the room already has a meter of the same type
+            var existingMeterType = _context.RoomMeters
+                .Include(rm => rm.Meter)
+                .Where(rm => rm.RoomId == roomMeterDto.RoomId && rm.Status == "Active")
+                .Select(rm => rm.Meter.MeterType)
+                .ToList();
+
+            if (existingMeterType.Contains(meter.MeterType))
+            {
+                ModelState.AddModelError("", $"Room already has a {meter.MeterType} meter assigned.");
+                SetAssignMeterViewBags();
+                return View(roomMeterDto);
+            }
+
+            // Assign new meter
+            var roomMeter = new RoomMeter
             {
                 RoomId = roomMeterDto.RoomId,
                 MeterId = roomMeterDto.MeterId,
@@ -215,6 +287,43 @@ namespace MyProjectIT15.Controllers
 
             return RedirectToAction("RoomMeter", "Meter");
         }
+
+        private void SetAssignMeterViewBags()
+        {
+            var roomMeterMap = _context.RoomMeters
+                .Where(rm => rm.Status == "Active")
+                .Include(rm => rm.Meter)
+                .AsEnumerable()
+                .GroupBy(rm => rm.RoomId)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(rm => rm.Meter.MeterType).ToList()
+                );
+
+            var allActiveRooms = _context.Rooms
+                .Where(r => r.Status == "Active")
+                .ToList();
+
+            var availableRooms = allActiveRooms
+                .Where(r =>
+                    !roomMeterMap.ContainsKey(r.Id) ||
+                    !roomMeterMap[r.Id].Contains("Water") ||
+                    !roomMeterMap[r.Id].Contains("Electric"))
+                .ToList();
+
+            ViewBag.Rooms = availableRooms;
+
+            var assignedMeterIds = _context.RoomMeters
+                .Where(rm => rm.Status == "Active")
+                .Select(rm => rm.MeterId)
+                .ToList();
+
+            ViewBag.Meters = _context.Meters
+                .Where(m => m.Status == "Active" && !assignedMeterIds.Contains(m.Id))
+                .ToList();
+        }
+
+
 
         public IActionResult EditRoomMeter(int id)
         {
@@ -307,26 +416,136 @@ namespace MyProjectIT15.Controllers
             return View(meterReadings); // Pass the list of MeterReading objects to the view
         }
 
+        //[HttpGet]
+        //public IActionResult ReadMeter()
+        //{
+        //    var meterReadingDto = new MeterReadingDto
+        //    {
+        //        ReadingDate = DateTime.UtcNow,
+        //        RoomMeters = _context.RoomMeters
+        //            .Where(rm => rm.Status == "Active")
+        //            .Include(rm => rm.Room)
+        //            .Include(rm => rm.Meter)
+        //            .Select(rm => new SelectListItem
+        //            {
+        //                Value = rm.Id.ToString(),
+        //                Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
+        //            })
+        //            .ToList()
+        //    };
+
+        //    return View(meterReadingDto);
+        //}
+
         [HttpGet]
         public IActionResult ReadMeter()
         {
+            // Find RoomIds that have both active Water and Electric meters
+            var eligibleRoomIds = _context.RoomMeters
+                .Where(rm => rm.Status == "Active")
+                .Include(rm => rm.Meter)
+                .GroupBy(rm => rm.RoomId)
+                .Where(g => g.Any(m => m.Meter.MeterType == "Water") &&
+                            g.Any(m => m.Meter.MeterType == "Electric"))
+                .Select(g => g.Key)
+                .ToList();
+
+            var roomMeters = _context.RoomMeters
+                .Where(rm => eligibleRoomIds.Contains(rm.RoomId))
+                .Include(rm => rm.Room)
+                .GroupBy(rm => rm.RoomId)
+                .Select(g => g.First()) // Pick one RoomMeter per room just for display
+                .ToList();
+
             var meterReadingDto = new MeterReadingDto
             {
                 ReadingDate = DateTime.UtcNow,
-                RoomMeters = _context.RoomMeters
-                    .Where(rm => rm.Status == "Active")
-                    .Include(rm => rm.Room)
-                    .Include(rm => rm.Meter)
-                    .Select(rm => new SelectListItem
-                    {
-                        Value = rm.Id.ToString(),
-                        Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
-                    })
-                    .ToList()
+                RoomMeters = roomMeters.Select(rm => new SelectListItem
+                {
+                    Value = rm.Id.ToString(), // We still pass RoomMeterId, but all meters will be queried in POST
+                    Text = $"Room {rm.Room?.Room_Number}"
+                }).ToList()
             };
 
             return View(meterReadingDto);
         }
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> ReadMeter(MeterReadingDto meterReadingDto)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        meterReadingDto.RoomMeters = _context.RoomMeters
+        //            .Where(rm => rm.Status == "Active")
+        //            .Include(rm => rm.Room)
+        //            .Include(rm => rm.Meter)
+        //            .Select(rm => new SelectListItem
+        //            {
+        //                Value = rm.Id.ToString(),
+        //                Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
+        //            }).ToList();
+
+        //        return View(meterReadingDto);
+        //    }
+
+        //    var user = await _userManager.GetUserAsync(User);
+
+        //    var roomMeter = await _context.RoomMeters
+        //        .Include(rm => rm.Room)
+        //        .FirstOrDefaultAsync(rm => rm.Id == meterReadingDto.RoomMeterId);
+
+        //    var monthlyRent = roomMeter?.Room?.Monthly_Rent;
+        //    var MonthlyRent = Math.Round((decimal)monthlyRent);
+        //    if (roomMeter == null)
+        //    {
+        //        ModelState.AddModelError("", "Selected meter not found.");
+        //        return View(meterReadingDto);
+        //    }
+
+        //    var userRoom = await _context.UserRooms
+        //        .FirstOrDefaultAsync(ur => ur.RoomId == roomMeter.RoomId && ur.Status == "Active");
+
+        //    if (userRoom == null)
+        //    {
+        //        ModelState.AddModelError("", "No active user assigned to this room.");
+        //        return View(meterReadingDto);
+        //    }
+
+        //    var meterReading = new MeterReading
+        //    {
+        //        UserRoomId = userRoom.Id,
+        //        RoomMeterId = meterReadingDto.RoomMeterId,
+        //        ReadingDate = meterReadingDto.ReadingDate,
+        //        PreviousReading = meterReadingDto.PreviousReading,
+        //        CurrentReading = meterReadingDto.CurrentReading,
+        //        Consumption = meterReadingDto.CurrentReading - meterReadingDto.PreviousReading,
+        //        UserId = user?.Id
+        //    };
+
+        //    var calculateTotalAmount = Math.Round((meterReadingDto.CurrentReading - meterReadingDto.PreviousReading) * 13.0127m, 2);
+
+        //    _context.MeterReadings.Add(meterReading);
+        //    await _context.SaveChangesAsync();
+
+        //    var billing = new Billing
+        //    {
+        //        UserId = userRoom.TenantId,
+        //        MeterReadingId = meterReading.Id, // Link the new meter reading
+        //        ReadingDate = meterReadingDto.ReadingDate,
+        //        DueDate = meterReadingDto.ReadingDate.AddDays(14),
+        //        TotalAmount = calculateTotalAmount + MonthlyRent,
+        //        Status = "Unpaid"
+        //    };
+
+        //    _context.Billings.Add(billing);
+        //    await _context.SaveChangesAsync();
+
+        //    TempData["ShowSuccess"] = true;
+        //    TempData["Success"] = "Meter Reading and Billing done successsfully.";
+
+        //    return RedirectToAction("MeterReading", "Meter");
+        //}
 
         [HttpPost]
         public async Task<IActionResult> ReadMeter(MeterReadingDto meterReadingDto)
@@ -350,7 +569,11 @@ namespace MyProjectIT15.Controllers
 
             var roomMeter = await _context.RoomMeters
                 .Include(rm => rm.Room)
+                .Include(rm => rm.Meter)
                 .FirstOrDefaultAsync(rm => rm.Id == meterReadingDto.RoomMeterId);
+
+            var monthlyRent = roomMeter?.Room?.Monthly_Rent;
+            var MonthlyRent = Math.Round((decimal)monthlyRent);
 
             if (roomMeter == null)
             {
@@ -367,21 +590,69 @@ namespace MyProjectIT15.Controllers
                 return View(meterReadingDto);
             }
 
+
+            // Calculate electric consumption and amount
+            var electricConsumption = meterReadingDto.CurrentReading - meterReadingDto.PreviousReading;
+            var electricAmount = Math.Round(electricConsumption * 13.0127m, 2);
+
+            // Calculate water consumption and amount
+            var waterConsumption = meterReadingDto.WaterCurrentReading - meterReadingDto.WaterPreviousReading;
+            //var waterAmount = Math.Round(waterConsumption * 7.5m, 2);
+
+            var waterrate = 24.70m;
+            var waterAmount = 0m;
+
+
+            if (waterConsumption > 40)
+            {
+                waterrate = 61.80m;
+            }
+            else if (waterConsumption > 30)
+            {
+                waterrate = 42.40m;
+            }
+            else if (waterConsumption > 20)
+            {
+                waterrate = 31.90m;
+            }
+            else if (waterConsumption > 10)
+            {
+                waterrate = 24.70m;
+            }
+            else
+            {
+                waterAmount = 235.60m;
+            }
+
+            if (waterConsumption > 10)
+            {
+                waterAmount = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+            }
+
+
+            // Create single MeterReading entry
             var meterReading = new MeterReading
             {
                 UserRoomId = userRoom.Id,
-                RoomMeterId = meterReadingDto.RoomMeterId,
+                RoomMeterId = roomMeter.Id, // Optional, or keep for reference
                 ReadingDate = meterReadingDto.ReadingDate,
+                UserId = user?.Id,
+
                 PreviousReading = meterReadingDto.PreviousReading,
                 CurrentReading = meterReadingDto.CurrentReading,
-                Consumption = meterReadingDto.CurrentReading - meterReadingDto.PreviousReading,
-                UserId = user?.Id
-            };
+                Consumption = electricConsumption,
 
-            var calculateTotalAmount = Math.Round((meterReadingDto.CurrentReading - meterReadingDto.PreviousReading) * 13.0127m, 2);
+                WaterPreviousReading = meterReadingDto.WaterPreviousReading,
+                WaterCurrentReading = meterReadingDto.WaterCurrentReading,
+                WaterConsumption = waterConsumption,
+                Status = "Complete",
+
+            };
 
             _context.MeterReadings.Add(meterReading);
             await _context.SaveChangesAsync();
+
+            var calculateTotalAmount = electricAmount + waterAmount;
 
             var billing = new Billing
             {
@@ -389,7 +660,7 @@ namespace MyProjectIT15.Controllers
                 MeterReadingId = meterReading.Id, // Link the new meter reading
                 ReadingDate = meterReadingDto.ReadingDate,
                 DueDate = meterReadingDto.ReadingDate.AddDays(14),
-                TotalAmount = calculateTotalAmount,
+                TotalAmount = calculateTotalAmount + MonthlyRent,
                 Status = "Unpaid"
             };
 
@@ -397,10 +668,12 @@ namespace MyProjectIT15.Controllers
             await _context.SaveChangesAsync();
 
             TempData["ShowSuccess"] = true;
-            TempData["Success"] = "Meter Reading and Billing done successsfully.";
+            TempData["Success"] = "Meter Reading and Billing recorded successfully.";
 
             return RedirectToAction("MeterReading", "Meter");
         }
+
+
 
         public IActionResult Billings()
         {

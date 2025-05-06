@@ -22,6 +22,8 @@ namespace MyProjectIT15.Services
 
         public DbSet<Billing> Billings { get; set; }
 
+        public DbSet<Payment> Payments { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)

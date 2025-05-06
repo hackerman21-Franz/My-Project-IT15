@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyProjectIT15.Services;
 
@@ -11,9 +12,11 @@ using MyProjectIT15.Services;
 namespace MyProjectIT15.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250501093636_PaymentMongo")]
+    partial class PaymentMongo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,19 +54,19 @@ namespace MyProjectIT15.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e6c5441f-5e47-44e4-aa14-27c2154e15f9",
+                            Id = "fc7fd09a-083b-477a-81a6-c872c310e1e1",
                             Name = "admin",
                             NormalizedName = "admin"
                         },
                         new
                         {
-                            Id = "f002d451-add2-4403-975c-28da65e7b2b3",
+                            Id = "c221b405-9e3c-43b2-a546-ae1d2ac41b3d",
                             Name = "tenant",
                             NormalizedName = "tenant"
                         },
                         new
                         {
-                            Id = "2ac3464f-2311-4708-92a4-938049456156",
+                            Id = "a876f676-a562-4113-9803-d3efefb828c5",
                             Name = "owner",
                             NormalizedName = "owner"
                         });
@@ -227,11 +230,6 @@ namespace MyProjectIT15.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MeterType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Meter_Number")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -275,23 +273,10 @@ namespace MyProjectIT15.Migrations
                     b.Property<int?>("RoomMeterId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("UserRoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WaterConsumption")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WaterCurrentReading")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WaterPreviousReading")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -316,10 +301,6 @@ namespace MyProjectIT15.Migrations
                     b.Property<int>("BillingId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CheckoutSessionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -329,13 +310,18 @@ namespace MyProjectIT15.Migrations
                     b.Property<string>("LastWebhookEvent")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PaymentMethod")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferenceNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalPaid")

@@ -20,5 +20,7 @@ namespace MyProjectIT15.Models
 
         public ICollection<Billing> Billings { get; set; } = new List<Billing>();
 
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
+
     }
 }

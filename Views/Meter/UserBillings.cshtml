@@ -74,7 +74,40 @@
                                                     var previous = billing.MeterReading?.PreviousReading ?? 0;
                                                     var rate = 13.0127m;
                                                     var calculatedTotal = Math.Round((current - previous) * rate, 2);
+
+                                                    var watercurrent = billing.MeterReading?.WaterCurrentReading ?? 0;
+                                                    var waterprevious = billing.MeterReading?.WaterPreviousReading ?? 0;
+                                                    var waterConsumption = watercurrent - waterprevious;
+
+                                                    var waterrate = 24.70m;
+                                                    var watercalculatedTotal = 0m;
+
+                                                    if (waterConsumption > 40)
+                                                    {
+                                                        waterrate = 61.80m;
+                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+                                                    }
+                                                    else if (waterConsumption > 30)
+                                                    {
+                                                        waterrate = 42.40m;
+                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+                                                    }
+                                                    else if (waterConsumption > 20)
+                                                    {
+                                                        waterrate = 31.90m;
+                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+                                                    }
+                                                    else if (waterConsumption > 10)
+                                                    {
+                                                        waterrate = 24.70m;
+                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+                                                    }
+                                                    else
+                                                    {
+                                                        watercalculatedTotal = 235.60m;
+                                                    }
                                                 }
+
 
                                                 <div class="row justify-content-center">
                                                     <div class="col-12 col-md-10">
@@ -94,17 +127,28 @@
                                                                     <h6 class="fw-semibold">Tenant Information</h6>
                                                                     <p class="mb-1"><strong>Name:</strong> @(billing.User != null ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}" : "No Tenant Assigned")</p>
                                                                     <p class="mb-1"><strong>Room Meter ID:</strong> @billing.MeterReading?.RoomMeterId</p>
+                                                                    <p class="mb-1"><strong>Reading Date:</strong> @billing.ReadingDate.ToString("MMM dd, yyyy")</p>
                                                                 </div>
 
                                                                 <hr class="my-3" />
 
                                                                 <!-- Meter Readings -->
                                                                 <div class="mb-3">
-                                                                    <h6 class="fw-semibold">Meter Reading Details</h6>
+                                                                    <h6 class="fw-semibold">Electricity Meter Reading Details</h6>
                                                                     <div class="row">
-                                                                        <div class="col-sm-4"><strong>Reading Date:</strong><br />@billing.ReadingDate.ToString("MMM dd, yyyy")</div>
                                                                         <div class="col-sm-4"><strong>Previous Reading:</strong><br />@previous</div>
                                                                         <div class="col-sm-4"><strong>Current Reading:</strong><br />@current</div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <hr class="my-3" />
+
+                                                                <!-- Meter Readings -->
+                                                                <div class="mb-3">
+                                                                    <h6 class="fw-semibold">Water Meter Reading Details</h6>
+                                                                    <div class="row">
+                                                                        <div class="col-sm-4"><strong>Previous Reading:</strong><br />@waterprevious</div>
+                                                                        <div class="col-sm-4"><strong>Current Reading:</strong><br />@watercurrent</div>
                                                                     </div>
                                                                 </div>
 
@@ -117,6 +161,14 @@
                                                                         <div class="col-sm-4"><strong>Rate per kWh:</strong><br />₱ @rate</div>
                                                                         <div class="col-sm-4"><strong>Consumption:</strong><br />@(current - previous) kWh</div>
                                                                         <div class="col-sm-4"><strong>Calculated Total:</strong><br />₱ @calculatedTotal</div>
+
+                                                                        <hr class="my-3" />
+
+                                                                        <div class="col-sm-4"><strong>Rate per Cubic meter:</strong><br />₱ @waterrate</div>
+                                                                        <div class="col-sm-4"><strong>Consumption:</strong><br />@(watercurrent - waterprevious) m³</div>
+                                                                        <div class="col-sm-4"><strong>Calculated Total:</strong><br />₱ @watercalculatedTotal</div>
+
+
                                                                     </div>
                                                                 </div>
 
@@ -146,11 +198,15 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="modal-footer border-top-0">
-                                                    <a class="btn btn-success" asp-action="" asp-route-id="@billing.Id">
+                                                <form method="post" asp-action="Create" asp-controller="Payment">
+                                                    <input type="hidden" name="amount" value="@billing.TotalAmount" />
+                                                    <input type="hidden" name="billingId" value="@billing.Id" />
+                                                    <button type="submit" class="btn btn-success">
                                                         <i class="bi bi-wallet2"></i> Pay Bills
-                                                    </a>
+                                                    </button>
+                                                </form>
+                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Print</button>
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                             </div>
                                         </div>

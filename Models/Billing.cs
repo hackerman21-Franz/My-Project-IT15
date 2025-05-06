@@ -28,5 +28,7 @@ namespace MyProjectIT15.Models
         [Precision(16, 2)]
         public decimal TotalAmount { get; set; }
         public string Status { get; set; } = string.Empty;
+
+        public ICollection<Payment> Payments { get; set; } = new List<Payment>();
     }
 }

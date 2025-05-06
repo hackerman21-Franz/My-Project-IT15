@@ -17,6 +17,13 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
 );
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+//builder.Services.AddHttpClient<PayMongoService>();
+builder.Services.AddSingleton<PayMongoService>();
+
+builder.Services.Configure<PayMongoSettings>(
+    builder.Configuration.GetSection("PayMongo"));
+
+
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
