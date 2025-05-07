@@ -3,6 +3,8 @@ using MyProjectIT15.Services;
 using Microsoft.AspNetCore.Identity;
 using MyProjectIT15.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using MyProjectIT15.Middleware;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +25,31 @@ builder.Services.AddSingleton<PayMongoService>();
 builder.Services.Configure<PayMongoSettings>(
     builder.Configuration.GetSection("PayMongo"));
 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the timeout duration
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Lockout duration
+    options.Lockout.MaxFailedAccessAttempts = 3; // Maximum failed attempts
+    options.Lockout.AllowedForNewUsers = true;   // Enable lockout for new users
+} )
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";  // Redirect to login page after timeout
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Total timeout duration
+    options.SlidingExpiration = true;      // Reset expiration on each request
+    options.Cookie.HttpOnly = true;
+});
 
 var app = builder.Build();
 
@@ -43,6 +65,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+
+app.UseSession(); // Enable session management
+app.UseSessionTimeout(); // Custom session timeout middleware
 
 app.UseAuthentication();
 app.UseAuthorization();

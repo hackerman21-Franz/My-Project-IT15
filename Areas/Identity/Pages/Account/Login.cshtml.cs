@@ -112,10 +112,14 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: true);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    HttpContext.Session.SetString("User", Input.Email);
+                    HttpContext.Session.SetString("LastActivity", DateTime.UtcNow.ToString());
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -125,13 +129,30 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
                 if (result.IsLockedOut)
                 {
                     _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
+                    // Show the lockout message directly on the login page
+                    ModelState.AddModelError(string.Empty, "Your account has been locked due to multiple failed login attempts. Please try again after 5 minutes.");
+                    return Page();
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    // Get remaining attempts
+                    var user = await _signInManager.UserManager.FindByEmailAsync(Input.Email);
+                    if (user != null)
+                    {
+                        int attemptsLeft = 3 - await _signInManager.UserManager.GetAccessFailedCountAsync(user);
+                        ModelState.AddModelError(string.Empty, $"Invalid login attempt. You have {attemptsLeft} attempts left.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    }
                     return Page();
                 }
+                //else
+                //{
+                //    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                //    return Page();
+                //}
             }
 
             // If we got this far, something failed, redisplay form
