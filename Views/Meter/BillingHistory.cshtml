@@ -1,7 +1,7 @@
 ﻿@model List<MyProjectIT15.Models.Billing>
 
 @{
-    ViewBag.Title = "Billings";
+    ViewBag.Title = "Billing History";
 }
 
 <div class="container py-4">
@@ -9,13 +9,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="BillingHistory">
-                <i class="bi bi-plus-lg"></i> Billing History
-            </a>
-            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="PaymentHistory">
-                <i class="bi bi-plus-lg"></i> Payment History
-            </a>
-            <a class="btn btn-outline-primary" asp-controller="Meter" asp-action="Index">
+            <a class="btn btn-outline-primary" asp-controller="Meter" asp-action="Billings">
                 <i class="bi bi-people"></i> Back
             </a>
         </div>
@@ -32,7 +26,7 @@
                     <th>Due Date</th>
                     <th>Total Amount</th>
                     <th>Status</th>
-              @*       <th style="width: 150px;">Actions</th> *@
+                    @*       <th style="width: 150px;">Actions</th> *@
                 </tr>
             </thead>
             <tbody>
@@ -54,9 +48,9 @@
                             <td>@billing.DueDate</td>
                             <td>₱ @billing.TotalAmount.ToString("N2")</td>
                             <td>@billing.Status</td>
-                          @*   <td>
-                                <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@billing.Id">Void Billing</a>
-                            </td> *@
+                            @*   <td>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@billing.Id">Void Billing</a>
+                    </td> *@
                         </tr>
                     }
                 }

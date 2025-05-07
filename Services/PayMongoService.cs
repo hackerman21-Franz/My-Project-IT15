@@ -9,7 +9,7 @@ namespace MyProjectIT15.Services
         private readonly string _secretKey = "sk_test_vhfwqM8ZvUdi8fFtCg7bo2dn"; // replace with your real secret key
         private readonly string _baseUrl = "https://api.paymongo.com/v1";
 
-        public async Task<string> CreateCheckoutSessionAsync(decimal amount, string description, string referenceNumber)
+        public async Task<string> CreateCheckoutSessionAsync(decimal amount, string description, string referenceNumber, string[] paymentMethods)
         {
             var client = new RestClient(_baseUrl);
             var request = new RestRequest("checkout_sessions", Method.Post);
@@ -37,7 +37,7 @@ namespace MyProjectIT15.Services
                         quantity = 1
                     }
                 },
-                        payment_method_types = new[] { "gcash", "card" },
+                        payment_method_types = paymentMethods,
                         reference_number = referenceNumber,
                         success_url = $"https://localhost:7252/Payment/VerifyPayment?ref={referenceNumber}",
                         //cancel_url = "https://localhost:7252/Payment/Failed"
@@ -64,5 +64,19 @@ namespace MyProjectIT15.Services
             var response = await client.ExecuteAsync(request);
             return response.Content;
         }
+
+        public async Task<string> GetPaymentDetailsAsync(string paymentId)
+        {
+            var client = new RestClient(_baseUrl);
+            var request = new RestRequest($"payments/{paymentId}", Method.Get);
+            var credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_secretKey}:"));
+
+            request.AddHeader("Authorization", $"Basic {credentials}");
+            request.AddHeader("Content-Type", "application/json");
+
+            var response = await client.ExecuteAsync(request);
+            return response.Content;
+        }
+
     }
 }

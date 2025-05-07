@@ -32,11 +32,19 @@ namespace MyProjectIT15.Controllers
         {
             return View();
         }
+
         [Authorize(Roles = "admin")]
         public IActionResult Tenants()
         {
-            return View();
+            var tenants = _context.Users
+                .Where(u => _context.UserRoles
+                    .Any(ur => ur.UserId == u.Id && ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Tenant").Id))
+                .ToList();
+
+            return View(tenants);
         }
+
+
         [Authorize(Roles = "owner")]
         public IActionResult owner()
         {
@@ -46,7 +54,10 @@ namespace MyProjectIT15.Controllers
 		[Authorize(Roles = "admin")]
 		public IActionResult room()
         {
-            var rooms = _context.Rooms.OrderByDescending(p => p.Id).ToList();
+            var rooms = _context.Rooms
+                .OrderByDescending(p => p.Id)
+                .Where(r => r.Status == "Active")
+                .ToList();
             return View(rooms);
         }
 
@@ -169,7 +180,8 @@ namespace MyProjectIT15.Controllers
 
 			return View(roomDto);
 		}
-		[Authorize(Roles = "admin")]
+		
+        [Authorize(Roles = "admin")]
 		[HttpPost]
 		public IActionResult Edit(int Id, RoomDto roomDto)
 		{
@@ -211,6 +223,17 @@ namespace MyProjectIT15.Controllers
 			room.Status = roomDto.Status;
 			room.ImageFileName = newFileName;
 
+			// Check if there is an active user assigned to the room
+			bool hasActiveUser = _context.UserRooms
+				.Any(ur => ur.RoomId == room.Id && ur.Status == "Active");
+
+			if (roomDto.Status != "Active" && hasActiveUser)
+			{
+				TempData["ShowError"] = true;
+				TempData["Error"] = "There is a user assigned to this Room. The status cannot be updated.";
+				return RedirectToAction("room", "AdminPage");
+			}
+
 			_context.SaveChanges();
 
 			TempData["ShowSuccess"] = true;
@@ -218,6 +241,7 @@ namespace MyProjectIT15.Controllers
 
 			return RedirectToAction("room", "AdminPage");
 		}
+
 		[Authorize(Roles = "admin")]
 		public IActionResult Delete(int Id)
 		{

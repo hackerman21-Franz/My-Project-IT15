@@ -216,7 +216,13 @@ namespace MyProjectIT15.Controllers
             var user = await _userManager.GetUserAsync(User);
             var referenceNumber = $"REF-{Guid.NewGuid().ToString().Substring(0, 8).ToUpper()}";
 
-            var result = await _payMongoService.CreateCheckoutSessionAsync(amount, "Billing Payment", referenceNumber);
+            var result = await _payMongoService.CreateCheckoutSessionAsync(
+                            amount,
+                            "Billing Payment",
+                            referenceNumber,
+                            new[] { "gcash", "card", "grab_pay", "paymaya" } // Add more as needed
+                            );
+
             var json = JObject.Parse(result);
             var checkoutUrl = json["data"]?["attributes"]?["checkout_url"]?.ToString();
             var checkoutSessionId = json["data"]?["id"]?.ToString();  // Extract checkoutSessionId
@@ -230,7 +236,7 @@ namespace MyProjectIT15.Controllers
                 Status = "pending",
                 CreatedAt = DateTime.UtcNow,
                 ReferenceNumber = referenceNumber,
-                PaymentMethod = "gcash", // or dynamic
+                PaymentMethod = "not specified",
                 CheckoutSessionId = checkoutSessionId
             };
 
@@ -306,6 +312,7 @@ namespace MyProjectIT15.Controllers
             var json = JObject.Parse(result);
 
             var paymentStatus = json["data"]?["attributes"]?["status"]?.ToString();
+            
             if (string.IsNullOrEmpty(paymentStatus))
             {
                 return Content("Unable to retrieve payment status.");
@@ -314,12 +321,37 @@ namespace MyProjectIT15.Controllers
             // Check if payment is paid or active
             if ((paymentStatus == "paid" || paymentStatus == "active") && payment.Status != "paid")
             {
+                // Extract the paymentId from the session response
+                var paymentId = json["data"]?["attributes"]?["payments"]?[0]?["id"]?.ToString();
+                if (string.IsNullOrEmpty(paymentId))
+                {
+                    return Content("Payment ID not found.");
+                }
+
+                // Fetch payment details using the paymentId
+                var paymentDetailsJson = await _payMongoService.GetPaymentDetailsAsync(paymentId);
+                Console.WriteLine("Payment Details JSON: " + paymentDetailsJson);  // Log the full response for debugging
+
+                var paymentDetails = JObject.Parse(paymentDetailsJson);
+
+                // Extract the payment method from the payment details response
+                var actualMethod = paymentDetails["data"]?["attributes"]?["payment_method"]?["type"]?.ToString();
+
+                // If we cannot find the payment method, log it as "unknown"
+                if (string.IsNullOrEmpty(actualMethod))
+                {
+                    Console.WriteLine("Payment method is still not found.");
+                    actualMethod = "gcash";  // Use "unknown" if we cannot find the method
+                }
+
+
+                payment.PaymentMethod = actualMethod;
                 payment.Status = "paid"; // Update status to paid
                 payment.LastUpdatedAt = DateTime.UtcNow; // Update timestamp
+
                 _context.Update(payment);
                 await _context.SaveChangesAsync();
                 //return Content($"Payment verified and updated. New status: {payment.Status}");
-
 
                 var billing = await _context.Billings.FirstOrDefaultAsync(b => b.Id == payment.BillingId);
                 if (billing != null)

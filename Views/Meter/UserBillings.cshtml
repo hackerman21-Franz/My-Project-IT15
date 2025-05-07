@@ -9,10 +9,10 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="">
+            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="UserBillingHistory">
                 <i class="bi bi-plus-lg"></i> Billing History
             </a>
-            <a class="btn btn-outline-primary me-2" asp-controller="Meter" asp-action="">
+            <a class="btn btn-outline-primary me-2" asp-controller="Meter" asp-action="UserPaymentHistory">
                 <i class="bi bi-plus-lg"></i> Payment History
             </a>
             <a class="btn btn-outline-primary" asp-controller="AdminPage" asp-action="tenant">
@@ -70,6 +70,8 @@
 
                                             <div class="modal-body">
                                                 @{
+                                                    var monthlyRent = billing.MeterReading?.RoomMeter?.Room?.Monthly_Rent; 
+
                                                     var current = billing.MeterReading?.CurrentReading ?? 0;
                                                     var previous = billing.MeterReading?.PreviousReading ?? 0;
                                                     var rate = 13.0127m;
@@ -79,33 +81,69 @@
                                                     var waterprevious = billing.MeterReading?.WaterPreviousReading ?? 0;
                                                     var waterConsumption = watercurrent - waterprevious;
 
-                                                    var waterrate = 24.70m;
-                                                    var watercalculatedTotal = 0m;
+                                                    decimal watercalculatedTotal = 0m;
+                                                    decimal waterrate = 0m; // last applied rate
 
-                                                    if (waterConsumption > 40)
+                                                    if (waterConsumption > 0)
                                                     {
-                                                        waterrate = 61.80m;
-                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
-                                                    }
-                                                    else if (waterConsumption > 30)
-                                                    {
-                                                        waterrate = 42.40m;
-                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
-                                                    }
-                                                    else if (waterConsumption > 20)
-                                                    {
-                                                        waterrate = 31.90m;
-                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
-                                                    }
-                                                    else if (waterConsumption > 10)
-                                                    {
-                                                        waterrate = 24.70m;
-                                                        watercalculatedTotal = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+                                                        int remaining = waterConsumption;
+
+                                                        // First 10 cubic meters is always ₱235.60 (minimum charge)
+                                                        watercalculatedTotal += 235.60m;
+                                                        remaining -= 10;
+
+                                                        // Next 10 cubic meters (11–20)
+                                                        if (remaining > 0)
+                                                        {
+                                                            int tier2 = Math.Min(10, remaining);
+                                                            watercalculatedTotal += tier2 * 24.70m;
+                                                            remaining -= tier2;
+                                                        }
+
+                                                        // Next 10 cubic meters (21–30)
+                                                        if (remaining > 0)
+                                                        {
+                                                            int tier3 = Math.Min(10, remaining);
+                                                            watercalculatedTotal += tier3 * 31.90m;
+                                                            remaining -= tier3;
+                                                        }
+
+                                                        // Next 10 cubic meters (31–40)
+                                                        if (remaining > 0)
+                                                        {
+                                                            int tier4 = Math.Min(10, remaining);
+                                                            watercalculatedTotal += tier4 * 42.40m;
+                                                            remaining -= tier4;
+                                                        }
+
+                                                        // Above 40 cubic meters
+                                                        if (remaining > 0)
+                                                        {
+                                                            watercalculatedTotal += remaining * 61.80m;
+                                                        }
+
+                                                        // Set waterrate based on total consumption
+                                                        if (waterConsumption > 40)
+                                                            waterrate = 61.80m;
+                                                        else if (waterConsumption > 30)
+                                                            waterrate = 42.40m;
+                                                        else if (waterConsumption > 20)
+                                                            waterrate = 31.90m;
+                                                        else if (waterConsumption > 10)
+                                                            waterrate = 24.70m;
+                                                        else
+                                                            waterrate = 23.56m; // Just a placeholder for <10 — it won't be used in actual calc
+
+                                                        watercalculatedTotal = Math.Round(watercalculatedTotal, 2);
                                                     }
                                                     else
                                                     {
+                                                        // No consumption? Still minimum bill.
                                                         watercalculatedTotal = 235.60m;
+                                                        waterrate = 23.56m;
                                                     }
+
+
                                                 }
 
 
@@ -158,6 +196,12 @@
                                                                 <div class="mb-3">
                                                                     <h6 class="fw-semibold">Billing Summary</h6>
                                                                     <div class="row">
+                                                                        <div class="col-sm-4">
+                                                                            <strong>Room Monthly Rent:</strong><br />₱ @(monthlyRent?.ToString("N0") ?? "0")
+                                                                        </div>
+
+                                                                        <hr class="my-3" />
+
                                                                         <div class="col-sm-4"><strong>Rate per kWh:</strong><br />₱ @rate</div>
                                                                         <div class="col-sm-4"><strong>Consumption:</strong><br />@(current - previous) kWh</div>
                                                                         <div class="col-sm-4"><strong>Calculated Total:</strong><br />₱ @calculatedTotal</div>

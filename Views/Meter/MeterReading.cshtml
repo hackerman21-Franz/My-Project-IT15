@@ -1,260 +1,93 @@
-﻿@* @{
-    ViewData["Title"] = "Meter Reading";
-    var ocrText = ViewBag.OcrResult as string;
-    var error = ViewBag.Error as string;
-} *@
-
-@* <div class="container mt-5">
-    <h2 class="text-center mb-4">@ViewData["Title"]</h2>
-
-    <!-- Form to upload image -->
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <form enctype="multipart/form-data" method="post" action="@Url.Action("Upload", "Meter")">
-                <div class="mb-3">
-                    <label for="image" class="form-label">Upload Image for OCR:</label>
-                    <input type="file" class="form-control" name="image" id="image" />
-                </div>
-                <button type="submit" class="btn btn-primary">Upload</button>
-            </form>
-        </div>
-    </div>
-
-    <hr class="my-4" />
-
-    <!-- Display OCR result -->
-    @if (ViewBag.OcrResult != null)
-    {
-        <div class="alert alert-info mt-4">
-            <strong>OCR Result:</strong>
-            <pre>@ViewBag.OcrResult</pre>
-        </div>
-    }
-
-
-</div> *@
-
-
-@*
-
-<script src="https://js.puter.com/v2/"></script>
-
-
-
-<div class="container mt-5">
-    <h2 class="text-center mb-4">OCR File Upload</h2>
-
-    <!-- Form and Image Preview Section in Grid Layout -->
-    <div class="row">
-        <!-- Left Column: Form to upload image -->
-        <div class="col-md-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form enctype="multipart/form-data" method="post" action="#">
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Upload Image for OCR:</label>
-                            <input type="file" class="form-control" name="image" id="image" accept="image/*" />
-                        </div>
-                        <button type="button" class="btn btn-primary" onclick="processImage()">Upload</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right Column: Image Preview -->
-        <div class="col-md-6">
-            <div id="image-preview-container" class="card shadow-sm mt-4 mt-md-0" style="display: none;">
-                <div class="card-body">
-                    <h4>Image Preview</h4>
-                    <div class="d-flex justify-content-center" style="height: 300px; overflow: hidden;">
-                        <img id="preview" class="img-fluid" style="object-fit: contain; width: 100%;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <hr class="my-4" />
-
-    <!-- Display OCR result -->
-    <div id="ocr-result" class="mt-4" style="display: none;">
-        <div class="alert alert-info">
-            <strong>OCR Result:</strong>
-            <pre id="result"></pre>
-        </div>
-    </div>
-</div>
-
-<script>
-    const imageInput = document.getElementById('image');
-    const preview = document.getElementById('preview');
-    const result = document.getElementById('result');
-    const imagePreviewContainer = document.getElementById('image-preview-container');
-    const ocrResultContainer = document.getElementById('ocr-result');
-
-    imageInput.addEventListener('change', function (e) {
-        const file = e.target.files[0];
-        if (file) {
-            // Show image preview
-            preview.src = URL.createObjectURL(file);
-            imagePreviewContainer.style.display = 'block';
-            ocrResultContainer.style.display = 'none'; // Hide previous results
-        }
-    });
-
-    async function processImage() {
-        const file = imageInput.files[0];
-        if (!file) {
-            alert('Please select an image first');
-            return;
-        }
-
-        result.textContent = 'Processing image...';
-
-        try {
-            // Convert file to data URL
-            const dataUrl = await new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.readAsDataURL(file);
-            });
-
-            // Now pass the data URL to img2txt
-            const text = await puter.ai.img2txt(dataUrl);
-            result.textContent = text || 'No text found in image';
-            ocrResultContainer.style.display = 'block';
-        } catch (error) {
-            result.textContent = 'Error: ' + error.message;
-        }
-    }
-</script> *@
-
-
-@* <div class="container mt-5">
-    <div class="row g-4">
-        <!-- Upload Section -->
-        <div class="col-12 col-md-6">
-            <h2>Upload Meter Image</h2>
-            <form asp-controller="Meter" asp-action="ScanMeter" method="post" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="imageFile" class="form-label">Select Image:</label>
-                    <input type="file" name="imageFile" class="form-control" required />
-                </div>
-                <button type="submit" class="btn btn-primary">Scan</button>
-            </form>
-
-            @if (!string.IsNullOrEmpty(error))
-            {
-                <div class="alert alert-danger mt-3">@error</div>
-            }
-        </div>
-
-        <!-- OCR Result Section -->
-        <div class="col-12 col-md-6">
-            <div class="alert alert-primary">
-                <h4 class="alert-heading">Meter Reading:</h4>
-                @if (ViewBag.OcrResult != null)
-                {
-                    <pre class="bg-light p-3 border rounded text-dark">@ocrText</pre>
-                }
-                <form asp-action="readMeter" asp-controller="Meter" method="post">
-                    <div class="mb-3">
-                        <input type="text"
-                               name="name"
-                               value="@ocrText"
-                               class="form-control"
-                               placeholder="Upload an image or type here..." />
-
-                        <button class="btn-primary btn mt-2" type="submit">Submit</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-
-    </div>
-</div> *@
-
-
-@model List<MyProjectIT15.Models.MeterReading>
+﻿@model List<MyProjectIT15.Models.MeterReading>
 
 @{
     ViewBag.Title = "Meter Reading";
 }
 
-<div class="container py-4">
-    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+<div class="container-fluid py-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h2 class="h5 mb-0">@ViewBag.Title</h2>
+            <div>
+                <a class="btn btn-light btn-sm me-2" asp-controller="Meter" asp-action="ReadMeter">
+                    <i class="bi bi-plus-lg me-1"></i> New Reading
+                </a>
+                <a class="btn btn-outline-light btn-sm" asp-controller="Meter" asp-action="Index">
+                    <i class="bi bi-arrow-left me-1"></i> Back
+                </a>
+            </div>
+        </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="ReadMeter">
-                <i class="bi bi-plus-lg"></i> Read Meter
-            </a>
-            <a class="btn btn-outline-primary" asp-controller="Meter" asp-action="Index">
-                <i class="bi bi-people"></i> Back
-            </a>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-nowrap">ID</th>
+                            <th class="text-nowrap">Room</th>
+                            <th>Tenant</th>
+                            <th class="text-nowrap">Date</th>
+                            <th class="text-center" colspan="3">Electric</th>
+                            <th class="text-center" colspan="3">Water</th>
+                            <th class="text-nowrap">Done By</th>
+                            <th class="text-nowrap">Actions</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4"></th>
+                            <th class="small text-muted text-nowrap">Prev</th>
+                            <th class="small text-muted text-nowrap">Current</th>
+                            <th class="small text-muted text-nowrap">Used</th>
+                            <th class="small text-muted text-nowrap">Prev</th>
+                            <th class="small text-muted text-nowrap">Current</th>
+                            <th class="small text-muted text-nowrap">Used</th>
+                            <th colspan="2"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var meterReading in Model)
+                            {
+                                <tr>
+                                    <td>@meterReading.Id</td>
+                                    <td>@meterReading.UserRoom?.Room?.Room_Number</td>
+                                    <td>
+                                        @(
+                                            meterReading.UserRoom?.Tenant != null
+                                            ? $"{meterReading.UserRoom.Tenant.FirstName} {meterReading.UserRoom.Tenant.MiddleName} {meterReading.UserRoom.Tenant.LastName}"
+                                            : "No Tenant"
+                                            )
+                                    </td>
+                                    <td class="text-nowrap">@meterReading.ReadingDate.ToString("MMM dd, yyyy")</td>
+                                    <td class="text-end">@meterReading.PreviousReading</td>
+                                    <td class="text-end">@meterReading.CurrentReading</td>
+                                    <td class="text-end fw-bold text-primary">@meterReading.Consumption</td>
+                                    <td class="text-end">@meterReading.WaterPreviousReading</td>
+                                    <td class="text-end">@meterReading.WaterCurrentReading</td>
+                                    <td class="text-end fw-bold text-info">@meterReading.WaterConsumption</td>
+                                    <td class="text-nowrap">@meterReading.User?.FirstName @meterReading.User?.LastName</td>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@meterReading.Id">
+                                                <i class="bi bi-pencil"></i>Edit
+                                            </a>
+                                            <a class="btn btn-sm btn-outline-success" asp-action="Print" asp-route-id="@meterReading.Id">
+                                                <i class="bi bi-check-circle"></i>Print
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="12" class="text-center py-4 text-muted">No meter readings found</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle shadow-sm">
-            <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Room Number</th>
-                    <th>Tenant Name</th>
-                    <th>Reading Date</th>
-                    <th>Electric Previous Reading</th>
-                    <th>Electric Current Reading</th>
-                    <th>Electric Consumption</th>
-                    <th>Water Previous Reading</th>
-                    <th>Water Current Reading</th>
-                    <th>Water Consumption</th>
-                    <th>Done By:</th>
-                    <th style="width: 150px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var meterReading in Model)
-                    {
-                        <tr>
-                            <td>@meterReading.Id</td>
-                            <td>@meterReading.UserRoom?.Room?.Room_Number</td> <!-- assuming Room_Number property -->
-                            <td>
-                                @(
-                                    meterReading.UserRoom?.Tenant != null
-                                    ? $"{meterReading.UserRoom.Tenant.FirstName} {meterReading.UserRoom.Tenant.MiddleName} {meterReading.UserRoom.Tenant.LastName}"
-                                    : "No Tenant"
-                                    )
-                            </td>
-                            <td>@meterReading.ReadingDate.ToString("yyyy-MM-dd")</td>
-                            <td>@meterReading.PreviousReading</td>
-                            <td>@meterReading.CurrentReading</td>
-                            <td>@meterReading.Consumption</td>
-                            <td>@meterReading.WaterPreviousReading</td>
-                            <td>@meterReading.WaterCurrentReading</td>
-                            <td>@meterReading.WaterConsumption</td>
-                            <td>@meterReading.User?.FirstName @meterReading.User?.MiddleName @meterReading.User?.LastName</td>
-                            <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@meterReading.Id">Edit</a>
-                                <a class="btn btn-sm btn-success" asp-action="Delete" asp-route-id="@meterReading.Id">Submit</a>
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="8" class="text-center">No meter readings found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
 </div>
-
-
-
-

@@ -14,6 +14,7 @@ using MyProjectIT15.Models;
 using System;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using MyProjectIT15.Migrations;
 
 namespace MyProjectIT15.Controllers
 {
@@ -416,31 +417,9 @@ namespace MyProjectIT15.Controllers
             return View(meterReadings); // Pass the list of MeterReading objects to the view
         }
 
-        //[HttpGet]
-        //public IActionResult ReadMeter()
-        //{
-        //    var meterReadingDto = new MeterReadingDto
-        //    {
-        //        ReadingDate = DateTime.UtcNow,
-        //        RoomMeters = _context.RoomMeters
-        //            .Where(rm => rm.Status == "Active")
-        //            .Include(rm => rm.Room)
-        //            .Include(rm => rm.Meter)
-        //            .Select(rm => new SelectListItem
-        //            {
-        //                Value = rm.Id.ToString(),
-        //                Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
-        //            })
-        //            .ToList()
-        //    };
-
-        //    return View(meterReadingDto);
-        //}
-
         [HttpGet]
-        public IActionResult ReadMeter()
+        public IActionResult ReadMeter(int? roomMeterId = null)
         {
-            // Find RoomIds that have both active Water and Electric meters
             var eligibleRoomIds = _context.RoomMeters
                 .Where(rm => rm.Status == "Active")
                 .Include(rm => rm.Meter)
@@ -454,98 +433,41 @@ namespace MyProjectIT15.Controllers
                 .Where(rm => eligibleRoomIds.Contains(rm.RoomId))
                 .Include(rm => rm.Room)
                 .GroupBy(rm => rm.RoomId)
-                .Select(g => g.First()) // Pick one RoomMeter per room just for display
+                .Select(g => g.First())
                 .ToList();
 
-            var meterReadingDto = new MeterReadingDto
+            var dto = new MeterReadingDto
             {
                 ReadingDate = DateTime.UtcNow,
                 RoomMeters = roomMeters.Select(rm => new SelectListItem
                 {
-                    Value = rm.Id.ToString(), // We still pass RoomMeterId, but all meters will be queried in POST
+                    Value = rm.Id.ToString(),
                     Text = $"Room {rm.Room?.Room_Number}"
                 }).ToList()
             };
 
-            return View(meterReadingDto);
+            if (roomMeterId.HasValue)
+            {
+                var selectedRoomMeter = _context.RoomMeters
+                    .Include(rm => rm.Room)
+                    .FirstOrDefault(rm => rm.Id == roomMeterId.Value);
+
+                if (selectedRoomMeter != null)
+                {
+                    // Get the latest reading for this specific RoomMeterId
+                    var latestReading = _context.MeterReadings
+                        .Where(m => m.RoomMeterId == roomMeterId.Value && m.Status == "Complete")
+                        .OrderByDescending(m => m.Id) // or use CreatedAt if you track timestamps
+                        .FirstOrDefault();
+
+                    dto.RoomMeterId = roomMeterId.Value;
+                    dto.PreviousReading = latestReading?.CurrentReading ?? 0;
+                    dto.WaterPreviousReading = latestReading?.WaterCurrentReading ?? 0;
+                }
+            }
+
+            return View(dto);
         }
-
-
-        //[HttpPost]
-        //public async Task<IActionResult> ReadMeter(MeterReadingDto meterReadingDto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        meterReadingDto.RoomMeters = _context.RoomMeters
-        //            .Where(rm => rm.Status == "Active")
-        //            .Include(rm => rm.Room)
-        //            .Include(rm => rm.Meter)
-        //            .Select(rm => new SelectListItem
-        //            {
-        //                Value = rm.Id.ToString(),
-        //                Text = $"Meter {rm.Meter.Meter_Number} - Room {rm.Room.Room_Number}"
-        //            }).ToList();
-
-        //        return View(meterReadingDto);
-        //    }
-
-        //    var user = await _userManager.GetUserAsync(User);
-
-        //    var roomMeter = await _context.RoomMeters
-        //        .Include(rm => rm.Room)
-        //        .FirstOrDefaultAsync(rm => rm.Id == meterReadingDto.RoomMeterId);
-
-        //    var monthlyRent = roomMeter?.Room?.Monthly_Rent;
-        //    var MonthlyRent = Math.Round((decimal)monthlyRent);
-        //    if (roomMeter == null)
-        //    {
-        //        ModelState.AddModelError("", "Selected meter not found.");
-        //        return View(meterReadingDto);
-        //    }
-
-        //    var userRoom = await _context.UserRooms
-        //        .FirstOrDefaultAsync(ur => ur.RoomId == roomMeter.RoomId && ur.Status == "Active");
-
-        //    if (userRoom == null)
-        //    {
-        //        ModelState.AddModelError("", "No active user assigned to this room.");
-        //        return View(meterReadingDto);
-        //    }
-
-        //    var meterReading = new MeterReading
-        //    {
-        //        UserRoomId = userRoom.Id,
-        //        RoomMeterId = meterReadingDto.RoomMeterId,
-        //        ReadingDate = meterReadingDto.ReadingDate,
-        //        PreviousReading = meterReadingDto.PreviousReading,
-        //        CurrentReading = meterReadingDto.CurrentReading,
-        //        Consumption = meterReadingDto.CurrentReading - meterReadingDto.PreviousReading,
-        //        UserId = user?.Id
-        //    };
-
-        //    var calculateTotalAmount = Math.Round((meterReadingDto.CurrentReading - meterReadingDto.PreviousReading) * 13.0127m, 2);
-
-        //    _context.MeterReadings.Add(meterReading);
-        //    await _context.SaveChangesAsync();
-
-        //    var billing = new Billing
-        //    {
-        //        UserId = userRoom.TenantId,
-        //        MeterReadingId = meterReading.Id, // Link the new meter reading
-        //        ReadingDate = meterReadingDto.ReadingDate,
-        //        DueDate = meterReadingDto.ReadingDate.AddDays(14),
-        //        TotalAmount = calculateTotalAmount + MonthlyRent,
-        //        Status = "Unpaid"
-        //    };
-
-        //    _context.Billings.Add(billing);
-        //    await _context.SaveChangesAsync();
-
-        //    TempData["ShowSuccess"] = true;
-        //    TempData["Success"] = "Meter Reading and Billing done successsfully.";
-
-        //    return RedirectToAction("MeterReading", "Meter");
-        //}
 
         [HttpPost]
         public async Task<IActionResult> ReadMeter(MeterReadingDto meterReadingDto)
@@ -597,10 +519,9 @@ namespace MyProjectIT15.Controllers
 
             // Calculate water consumption and amount
             var waterConsumption = meterReadingDto.WaterCurrentReading - meterReadingDto.WaterPreviousReading;
-            //var waterAmount = Math.Round(waterConsumption * 7.5m, 2);
-
+            
             var waterrate = 24.70m;
-            var waterAmount = 0m;
+            var waterAmount = 235.60m;
 
 
             if (waterConsumption > 40)
@@ -626,7 +547,7 @@ namespace MyProjectIT15.Controllers
 
             if (waterConsumption > 10)
             {
-                waterAmount = Math.Round(Math.Max(waterConsumption - 10, 0) * waterrate, 2);
+                waterAmount = Math.Round((Math.Max(waterConsumption - 10, 0) * waterrate) + waterAmount, 2);
             }
 
 
@@ -678,6 +599,7 @@ namespace MyProjectIT15.Controllers
         public IActionResult Billings()
         {
             var billings = _context.Billings
+                .Where(b => b.Status == "Unpaid")
             .OrderByDescending(b => b.Id)
             .Include(u => u.User)
             .Include(mr => mr.MeterReading)
@@ -686,20 +608,75 @@ namespace MyProjectIT15.Controllers
             return View(billings); 
         }
 
+        public IActionResult BillingHistory()
+        {
+            var billings = _context.Billings
+            .Where(b => b.Status == "Paid")
+            .OrderByDescending(b => b.Id) 
+            .Include(u => u.User)
+            .Include(mr => mr.MeterReading)
+            .ToList();
+
+            return View(billings);
+        }
+
         public async Task<IActionResult> UserBillings()
         {
             var currentUser = await _userManager.GetUserAsync(User);
             var currentUserId = currentUser?.Id;
 
-            var billings = await _context.Billings
-                .Where(b => b.UserId == currentUserId) // <-- Filter billings by current user ID
+        var billings = await _context.Billings
+                .Where(b => b.UserId == currentUserId && b.Status == "Unpaid") // <-- Filter billings by current user ID
                 .OrderByDescending(b => b.Id)
                 .Include(b => b.User)
                 .Include(b => b.MeterReading)
                     .ThenInclude(mr => mr.RoomMeter) // if you want RoomMeter details too
+                    .ThenInclude(rm => rm.Room)
                 .ToListAsync();
 
             return View(billings);
+        }
+
+        public async Task<IActionResult> UserBillingHistory()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var currentUserId = currentUser?.Id;
+
+            var billings = await _context.Billings
+                    .Where(b => b.UserId == currentUserId && b.Status == "Paid") // <-- Filter billings by current user ID
+                    .OrderByDescending(b => b.Id)
+                    .Include(b => b.User)
+                    .Include(b => b.MeterReading)
+                        .ThenInclude(mr => mr.RoomMeter) // if you want RoomMeter details too
+                        .ThenInclude(rm => rm.Room)
+                    .ToListAsync();
+
+            return View(billings);
+        }
+
+        public async Task<IActionResult> UserPaymentHistory()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            var currentUserId = currentUser?.Id;
+
+            var payments = await _context.Payments
+                .Where(p => p.UserId == currentUserId)
+                .OrderByDescending(p => p.Id)
+                .ToListAsync();
+
+
+            return View(payments);
+        }
+
+        public async Task<IActionResult> PaymentHistory()
+        {
+            var payments = await _context.Payments
+                .OrderByDescending(p => p.Id)
+                .Include(p => p.User)
+                .ToListAsync();
+
+
+            return View(payments);
         }
 
 

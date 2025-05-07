@@ -24,7 +24,7 @@
             <form asp-action="ReadMeter" method="post" class="shadow p-4 rounded bg-light">
                 <div class="mb-3">
                     <label asp-for="RoomMeterId" class="form-label">Select Meter</label>
-                    <select asp-for="RoomMeterId" asp-items="Model.RoomMeters" class="form-select" required>
+                    <select asp-for="RoomMeterId" asp-items="Model.RoomMeters" class="form-select" required onchange="window.location.href='@Url.Action("ReadMeter")?roomMeterId=' + this.value;">
                         <option value="">-- Select a Room --</option>
                     </select>
                     <span asp-validation-for="RoomMeterId" class="text-danger"></span>
