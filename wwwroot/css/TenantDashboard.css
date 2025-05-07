@@ -2,7 +2,14 @@
 html, body {
     height: 100%;
     overflow-y: auto;
-    background:white;
+    background: linear-gradient(to bottom, #f0f2f5, #e3e6eb);
+}
+
+
+.card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 .card-placeholder {
@@ -14,6 +21,9 @@ html, body {
 
 .card-lg {
     height: 300px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 .navbar-brand {
@@ -59,20 +69,23 @@ html, body {
 #box1,
 #box2,
 #box3 {
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 #big-box {
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 
 .usage-card {
     height: 250px;
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -101,14 +114,16 @@ html, body {
     font-style: normal;
     font-weight: 700;
     line-height: 24px; /* 200% */
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 #boxbottom2,
 #boxbottom3 {
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 
@@ -158,7 +173,8 @@ html, body {
 #tipcard-1,
 #tipcard-2,
 #tipcard-3 {
-    border-radius: 20px;
-    border: 1px solid #D3D3D3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
     background: #FFF;
 }
