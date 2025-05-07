@@ -84,106 +84,129 @@ else
 {
     <div>
 
-        <!-- CONTENTS -->
+        <div style="display:flex; flex-direction:column; justify-content: center; align-items: center;">
+            <section class="text-center py-5 position-relative"
+                     style="background-image: url('/images/229f6c17a5e0da7c6b075cee082cff4e.jpg');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                height: 90vh;
+                width: 200vh;
+                overflow: hidden;">
 
-        <section class="text-center py-5">
-            <div class="container " style="margin-top: 235px;">
-                <div class="top-texts">
-                    <h1>RJF Power Pulse</h1>
+                <!-- Overlay -->
+                <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0, 0, 0, 0.6); z-index: 1;"></div>
+
+                <!-- Centered Content -->
+                <div class="position-absolute top-50 start-50 translate-middle text-white d-flex flex-column justify-content-center align-items-center" style="z-index: 2;">
+                    <div class="container text-center">
+                        <div class="top-texts">
+                            <h1 class="display-4 fw-bold">RJF Power Pulse</h1>
+                        </div>
+                        <p class="lead mt-3 fw-semibold">Utility Management System for Dorms</p>
+                        <p class="text-light mb-4 mx-auto" style="max-width: 700px;">
+                            Our system helps tenants check their electricity usage, view bills, and pay online through PayMongo. Admins can manage tenant accounts, monitor consumption, and keep everything organized in one place.
+                        </p>
+                        <a href="#" class="btn btn-primary" style="padding: 10px 30px;">Get Started</a>
+                    </div>
                 </div>
-                <p class="lead mt-3 fw-bold">
-                    Utility Management System for Dorms
-                </p>
-                <p class="text-muted">
-                    Our system helps tenants check their electricity usage, view bills, and pay online through PayMongo. Admins can manage tenant accounts, monitor consumption, and keep everything organized in one place.
-                </p>
-                <a href="#" class="btn btn-primary mt-3" style="padding: 10px 30px;">Get Started</a>
-            </div>
-        </section>
+            </section>
+        </div>
+
+
 
         <!-- Large Image Section -->
-        <section class="py-5 text-center bg-white " style="margin-top:290px;">
-            <div class="container">
-                <h2 class="fw-bold mb-4">All-in-One Dorm Utility Platform</h2>
+        <section class="py-5" style="background-color: #f8f9fa; margin-top:190px; margin-bottom: 220px;">
+            <div class="container-fluid text-center">
+                <h2 class="fw-bold text-3xl mb-4">All-in-One Dorm Utility Platform</h2>
                 <p class="text-muted mb-5">Manage tenants, payments, and room assignments seamlessly.</p>
-                <div class="row g-5">
-                    <div class="col-md-4">
-                        <img src="~/images/peopls.png" alt="Tenant Management" class="img-fluid mb-3" style="height: auto; width: 200px;">
+                <div class="row g-5 justify-content-center">
 
+                    <!-- Tenant Management -->
+                    <div class="col-md-4">
+                        <div class="d-flex justify-content-center mb-3">
+                            <div style="background-color: #e3f2fd; padding: 20px; border-radius: 50%;">
+                                <img src="~/images/icons8-male-user-96.png" alt="Tenant Management" style="width: 60px; height: 60px;">
+                            </div>
+                        </div>
                         <h5 class="fw-bold">Tenant Management</h5>
-                        <p class="text-muted" style="width:250px;">Easily manage tenant details and monitor their utility usage.</p>
+                        <p class="text-muted" style="max-width: 250px; margin: 0 auto;">Manage tenant profiles, view history, and monitor their usage easily.</p>
                     </div>
+
+                    <!-- Billing & Payments -->
                     <div class="col-md-4">
-                        <img src="~/images/wallet.png" alt="Billing & Payments" class="img-fluid mb-3" style="height: auto; width: 200px;">
+                        <div class="d-flex justify-content-center mb-3">
+                            <div style="background-color: #e8f5e9; padding: 20px; border-radius: 50%;">
+                                <img src="~/images/icons8-buy-with-card-96.png" alt="Billing & Payments" style="width: 60px; height: 60px;">
+                            </div>
+                        </div>
                         <h5 class="fw-bold">Billing & Payments</h5>
-                        <p class="text-muted">Track bills and accept online payments through PayMongo.</p>
+                        <p class="text-muted" style="max-width: 250px; margin: 0 auto;">Track bills in real-time and accept online payments through PayMongo.</p>
                     </div>
+
+                    <!-- Room Assignment -->
                     <div class="col-md-4">
-                        <img src="~/images/door.png" alt="Room Assignment" class="img-fluid mb-3" style="height: auto; width: 200px;">
+                        <div class="d-flex justify-content-center mb-3">
+                            <div style="background-color: #fff3e0; padding: 20px; border-radius: 50%;">
+                                <img src="~/images/icons8-lease-96.png" alt="Room Assignment" style="width: 60px; height: 60px;">
+                            </div>
+                        </div>
                         <h5 class="fw-bold">Room Assignment</h5>
-                        <p class="text-muted">Assign and update rooms while tracking occupancy.</p>
+                        <p class="text-muted" style="max-width: 250px; margin: 0 auto;">Assign and organize rooms while tracking occupancy seamlessly.</p>
                     </div>
+
                 </div>
             </div>
         </section>
-
-
 
 
 
 
         <!-- Zigzag Features Section (3 Items) -->
-        <section class="py-5">
+        <section class="py-5 bg-body-tertiary" >
             <div class="container">
-                <div class="text-center" style="margin-bottom:200px; margin-top:300px;">
-                    <h2 class="fw-bold">Manage Your Dorm Utilities with Ease</h2>
-                    <p class="text-muted">
-                        Track consumption, pay bills online, and stay informed." or "Effortlessly monitor water and electricity usage and manage your account.
-                    </p>
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Designed for a Smarter Dorm Life</h2>
+                    <p class="text-muted mx-auto" style="max-width: 600px;">From power insights to peace of mind — everything you need to stay in control, right at your fingertips.</p>
                 </div>
 
-                <div class="row align-items-center g-5 mb-5">
-                    <div class="col-md-6">
-                        <h5>Convenient Online Bill Paymen</h5>
-                        <p class="text-muted" >Securely pay your utility bills online anytime, anywhere. Choose from various payment methods for a hassle-free experience.</p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="bg-black rounded-3 mx-auto" style="width: 100%; height: 500px;">
-
+                <div class="row g-4">
+                    <!-- Card 1 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 text-center border-0 shadow-sm feature-card">
+                            <div class="card-body py-5 px-4">
+                                <img src="~/images/h4Hb6cqW4cWLhaCI.png" alt="Take Charge of Your Power" class="mb-4" style="width: 80px;">
+                                <h5 class="card-title fw-semibold">⚡ Take Charge of Your Power</h5>
+                                <p class="card-text text-muted" style="width:300px;">Track your daily usage and avoid unexpected bills through real-time stats.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row align-items-center g-5 mb-5 flex-md-row-reverse">
-                    <div class="col-md-6">
-                        <h5>Manage Your Account</h5>
-                        <p class="text-muted">View your account details, payment history, and manage your profile information all in one place.</p>
+                    <!-- Card 2 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 text-center border-0 shadow-sm feature-card">
+                            <div class="card-body py-5 px-4">
+                                <img src="~/images/8Eht4Iyt5wjryXab.png" alt="Pay with Confidence" class="mb-4" style="width: 80px;">
+                                <h5 class="card-title fw-semibold">💳 Pay with Confidence</h5>
+                                <p class="card-text text-muted" style="width:300px;">No queues, no stress — pay through secure online gateways anytime.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="bg-black rounded-3 mx-auto" style="width: 100%; height: 500px;"></div>
-                    </div>
-                </div>
 
-                <div class="row align-items-center g-5">
-                    <div class="col-md-6">
-                        <h5>Experience Smart Utility Management</h5>
-                        <p class="text-muted">Sign up now to easily track your utilities and manage your payments.</p>
+                    <!-- Card 3 -->
+                    <div class="col-md-4">
+                        <div class="card h-100 text-center border-0 shadow-sm feature-card">
+                            <div class="card-body py-5 px-4">
+                                <img src="~/images/pMOK22ZDBTABBt1l.png" alt="Live Worry-Free" class="mb-4" style="width: 80px;">
+                                <h5 class="card-title fw-semibold">🔔 Live Worry-Free</h5>
+                                <p class="card-text text-muted" style="width:300px;">Get alerts for bills, meter reads, and room updates — no surprises.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="bg-black rounded-3 mx-auto" style="width: 100%; height: 500px;"></div>
-                    </div>
-                </div>
 
+                </div>
             </div>
         </section>
-
-        <!-- Final Large Image Section 
-        <section class="py-5">
-            <div class="container">
-                <div class="bg-dark rounded-3" style="height: 300px;"></div>
-            </div>
-        </section>
-        -->
 
 
 
