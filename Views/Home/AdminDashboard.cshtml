@@ -14,18 +14,6 @@
 
     <div class="container py-4">
         <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="header">
-                <h1>Admin Dashboard</h1>
-                <small class="text-muted">Manage your payments and billing information</small>
-            </div>
-            <div class="d-flex align-items-center gap-2">
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="button" class="btn btn-outline-primary">Download Report</button>
-                    <button type="button" class="btn btn-primary">Download Current Receipt</button>
-                </div>
-            </div>
-        </div>
 
         <!-- Custom Grid Layout -->
         <div class="d-flex flex-wrap mb-4 justify-content-start">
@@ -34,20 +22,53 @@
                 <div class="card p-4 shadow-sm" style="width: 100%;">
                     <!-- Wide Card Content -->
                     <div class="mb-3">
-                        <div class="p-2 rounded d-inline-block" style="background-color: #e0f7fa;">
-                            <img src="~/images/people.png" alt="People Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        <div class="p-4 rounded d-flex justify-content-between align-items-center ">
+
+                            <!-- Left side: icon and welcome message -->
+                            <div class="d-flex align-items-center">
+                                <img src="~/images/ZetwoyA1_mcLMbix.png" alt="Icon" class="me-3" style="width: 120px; height: 120px;">
+                                <div>
+                                    <h4 class="mb-1 fw-bold">Welcome back, Admin!</h4>
+                                    <small class="text-muted">Manage your dashboard with ease.</small>
+                                </div>
+                            </div>
+
+                            <!-- Right side: quick stats and actions -->
+                            <div class="text-end">
+
+                                <!-- Stats with badges -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-end align-items-center mb-1">
+                                        <span class="me-2 fw-semibold">Total Users:</span>
+                                        <span class="badge bg-primary rounded-pill px-3 py-2">1,205</span>
+                                    </div>
+                                    <div class="d-flex justify-content-end align-items-center">
+                                        <span class="me-2 fw-semibold">Pending Reports:</span>
+                                        <span class="badge bg-danger rounded-pill px-3 py-2">3</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action buttons grouped -->
+                                <div class="btn-group" role="group">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/Users" class="btn btn-sm btn-primary d-flex align-items-center">
+                                            <i class="bi bi-people-fill me-2"></i> Manage Users
+                                        </a>
+                                        <a href="/Reports" class="btn btn-sm btn-secondary d-flex align-items-center">
+                                            <i class="bi bi-file-earmark-text-fill me-2"></i> View Reports
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
                         </div>
-                    </div>
-                    <div class="mb-2">
-                        <span class="fw-medium d-block">Total Tenants</span>
-                    </div>
-                    <div class="mb-2">
-                        <h1 class="fw-bold m-0">201</h1>
-                    </div>
-                    <div>
-                        <small class="card-text-muted">Small descriptive text</small>
+
                     </div>
                 </div>
+
             </div>
 
             <!-- 4 Small Cards in a Single Row -->
