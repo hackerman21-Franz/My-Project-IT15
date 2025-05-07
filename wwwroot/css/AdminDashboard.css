@@ -1,5 +1,5 @@
 ﻿body {
-
+    background: linear-gradient(to bottom, #f0f2f5, #e3e6eb);
 }
 
 
@@ -16,28 +16,32 @@
     width: 300px;
     height: 200px;
     flex-shrink: 0;
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 .card-large {
     width: 455px;
     height: 460px;
     flex-shrink: 0;
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 #dataoverview-card {
     height: 500px;
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 #overallnewtenants-card {
     height: 500px;
-    border: 1px solid #D8D8D8;
-    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
 
 .fw-medium {

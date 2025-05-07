@@ -3,6 +3,8 @@ html, body {
     height: 100%;
     overflow-y: auto;
     background: white;
+
+    background: linear-gradient(to bottom, #f0f2f5, #e3e6eb);
 }
 
 
@@ -68,4 +70,9 @@ html, body {
     font-style: normal;
     font-weight: 500;
     line-height: 24px;
+}
+.card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* subtle and modern */
+    border-radius: 12px; /* optional, for smooth corners */
+    border: none; /* remove default Bootstrap border */
 }
