@@ -58,17 +58,11 @@
                                             <i class="bi bi-file-earmark-text-fill me-2"></i> View Reports
                                         </a>
                                     </div>
-
                                 </div>
-
                             </div>
-
-
                         </div>
-
                     </div>
                 </div>
-
             </div>
 
             <!-- 4 Small Cards in a Single Row -->
@@ -187,30 +181,32 @@
                 </div>
             </div>
 
-            <div class="card p-4 shadow-sm" id="dataoverview-card" style="max-height: 500px; overflow-y: auto;">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
-                        <tr class="table-primary rounded">
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>1</td><td>Juan Dela Cruz</td><td>juan@example.com</td><td>Active</td></tr>
-                        <tr><td>2</td><td>Maria Santos</td><td>maria@example.com</td><td>Inactive</td></tr>
-                        <tr><td>3</td><td>Jose Rizal</td><td>rizal@example.com</td><td>Active</td></tr>
-                        <tr><td>4</td><td>Ana Lopez</td><td>ana@example.com</td><td>Pending</td></tr>
-                        <tr><td>5</td><td>Mark Lim</td><td>mark@example.com</td><td>Active</td></tr>
-                        <tr><td>6</td><td>Ella Reyes</td><td>ella@example.com</td><td>Inactive</td></tr>
-                        <tr><td>7</td><td>Carlos Tan</td><td>carlos@example.com</td><td>Active</td></tr>
-                        <tr><td>8</td><td>Lara Dy</td><td>lara@example.com</td><td>Pending</td></tr>
-                        <tr><td>9</td><td>Jorge Lee</td><td>jorge@example.com</td><td>Active</td></tr>
-                        <tr><td>10</td><td>Sofia Chua</td><td>sofia@example.com</td><td>Inactive</td></tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="card p-4 shadow-sm" id="dataoverview-card" style="max-height: 500px; overflow-y: auto;">
+            <!-- User Data Table -->
+            <table class="table table-hover mb-4">
+                <thead class="table-light">
+                    <tr class="table-primary rounded">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Juan Dela Cruz</td><td>juan@example.com</td><td>Active</td></tr>
+                    <tr><td>2</td><td>Maria Santos</td><td>maria@example.com</td><td>Inactive</td></tr>
+                    <tr><td>3</td><td>Jose Rizal</td><td>rizal@example.com</td><td>Active</td></tr>
+                    <tr><td>4</td><td>Ana Lopez</td><td>ana@example.com</td><td>Pending</td></tr>
+                    <tr><td>5</td><td>Mark Lim</td><td>mark@example.com</td><td>Active</td></tr>
+                    <tr><td>6</td><td>Ella Reyes</td><td>ella@example.com</td><td>Inactive</td></tr>
+                    <tr><td>7</td><td>Carlos Tan</td><td>carlos@example.com</td><td>Active</td></tr>
+                    <tr><td>8</td><td>Lara Dy</td><td>lara@example.com</td><td>Pending</td></tr>
+                    <tr><td>9</td><td>Jorge Lee</td><td>jorge@example.com</td><td>Active</td></tr>
+                    <tr><td>10</td><td>Sofia Chua</td><td>sofia@example.com</td><td>Inactive</td></tr>
+                </tbody>
+            </table>
+
+        </div>
         </div>
 
 
@@ -218,11 +214,57 @@
         <div class="mb-4 mt-5">
             <h5>Overall New Tenants</h5>
             <small class="text-muted">Manage your payments and billing information</small>
-            <div class="card p-4 shadow-sm mt-2" id="overallnewtenants-card"></div>
+        <div class="card p-4 shadow-sm mt-2" id="overallnewtenants-card">
+            <div class="mt-4">
+                <h6 class="fw-bold">Monthly Revenue Overview</h6>
+                <small class="text-muted">Total revenue generated per month</small>
+                <canvas id="monthlyRevenueChart" height="90"></canvas>
+            </div>
+        </div>
         </div>
 
+    <!-- Real-Time Notifications -->
+    <div class="mb-4 mt-5">
+        <h5>Real-Time Notifications</h5>
+        <small class="text-muted">Stay updated on the latest system activities</small>
+        <div class="card p-4 shadow-sm mt-2" style="max-height: 300px; overflow-y: auto;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Payment Received</strong>
+                        <div class="small text-muted">John Doe paid ₱3,500 for Room 204</div>
+                    </div>
+                    <span class="badge bg-success rounded-pill">Just now</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>New Tenant Registered</strong>
+                        <div class="small text-muted">Maria Santos assigned to Room 105</div>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">5 mins ago</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Report Submitted</strong>
+                        <div class="small text-muted">Leaky faucet issue in Room 302</div>
+                    </div>
+                    <span class="badge bg-warning rounded-pill">10 mins ago</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Tenant Checked Out</strong>
+                        <div class="small text-muted">Carlos Tan checked out of Room 308</div>
+                    </div>
+                    <span class="badge bg-secondary rounded-pill">30 mins ago</span>
+                </li>
+            </ul>
+        </div>
+    </div>
 
 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
    <script>
         const myModal = document.getElementById('exampleModal')
         const myInput = document.getElementById('myInput')
@@ -230,5 +272,39 @@
         myModal.addEventListener('shown.bs.modal', () => {
             myInput.focus()
         })
+
+         const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+    const monthlyRevenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+            datasets: [{
+                label: 'Revenue (₱)',
+                data: [12000, 15000, 11000, 18000, 20000, 17000, 22000],
+                backgroundColor: '#4e73df',
+                borderRadius: 6,
+                barThickness: 30
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '₱' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
 </script>
 }
