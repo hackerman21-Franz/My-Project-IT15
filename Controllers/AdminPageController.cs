@@ -463,6 +463,50 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("ViewAssignedTenants");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeactTenant(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "No tenant found.";
+                return RedirectToAction("Tenants");
+            }
+
+            user.EmailConfirmed = false;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Tenant has been deactivated.";
+            return RedirectToAction("Tenants");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActTenant(string id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "No tenant found.";
+                return RedirectToAction("Tenants");
+            }
+
+            user.EmailConfirmed = true;
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            TempData["ShowSuccess"] = true;
+            TempData["Success"] = "Tenant has been activated.";
+            return RedirectToAction("Tenants");
+        }
+
 
 
 

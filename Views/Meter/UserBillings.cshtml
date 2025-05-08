@@ -158,7 +158,7 @@
                                                                     <small class="text-muted">Billing Reference #: @billing.Id</small>
                                                                 </div>
 
-                                                                <hr class="my-3" />
+                                                                <hr class="my-2" />
 
                                                                 <!-- Tenant Information -->
                                                                 <div class="mb-3">
@@ -168,7 +168,7 @@
                                                                     <p class="mb-1"><strong>Reading Date:</strong> @billing.ReadingDate.ToString("MMM dd, yyyy")</p>
                                                                 </div>
 
-                                                                <hr class="my-3" />
+                                                                <hr class="my-2" />
 
                                                                 <!-- Meter Readings -->
                                                                 <div class="mb-3">
@@ -179,7 +179,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <hr class="my-3" />
+                                                                <hr class="my-2" />
 
                                                                 <!-- Meter Readings -->
                                                                 <div class="mb-3">
@@ -190,7 +190,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <hr class="my-3" />
+                                                                <hr class="my-2" />
 
                                                                 <!-- Billing Summary -->
                                                                 <div class="mb-3">
@@ -216,7 +216,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <hr class="my-3" />
+                                                                <hr class="my-2" />
 
                                                                 <!-- Payment Details -->
                                                                 <div class="mb-3">
@@ -227,10 +227,10 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <hr class="my-3" />
+                                                                <hr class="my-2" />
 
                                                                 <!-- Notes -->
-                                                                <div class="mt-4">
+                                                                <div class="mt-2 text-sm">
                                                                     <p class="text-muted">
                                                                         <strong>Note:</strong> Please settle your payment on or before the due date to avoid service disruption or penalties.
                                                                     </p>
@@ -250,8 +250,31 @@
                                                         <i class="bi bi-wallet2"></i> Pay Bills
                                                     </button>
                                                 </form>
-                                                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Print</button>
+                                                <button type="button" class="btn btn-primary" onclick="generatePDF(@billing.Id)">Print</button>
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                                <script>
+                                                    function generatePDF(billingId) {
+                                                        // Select the correct modal content dynamically based on the billing ID
+                                                        const modalContent = document.querySelector(`#Modal_${billingId} .modal-content`).cloneNode(true);
+
+                                                        // Remove the footer (buttons) from the cloned content
+                                                        const footer = modalContent.querySelector('.modal-footer');
+                                                        if (footer) footer.remove();
+
+                                                        // PDF options
+                                                        const options = {
+                                                            margin: 10,
+                                                            filename: `billing_details_${billingId}.pdf`,
+                                                            image: { type: 'jpeg', quality: 0.98 },
+                                                            html2canvas: { scale: 2 },
+                                                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                                                        };
+
+                                                        // Generate the PDF from the correctly selected modal content
+                                                        html2pdf().set(options).from(modalContent).save();
+                                                    }
+                                                </script>
                                             </div>
                                         </div>
                                     </div>
@@ -271,3 +294,5 @@
         </table>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>

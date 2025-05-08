@@ -19,13 +19,13 @@
         <table class="table table-hover table-bordered align-middle shadow-sm">
             <thead class="table-light">
                 <tr>
-                    <th>ID</th>
                     <th>First Name</th>
                     <th>Middle Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
                     <th>Phone Number</th>
-                    @*       <th style="width: 150px;">Actions</th> *@
+                    <th>Status</th>
+                          <th style="width: 150px;">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,12 +34,73 @@
                     foreach (var user in Model)
                     {
                         <tr>
-                            <td>@user.Id</td>
                             <td>@user.FirstName</td>
                             <td>@user.MiddleName</td>
                             <td>@user.LastName</td>
                             <td>@user.Email</td> <!-- assuming Room_Number property -->
                             <td>@user.PhoneNumber</td>
+                            <td>@(user.EmailConfirmed ? "Active" : "Inactive")</td>
+                            <td>
+                                <div class="btn-group">
+                                    <form asp-controller="AdminPage" asp-action="ActTenant" asp-route-id="@user.Id" method="post" style="display:inline">
+                                        @Html.AntiForgeryToken()
+
+                                        <!-- Trigger the modal with the button -->
+                                        <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#activateModal_@user.Id">
+                                            <i class="bi bi-x-circle"></i> Activate
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="activateModal_@user.Id" tabindex="-1" aria-labelledby="activateModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="activateModalLabel">Confirm Activation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to activate this tenant?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!-- Confirm button to submit the form -->
+                                                        <button type="submit" class="btn btn-success">Confirm Activation</button>
+                                                        <!-- Cancel button to close the modal -->
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form asp-controller="AdminPage" asp-action="DeactTenant" asp-route-id="@user.Id" method="post" style="display:inline">
+                                        @Html.AntiForgeryToken()
+
+                                        <!-- Trigger the modal with the button -->
+                                        <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal_@user.Id">
+                                            <i class="bi bi-x-circle"></i> Deactivate
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="deactivateModal_@user.Id" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="deactivateModalLabel">Confirm Deactivation</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        Are you sure you want to deactivate this tenant?
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <!-- Confirm button to submit the form -->
+                                                        <button type="submit" class="btn btn-danger">Confirm Deactivation</button>
+                                                        <!-- Cancel button to close the modal -->
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </td>
                         </tr>
                     }
                 }

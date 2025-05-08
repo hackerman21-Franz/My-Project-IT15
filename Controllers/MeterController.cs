@@ -715,6 +715,9 @@ namespace MyProjectIT15.Controllers
 
 
 
+
+
+
         //public IActionResult MeterReading()
         //{
         //    ViewBag.OcrResult = TempData["OcrResult"];
