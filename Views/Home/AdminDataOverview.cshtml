@@ -1,0 +1,239 @@
+﻿@page
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/AdminDataOverview.css" asp-append-version="true" />
+}
+
+@model MyProjectIT15.Views.Home.AdminDataOverviewModel
+@{
+    <div class="container py-5">
+        <div class="row">
+            <!-- Title -->
+            <div class="col-12 mb-4">
+                <h2 class="page-title">Admin Data Overview</h2>
+            </div>
+
+            <!-- Sidebar with buttons for different data views -->
+            <div class="col-md-2 mb-4">
+
+                <div class="list-group shadow-sm" id="dataTabs">
+                    <button class="list-group-item list-group-item-action active" data-section="rooms">
+                        <i class="bi bi-house-door-fill section-icon"></i> Rooms
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-section="assigned">
+                        <i class="bi bi-person-check-fill section-icon"></i> Assigned Tenants to Room
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-section="meters">
+                        <i class="bi bi-speedometer2 section-icon"></i> Meters
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-section="roommeters">
+                        <i class="bi bi-boxes section-icon"></i> Room Meters
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-section="reading">
+                        <i class="bi bi-list-nested section-icon"></i> Meter Reading
+                    </button>
+                    <button class="list-group-item list-group-item-action" data-section="billings">
+                        <i class="bi bi-receipt section-icon"></i> Billings
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content area to display the tables -->
+            <div class="col-md-10">
+
+                <div class="card shadow p-4" id="dataContent">
+                    <!-- Table content will be loaded here dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('#dataTabs button');
+        const content = document.getElementById('dataContent');
+
+        const sections = {
+            rooms: `
+            <h4 class="fw-semibold mb-3"><i class="bi bi-house-door-fill me-2"></i> Rooms</h4>
+            <hr>
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Created By</th>
+                        <th>Room Number</th>
+                        <th>Room Type</th>
+                        <th>Monthly Rent</th>
+                        <th>Image</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Admin</td>
+                        <td>101</td>
+                        <td>Single</td>
+                        <td>₱4,500</td>
+                        <td><img src="/images/room1.jpg" alt="Room Image" style="width: 60px; height: auto; border-radius: 5px;"></td>
+                        <td><span class="badge bg-success">Available</span></td>
+                        <td>2025-05-08</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        `,
+
+            assigned: `
+            <h4 class="fw-semibold mb-3"><i class="bi bi-person-check-fill me-2"></i> Assigned Tenants to Room</h4>
+            <hr>
+            <table class="table w-100 table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tenant Name</th>
+                        <th>Room Number</th>
+                        <th>Assigned By</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>John Doe</td>
+                        <td>101</td>
+                        <td>Admin</td>
+                        <td>2025-05-01</td>
+                        <td>2026-04-30</td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td><button class="btn btn-info btn-sm">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        `,
+
+            meters: `
+            <h4 class="fw-semibold mb-3"><i class="bi bi-speedometer2 me-2"></i> Meters</h4>
+            <hr>
+            <table class="table w-100 table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Meter Number</th>
+                        <th>Created By</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>MT001</td>
+                        <td>Admin</td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td>2025-05-08</td>
+                        <td><button class="btn btn-warning btn-sm">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        `,
+
+            roommeters: `
+            <h4 class="fw-semibold mb-3"><i class="bi bi-boxes me-2"></i> Room Meters</h4>
+            <hr>
+            <table class="table w-100 table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Room Number</th>
+                        <th>To</th>
+                        <th>Meter Number</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>101</td>
+                        <td>Tenant</td>
+                        <td>MT001</td>
+                        <td><span class="badge bg-success">Active</span></td>
+                        <td>2025-05-08</td>
+                        <td><button class="btn btn-primary btn-sm">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        `,
+
+            reading: `
+            <h4 class="fw-semibold mb-3"><i class="bi bi-list-nested me-2"></i> Meter Reading</h4>
+            <hr>
+            <table class="table w-100 table-bordered table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Room Number</th>
+                        <th>Tenant Name</th>
+                        <th>Reading Date</th>
+                        <th>Previous Reading</th>
+                        <th>Current Reading</th>
+                        <th>Consumption</th>
+                        <th>Done By</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>101</td>
+                        <td>John Doe</td>
+                        <td>2025-05-08</td>
+                        <td>120 kWh</td>
+                        <td>150 kWh</td>
+                        <td>30 kWh</td>
+                        <td>Admin</td>
+                        <td><button class="btn btn-info btn-sm">View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        `,
+
+            billings: `
+                        <h4 class="fw-semibold mb-3"><i class="bi bi-receipt me-2"></i> Billings</h4>
+                        <hr>
+                        <table class="table">
+                            <thead>
+                                <tr><th>Bill ID</th><th>Tenant</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>#B001</td><td>John Doe</td><td>$75.00</td><td>Paid</td><td><button class="btn btn-success">Details</button></td></tr>
+                            </tbody>
+                        </table>
+                    `
+        };
+
+        // Load default section (rooms)
+        content.innerHTML = sections.rooms;
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const section = tab.getAttribute('data-section');
+                content.innerHTML = sections[section];
+            });
+        });
+    </script>
+}

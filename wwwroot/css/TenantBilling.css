@@ -2,7 +2,6 @@
 html, body {
     height: 100%;
     overflow-y: auto;
-    background: white;
 
     background: linear-gradient(to bottom, #f0f2f5, #e3e6eb);
 }
