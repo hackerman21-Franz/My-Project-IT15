@@ -145,58 +145,80 @@
             </div>
         </div>
 
-        <!-- Row 4: One wide card -->
-        <div class="row g-4 mb-3">
+        
+
+        <div class="row g-4 mb-5">
             <div class="col-12">
-                <div class="card p-4 border-0" id="big-box-bottom" style="background: white;">
-
-                    <!-- Title and View All aligned on the same row -->
+                <div class="card p-4 border-0 shadow-sm bg-white">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h4 class="mb-0">Energy Saving Tips</h4>
-                        <button type="button" class="btn btn-outline-warning">View all</button>
+                        <h4 class="mb-0">Your Analytics Overview</h4>
+                        <button type="button" class="btn btn-outline-primary btn-sm">View Detailed Report</button>
                     </div>
 
-                    <div class="row g-3">
+                    <!-- Analytics Summary Cards -->
+                    <div class="row text-center mb-4">
                         <div class="col-md-4">
-                            <div id="tipcard-1" class="p-3 h-100">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
-                                        <i class="bi bi-lightning-charge"></i>
-                                    </div>
-                                    <strong>Switch to LED Lighting</strong>
-                                </div>
-                                <p class="mb-0 small">LED bulbs use up to 75% less energy than traditional incandescent bulbs and last much longer.</p>
+                            <div class="border rounded p-3">
+                                <h6>Total Payments</h6>
+                                <h3 class="text-success">₱ 6,540</h3>
+                                <small class="text-muted">Last 3 months</small>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div id="tipcard-2" class="p-3 h-100">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
-                                        <i class="bi bi-droplet"></i>
-                                    </div>
-                                    <strong>Short Showers</strong>
-                                </div>
-                                <p class="mb-0 small">Reducing your shower time by just 2 minutes can save up to 10 gallons of water per shower.</p>
+                            <div class="border rounded p-3">
+                                <h6>Average Monthly Usage</h6>
+                                <h3 class="text-info">248 kWh</h3>
+                                <small class="text-muted">Electricity</small>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div id="tipcard-3" class="p-3 h-100">
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 36px; height: 36px;">
-                                        <i class="bi bi-thermometer-half"></i>
-                                    </div>
-                                    <strong>Optimal Thermostat Settings</strong>
-                                </div>
-                                <p class="mb-0 small">Set your thermostat to 68°F (20°C) in winter and 78°F (26°C) in summer to optimize energy usage.</p>
+                            <div class="border rounded p-3">
+                                <h6>On-Time Payments</h6>
+                                <h3 class="text-warning">92%</h3>
+                                <small class="text-muted">Great job!</small>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Placeholder for Chart -->
+                    <div style="height: 300px;">
+                        <canvas id="usageChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 
 }
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                                <script>
+    const ctx = document.getElementById('usageChart').getContext('2d');
+    const usageChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+            datasets: [
+                {
+                    label: 'Electricity (kWh)',
+                    data: [230, 245, 260, 250, 240],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.1)',
+                    tension: 0.3
+                },
+                {
+                    label: 'Water (m³)',
+                    data: [35, 38, 32, 34, 36],
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    backgroundColor: 'rgba(153, 102, 255, 0.1)',
+                    tension: 0.3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'top' },
+                title: { display: true, text: 'Monthly Usage Trends' }
+            }
+        }
+    });</script>
