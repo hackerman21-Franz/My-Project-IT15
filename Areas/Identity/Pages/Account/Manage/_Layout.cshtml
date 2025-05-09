@@ -9,22 +9,43 @@
     }
 }
 
-<h1 class="mb-4 text-center">Manage Your Account</h1>
+@section Styles {
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,100..1000;1,0..1000&family=Inter:wght@100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/ManageAccount.css" asp-append-version="true" />
+}
 
-<div class="container bg-white shadow-sm p-4 rounded">
+<div class="container py-4">
+    <!-- Page Title -->
+    <h2 class="mb-4 fw-bold">Manage Your Account</h2>
+
     <div class="row">
+        <!-- Sidebar -->
         <div class="col-md-3 mb-4">
-            <div class="list-group">
-                <partial name="_ManageNav" />
+            <div class="list-group shadow-sm">
+                <a asp-page="./Index" class="list-group-item list-group-item-action @(ViewContext.ActionDescriptor.DisplayName.Contains("Index") ? "active" : "")">
+                    <i class="bi bi-person-fill me-1"></i> Profile
+                </a>
+                <a asp-page="./Email" class="list-group-item list-group-item-action @(ViewContext.ActionDescriptor.DisplayName.Contains("Email") ? "active" : "")">
+                    <i class="bi bi-envelope-fill me-1"></i> Email
+                </a>
+                <a asp-page="./ChangePassword" class="list-group-item list-group-item-action @(ViewContext.ActionDescriptor.DisplayName.Contains("ChangePassword") ? "active" : "")">
+                    <i class="bi bi-shield-lock-fill me-1"></i> Password
+                </a>
+                <a asp-page="./TwoFactorAuthentication" class="list-group-item list-group-item-action @(ViewContext.ActionDescriptor.DisplayName.Contains("TwoFactorAuthentication") ? "active" : "")">
+                    <i class="bi bi-shield-check me-1"></i> Two-Factor Auth
+                </a>
+                <a asp-page="./PersonalData" class="list-group-item list-group-item-action @(ViewContext.ActionDescriptor.DisplayName.Contains("PersonalData") ? "active" : "")">
+                    <i class="bi bi-archive-fill me-1"></i> Personal Data
+                </a>
             </div>
         </div>
+
+        <!-- Main Content -->
         <div class="col-md-9">
-            <div class="card border-0 shadow-sm">
-                <div class="card-body">
-                    <h2 class="card-title mb-3">Account Settings</h2>
-                    <hr />
-                    @RenderBody()
-                </div>
+            <div class="card shadow-sm p-4">
+                @RenderBody()
             </div>
         </div>
     </div>
