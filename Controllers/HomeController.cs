@@ -38,15 +38,7 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
-        public IActionResult ManageAccount()
-        {
-            return View();
-        }
 
-        public IActionResult AdminDataOverview()
-        {
-            return View();
-        }
 
         public IActionResult Privacy()
         {

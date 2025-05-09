@@ -475,6 +475,14 @@ namespace MyProjectIT15.Controllers
                 return RedirectToAction("Tenants");
             }
 
+            // Check if the user is already inactive
+            if (!user.EmailConfirmed)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "The tenant is already inactive.";
+                return RedirectToAction("Tenants");
+            }
+
             user.EmailConfirmed = false;
 
             _context.Users.Update(user);
@@ -497,8 +505,15 @@ namespace MyProjectIT15.Controllers
                 return RedirectToAction("Tenants");
             }
 
-            user.EmailConfirmed = true;
+            // Check if the user is already active
+            if (user.EmailConfirmed)
+            {
+                TempData["ShowError"] = true;
+                TempData["Error"] = "The tenant is already active.";
+                return RedirectToAction("Tenants");
+            }
 
+            user.EmailConfirmed = true;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
 

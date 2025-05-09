@@ -15,7 +15,7 @@
 }
 
 
-<div class="row " style="display:none;">
+<div class="row " style="display:none;" >
     <div class="col-lg-6 mx-auto rounded border p-3">
         <div class="d-flex justify-content-center">
             <a asp-area="" asp-controller="Home" asp-action="Index">
@@ -104,6 +104,7 @@
     
 </div>
 
+
 <div class="row">
     <div class="contents">
         <div class="top-texts">
@@ -153,14 +154,6 @@
                     <label for="confirm-password" class="form-label">Confirm Password</label>
                     <input type="password" class="form-control" id="confirm-password" placeholder="Confirm password">
                 </div>
-
-                <!-- ✅ Terms and Conditions checkbox (opens modal) -->
-                <div class="mb-3">
-                    <input type="checkbox" class="form-check-input" id="terms-checkbox" data-bs-toggle="modal" data-bs-target="#termsModal">
-                    <label for="terms-checkbox" class="form-check-label">
-                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-                    </label>
-                </div>
             </form>
 
             <div class="lower-texts d-none">
@@ -174,155 +167,6 @@
         </div>
     </div>
 </div>
-
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg mx-auto modal-dialog-centered" style="max-width: 500px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="termsContent" style="max-height: 300px; overflow-y: auto;">
-                <p><strong>Last updated:</strong> May 9, 2025</p>
-                <p>Welcome to RJF Power Pulse! Please carefully read these Terms and Conditions before using our system for energy and utility transactions.</p>
-
-                <h6>1. Interpretation and Definitions</h6>
-                <p><strong>Interpretation:</strong> Capitalized terms have the meanings defined below. These apply whether singular or plural.</p>
-                <p><strong>Company:</strong> “we,” “us,” or “our” refers to RJF Power Pulse, Philippines.</p>
-                <p><strong>Service:</strong> Refers to the energy and utility transaction services we provide through our system.</p>
-                <p><strong>User:</strong> “you,” “your” means any person or entity using our Service.</p>
-                <p><strong>Account:</strong> Means an account created to access the system.</p>
-                <p><strong>Transaction:</strong> Means any energy or utility-related order, payment, or service made through our system.</p>
-
-                <h6>2. Acceptance of Terms</h6>
-                <p>By registering an Account or using our Service, you agree to comply with these Terms and Conditions. If you do not agree, you must not use the Service.</p>
-
-                <h6>3. Clarity and Transparency</h6>
-                <p>We aim to present clear and transparent terms describing the roles, rights, and responsibilities of all parties. If anything is unclear, please contact us for clarification.</p>
-
-                <h6>4. User Guidelines</h6>
-                <p>You agree to use the Service responsibly. Prohibited actions include:</p>
-                <ul>
-                    <li>Submitting false or inaccurate transaction details.</li>
-                    <li>Engaging in fraudulent or illegal activities.</li>
-                    <li>Attempting to hack, damage, or disrupt the system.</li>
-                    <li>Violating any applicable laws or regulations.</li>
-                </ul>
-                <p>Accounts that violate these guidelines may be suspended or terminated.</p>
-
-                <h6>5. Payment Terms</h6>
-                <p>Payments must be made as specified in your transaction. We accept authorized payment methods (including GCash and bank transfer). By making a transaction, you agree to:</p>
-                <ul>
-                    <li>Provide accurate billing and payment details.</li>
-                    <li>Pay any applicable service fees or charges.</li>
-                    <li>Cover penalties or late fees if payments are delayed.</li>
-                </ul>
-                <p>We reserve the right to suspend transactions for unpaid or suspicious accounts.</p>
-
-                <h6>6. Intellectual Property</h6>
-                <p>All system content, including software, designs, logos, and data, is owned or licensed by RJF Power Pulse. You may not copy, modify, distribute, or use any content without prior written permission.</p>
-
-                <h6>7. Liability Limitations</h6>
-                <p>To the fullest extent allowed by law, RJF Power Pulse is not liable for:</p>
-                <ul>
-                    <li>Indirect or incidental damages (including loss of profits, energy service interruptions, or data loss).</li>
-                    <li>Third-party failures (such as payment processors or utility providers).</li>
-                    <li>Events outside our control (such as natural disasters or cyberattacks).</li>
-                </ul>
-
-                <h6>8. Warranty and Disclaimer</h6>
-                <p>We provide the Service “as is” and “as available.” We do not guarantee:</p>
-                <ul>
-                    <li>Continuous, uninterrupted service.</li>
-                    <li>That transactions will always be error-free or completed on time.</li>
-                    <li>That all information in the system is free of inaccuracies.</li>
-                </ul>
-
-                <h6>9. Confidentiality</h6>
-                <p>We take confidentiality seriously. We protect user data following applicable data privacy laws. You agree not to misuse any confidential or proprietary information you access through the Service. Please refer to our Privacy Policy for details.</p>
-
-                <h6>10. Termination</h6>
-                <p>We may suspend or terminate your Account:</p>
-                <ul>
-                    <li>For violating these Terms.</li>
-                    <li>For non-payment or fraudulent activity.</li>
-                    <li>If required by law or regulatory authorities.</li>
-                </ul>
-                <p>You may also close your Account at any time by contacting us.</p>
-
-                <h6>11. Dispute Resolution</h6>
-                <p>If a dispute arises:</p>
-                <ul>
-                    <li>We encourage you to first contact us for informal resolution.</li>
-                    <li>If unresolved, we may use mediation or arbitration.</li>
-                    <li>Legal proceedings will follow the laws and jurisdiction of the Philippines.</li>
-                </ul>
-
-                <h6>12. Governing Law</h6>
-                <p>These Terms are governed by the laws of the Philippines. Any legal disputes will be handled by the competent courts in the Philippines.</p>
-
-                <h6>13. Changes to Terms</h6>
-                <p>We may update these Terms as needed. We will post changes on our system and update the “Last updated” date. Your continued use means you accept the new Terms.</p>
-
-                <h6>14. Contact Us</h6>
-                <p>For any questions or concerns, please contact:</p>
-                <ul>
-                    <li>Email: RJFpowerpulse@gmail.com</li>
-                    <li>Phone: 0909 481 8273</li>
-                </ul>
-
-                <p id="bottomMarker"><strong>You’ve reached the end of the Terms & Conditions.</strong></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="acceptBtn" class="btn btn-primary" disabled data-bs-dismiss="modal">Accept</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- ✅ JavaScript (put before </body>) -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const modalBody = document.getElementById('termsContent');
-        const acceptBtn = document.getElementById('acceptBtn');
-        const termsCheckbox = document.getElementById('terms-checkbox');
-
-        document.getElementById('termsModal').addEventListener('shown.bs.modal', function () {
-            acceptBtn.disabled = true;
-            modalBody.scrollTop = 0;
-        });
-
-        modalBody.addEventListener('scroll', function () {
-            if (modalBody.scrollTop + modalBody.clientHeight >= modalBody.scrollHeight - 5) {
-                acceptBtn.disabled = false;
-            }
-        });
-
-        acceptBtn.addEventListener('click', function () {
-            termsCheckbox.checked = true;
-        });
-
-        termsCheckbox.addEventListener('click', function (e) {
-            if (!termsCheckbox.checked) {
-                e.preventDefault(); // only allow checking via modal
-            }
-        });
-    });
-
-   
-        const modalBody = document.getElementById('termsContent');
-    const acceptBtn = document.getElementById('acceptBtn');
-
-    modalBody.addEventListener('scroll', () => {
-        if (modalBody.scrollTop + modalBody.clientHeight >= modalBody.scrollHeight - 5) {
-            acceptBtn.disabled = false;
-        }
-    });
-
-
-</script>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
