@@ -51,12 +51,6 @@
         </main>
     </div>
 
-    <!-- Remove the container if you want to extend the Footer to full width. -->
- 
-   
-        <!-- Footer -->
-   
-    <!-- End of .container -->
 
    
 
@@ -103,6 +97,43 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
+
+
+
+<div id="loaderOverlay" style="display:none;">
+    <div class="loader-wrapper">
+        <div class="pulse-circle text-primary"></div>
+        <div class="pulse-circle text-secondary"></div>
+        <div class="pulse-circle text-success"></div>
+        <div class="pulse-circle text-danger"></div>
+        <div class="pulse-circle text-warning"></div>
+        <div class="pulse-circle text-info"></div>
+        <div class="pulse-circle text-dark"></div>
+    </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                const href = link.getAttribute("href");
+
+                if (href && !href.startsWith("#") && !href.startsWith("javascript")) {
+                    e.preventDefault();
+                    document.getElementById('loaderOverlay').style.display = 'flex';
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 1000);
+                }
+            });
+        });
+    });
+</script>
+
 </html>
 
 <style>
