@@ -12,7 +12,7 @@
         <div class="row">
             <!-- Title -->
             <div class="col-12 mb-4">
-                <h2 class="page-title">Admin Data Overview</h2>
+                <h2 class="page-title">📊 Admin Data Overview</h2>
             </div>
 
             <!-- Sidebar with buttons for different data views -->
@@ -50,38 +50,122 @@
         </div>
     </div>
 
+
+
+
+
+
+
+
+
+    // MODALS HERE:
+    <!-- New Room Modal -->
+    <div class="modal fade" id="newRoomModal" tabindex="-1" aria-labelledby="newRoomModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newRoomModalLabel">Add New Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add your form fields here -->
+                    <form>
+                        <div class="mb-3">
+                            <label for="roomNumber" class="form-label">Room Number</label>
+                            <input type="text" class="form-control" id="roomNumber">
+                        </div>
+                        <div class="mb-3">
+                            <label for="roomType" class="form-label">Room Type</label>
+                            <input type="text" class="form-control" id="roomType">
+                        </div>
+                        <!-- Add more fields as needed -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save Room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Assigned Tenants Modal -->
+    <div class="modal fade" id="viewTenantsModal" tabindex="-1" aria-labelledby="viewTenantsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <!-- Large modal -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewTenantsModalLabel">Assigned Tenants for Rooms</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- You can dynamically load tenant data here -->
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Tenant Name</th>
+                                <th>Room Number</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>101</td>
+                                <td>2025-05-01</td>
+                                <td>2026-04-30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <script>
         const tabs = document.querySelectorAll('#dataTabs button');
         const content = document.getElementById('dataContent');
 
         const sections = {
             rooms: `
-            <h4 class="fw-semibold mb-3"><i class="bi bi-house-door-fill me-2"></i> Rooms</h4>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-semibold"><i class="bi bi-house-door-fill me-2"></i> Rooms</h4>
+                <div>
+                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#newRoomModal">New Room</button>
+                    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#viewTenantsModal">View Assigned Tenants</button>
+                </div>
+            </div>
             <hr>
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Created By</th>
-                        <th>Room Number</th>
-                        <th>Room Type</th>
-                        <th>Monthly Rent</th>
-                        <th>Image</th>
-                        <th>Status</th>
-                        <th>Created At</th>
-                        <th>Actions</th>
-                    </tr>
+                    <tr><th>ID</th><th>Created By</th><th>Room Number</th><th>Room Type</th><th>Monthly Rent</th><th>Image</th><th>Status</th><th>Created At</th><th>Actions</th></tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>1</td>
-                        <td>Admin</td>
-                        <td>101</td>
-                        <td>Single</td>
-                        <td>₱4,500</td>
-                        <td><img src="/images/room1.jpg" alt="Room Image" style="width: 60px; height: auto; border-radius: 5px;"></td>
-                        <td><span class="badge bg-success">Available</span></td>
-                        <td>2025-05-08</td>
+                        <td>1</td><td>Admin</td><td>101</td><td>Single</td><td>₱4,500</td>
+                        <td><img src="/images/room1.jpg" alt="Room Image" class="img-fluid" style="max-width: 60px; border-radius: 5px;"></td>
+                        <td><span class="badge bg-success">Available</span></td><td>2025-05-08</td>
                         <td>
                             <button class="btn btn-sm btn-primary">Edit</button>
                             <button class="btn btn-sm btn-danger">Delete</button>
@@ -92,7 +176,12 @@
         `,
 
             assigned: `
-            <h4 class="fw-semibold mb-3"><i class="bi bi-person-check-fill me-2"></i> Assigned Tenants to Room</h4>
+                     <div class="d-flex justify-content-between align-items-center mb-3">
+                                  <h4 class="fw-semibold mb-3"><i class="bi bi-person-check-fill me-2"></i> Assigned Tenants to Room</h4>
+                        <div>
+                            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#">Assign Tenant</button>
+                        </div>
+                    </div>
             <hr>
             <table class="table w-100 table-bordered table-hover align-middle">
                 <thead class="table-light">
@@ -121,7 +210,13 @@
         `,
 
             meters: `
-            <h4 class="fw-semibold mb-3"><i class="bi bi-speedometer2 me-2"></i> Meters</h4>
+         <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="fw-semibold mb-3"><i class="bi bi-speedometer2 me-2"></i> Meters</h4>
+                        <div>
+                            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#">Add New Meter</button>
+                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#">Assign Room Meters</button>
+                        </div>
+                    </div>
             <hr>
             <table class="table w-100 table-bordered table-hover align-middle">
                 <thead class="table-light">
@@ -148,7 +243,12 @@
         `,
 
             roommeters: `
-            <h4 class="fw-semibold mb-3"><i class="bi bi-boxes me-2"></i> Room Meters</h4>
+                     <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h4 class="fw-semibold mb-3"><i class="bi bi-boxes me-2"></i> Room Meters</h4>
+                                <div>
+                                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#">Assign Meter</button>
+                                </div>
+                            </div>
             <hr>
             <table class="table w-100 table-bordered table-hover align-middle">
                 <thead class="table-light">
@@ -177,7 +277,12 @@
         `,
 
             reading: `
-            <h4 class="fw-semibold mb-3"><i class="bi bi-list-nested me-2"></i> Meter Reading</h4>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="fw-semibold mb-3"><i class="bi bi-list-nested me-2"></i> Meter Reading</h4>
+                        <div>
+                            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#">Read Meter</button>
+                        </div>
+                    </div>
             <hr>
             <table class="table w-100 table-bordered table-hover align-middle">
                 <thead class="table-light">
@@ -210,7 +315,12 @@
         `,
 
             billings: `
-                        <h4 class="fw-semibold mb-3"><i class="bi bi-receipt me-2"></i> Billings</h4>
+                                  <div class="d-flex justify-content-between align-items-center mb-3">
+                                               <h4 class="fw-semibold mb-3"><i class="bi bi-receipt me-2"></i> Billings</h4>
+                                <div>
+                                    <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#">Billing History</button>
+                                </div>
+                            </div>
                         <hr>
                         <table class="table">
                             <thead>
@@ -222,6 +332,15 @@
                         </table>
                     `
         };
+        
+
+
+
+
+
+
+
+
 
         // Load default section (rooms)
         content.innerHTML = sections.rooms;
