@@ -15,6 +15,7 @@ using System;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using MyProjectIT15.Migrations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyProjectIT15.Controllers
 {
@@ -31,10 +32,13 @@ namespace MyProjectIT15.Controllers
 			_env = env;
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
             return View();
         }
+
+        [Authorize(Roles = "admin")]
         public IActionResult Meter()
         {
             var meters = _context.Meters.OrderByDescending(p => p.Id).ToList();
@@ -44,12 +48,14 @@ namespace MyProjectIT15.Controllers
             return View(meters);
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		public async Task<IActionResult> Create(MeterDto meterDto)
 		{
 			var user = await _userManager.GetUserAsync(User);
@@ -79,6 +85,7 @@ namespace MyProjectIT15.Controllers
 			return RedirectToAction("Meter", "Meter");
 		}
 
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int Id)
         {
             var meter = _context.Meters.Find(Id);
@@ -102,6 +109,7 @@ namespace MyProjectIT15.Controllers
             return View(meterDto);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult Edit(int Id, MeterDto meterDto)
         {
@@ -132,7 +140,8 @@ namespace MyProjectIT15.Controllers
 			return RedirectToAction("Meter", "Meter");
         }
 
-		[HttpPost]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> Deactivate(int id)
 		{
@@ -154,6 +163,7 @@ namespace MyProjectIT15.Controllers
 			return RedirectToAction("Meter");
 		}
 
+        [Authorize(Roles = "admin")]
         public IActionResult RoomMeter()
         {
             var roomMeters = _context.RoomMeters.OrderByDescending(p => p.Id).ToList();
@@ -195,6 +205,7 @@ namespace MyProjectIT15.Controllers
         //    return View();
         //}
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult AssignMeter()
         {
@@ -238,7 +249,7 @@ namespace MyProjectIT15.Controllers
         }
 
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public ActionResult AssignMeter(RoomMeterDto roomMeterDto)
         {
@@ -289,6 +300,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("RoomMeter", "Meter");
         }
 
+
         private void SetAssignMeterViewBags()
         {
             var roomMeterMap = _context.RoomMeters
@@ -325,7 +337,7 @@ namespace MyProjectIT15.Controllers
         }
 
 
-
+        [Authorize(Roles = "admin")]
         public IActionResult EditRoomMeter(int id)
         {
             var roomMeter = _context.RoomMeters.Find(id);
@@ -350,6 +362,7 @@ namespace MyProjectIT15.Controllers
             return View(roomMeterDto);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public IActionResult EditRoomMeter(int id, RoomMeterDto roomMeterDto)
         {
@@ -381,6 +394,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("RoomMeter", "Meter");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeactivateRoomMeter(int id)
@@ -417,6 +431,7 @@ namespace MyProjectIT15.Controllers
             return View(meterReadings); // Pass the list of MeterReading objects to the view
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet]
         public IActionResult ReadMeter(int? roomMeterId = null)
         {
@@ -469,6 +484,7 @@ namespace MyProjectIT15.Controllers
             return View(dto);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> ReadMeter(MeterReadingDto meterReadingDto)
         {
@@ -595,7 +611,7 @@ namespace MyProjectIT15.Controllers
         }
 
 
-
+        [Authorize(Roles = "admin")]
         public IActionResult Billings()
         {
             var billings = _context.Billings
@@ -608,6 +624,7 @@ namespace MyProjectIT15.Controllers
             return View(billings); 
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult BillingHistory()
         {
             var billings = _context.Billings
@@ -668,6 +685,7 @@ namespace MyProjectIT15.Controllers
             return View(payments);
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> PaymentHistory()
         {
             var payments = await _context.Payments

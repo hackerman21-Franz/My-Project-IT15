@@ -264,7 +264,7 @@ namespace MyProjectIT15.Controllers
 		}
 
 
-
+        [Authorize(Roles = "admin")]
         // GET: AdminPage/AssignTenant
         [HttpGet]
         public async Task<IActionResult> AssignTenant()
@@ -294,6 +294,7 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AssignTenant(UserRoomDto dto)
@@ -358,6 +359,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("ViewAssignedTenants");
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult ViewAssignedTenants()
 		{
 			var assignedTenants = _context.UserRooms
@@ -369,6 +371,7 @@ namespace MyProjectIT15.Controllers
 			return View(assignedTenants);
 		}
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> EditAssignedTenant(int id)
         {
             var userRoom = await _context.UserRooms.FindAsync(id);
@@ -402,6 +405,7 @@ namespace MyProjectIT15.Controllers
             return View(dto);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditAssignedTenant(int UserRoomId, UserRoomDto dto)
@@ -441,6 +445,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("ViewAssignedTenants");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeactivateAssignedTenant(int id)
@@ -463,6 +468,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("ViewAssignedTenants");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeactTenant(string id)
@@ -493,6 +499,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("Tenants");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ActTenant(string id)
