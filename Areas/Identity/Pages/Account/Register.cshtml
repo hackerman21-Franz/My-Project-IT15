@@ -195,7 +195,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label asp-for="Input.MiddleName" class="form-label fw-bold">Middle Name</label>
-                                <input asp-for="Input.MiddleName" class="form-control py-2" placeholder="Enter middle name" required>
+                                <input asp-for="Input.MiddleName" class="form-control py-2" placeholder="Enter middle name (Optional)">
                                 <span asp-validation-for="Input.MiddleName" class="text-danger small"></span>
                             </div>
                             <div class="col-md-4">
@@ -252,7 +252,7 @@
                         <!-- Buttons -->
                         <div class="row g-2 mt-4">
                             <div class="col-md-6">
-                                <button type="submit" class="btn btn-primary w-100 fw-bold">Sign Up</button>
+                                <button type="submit" id="signUpBtn" class="btn btn-primary w-100 fw-bold" disabled>Sign Up</button>
                             </div>
                             <div class="col-md-6">
                                 <a href="/" class="btn btn-outline-primary w-100">Cancel</a>
@@ -411,6 +411,16 @@
         if (modalBody.scrollTop + modalBody.clientHeight >= modalBody.scrollHeight - 5) {
             acceptBtn.disabled = false;
         }
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const termsCheckbox = document.getElementById('terms-checkbox');
+        const signUpBtn = document.getElementById('signUpBtn');
+
+        // Toggle button based on checkbox state
+        termsCheckbox.addEventListener('change', function () {
+            signUpBtn.disabled = !termsCheckbox.checked;
+        });
     });
 
 

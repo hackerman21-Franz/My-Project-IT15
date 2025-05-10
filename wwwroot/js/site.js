@@ -20,3 +20,4 @@ document.getElementById("assignTenantBtn").addEventListener("click", function ()
     document.getElementById("spinner").classList.remove("d-none");
     this.setAttribute("disabled", "true");
 });
+
