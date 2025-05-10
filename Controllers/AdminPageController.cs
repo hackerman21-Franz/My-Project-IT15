@@ -57,6 +57,12 @@ namespace MyProjectIT15.Controllers
                 .ToList();
             ViewBag.TenantCount = tenants.Count;
 
+            var newtenants = _context.Users
+                .Where(u => u.EmailConfirmed == true && u.CreatedAt >= DateTime.Now.AddDays(-5) && _context.UserRoles
+                    .Any(ur => ur.UserId == u.Id && ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Tenant").Id))
+                .ToList();
+            ViewBag.NewTenantCount = newtenants.Count;
+
             // New Tenants (last 5 days)
             var newTenants = _context.Users
                 .Where(u => u.EmailConfirmed == true && u.CreatedAt >= DateTime.Now.AddDays(-5) && _context.UserRoles
@@ -69,6 +75,11 @@ namespace MyProjectIT15.Controllers
                 });
 
             // Meter Readings (current month)
+            var meterreadings = _context.MeterReadings
+                .Where(mt => mt.ReadingDate.Year == DateTime.Now.Year && mt.ReadingDate.Month == DateTime.Now.Month)
+                .ToList();
+            ViewBag.TotalMeterReadCount = meterreadings.Count;
+
             var meterReadings = _context.MeterReadings
                 .Where(mt => mt.ReadingDate.Year == DateTime.Now.Year && mt.ReadingDate.Month == DateTime.Now.Month)
                 .Select(mt => new
@@ -91,9 +102,95 @@ namespace MyProjectIT15.Controllers
             ViewBag.RecentActivities = recentActivities;
             return View();
         }
+
         [Authorize(Roles = "tenant")]
-        public IActionResult tenant()
+        public async Task<IActionResult> tenant()
         {
+            var user = await _userManager.GetUserAsync(User);
+
+            var userRoom = _context.UserRooms
+                .Include(ur => ur.Room)  // Ensure Room data is loaded
+                .FirstOrDefault(ur => ur.TenantId == user.Id && ur.Status == "Active");
+
+                if (userRoom != null && userRoom.Room != null)
+                {
+                    ViewBag.RoomNum = userRoom.Room.Room_Number;
+                    ViewBag.RoomRent = userRoom.Room.Monthly_Rent;
+                    ViewBag.RoomImg = "/rooms/" + userRoom.Room.ImageFileName;
+                }
+                else
+                {
+                    ViewBag.RoomNum = "N/A";
+                    ViewBag.RoomRent = 0;
+                    ViewBag.RoomImg = "default.png";  // Fallback image
+                }
+
+            var payments = _context.Payments
+                .Where(p => p.UserId == user.Id)
+                .ToList();
+            ViewBag.TotalPaymentCount = payments.Count;
+
+            var billings = _context.Billings
+                .Where(b => b.UserId == user.Id)
+                .ToList();
+            ViewBag.TotalBillingCount = billings.Count;
+
+            var latestBilling = _context.Billings
+                .Where(b => b.UserId == user.Id && b.Status == "Unpaid")
+                .OrderByDescending(b => b.Id)   // Order by the latest billing date
+                .FirstOrDefault();  // Get the most recent billing
+
+            if (latestBilling != null)
+            {
+                ViewBag.TotalBillAmount = latestBilling.TotalAmount;  // Replace with your actual field name
+                ViewBag.DueDate = latestBilling.DueDate.ToString("MMMM dd, yyyy");  // Replace with your actual field name
+            }
+            else
+            {
+                ViewBag.TotalBillAmount = 0;
+                ViewBag.DueDate = "N/A";
+            }
+
+            var paymentspaid = _context.Payments
+                .Where(p => p.Status == "Paid" && p.UserId == user.Id)
+                .ToList();
+            ViewBag.TotalPaidPaymentCount = paymentspaid.Count;
+
+            // Meter Readings (current month)
+            var meterreadings = _context.MeterReadings
+                .Where(mt => mt.UserRoom.TenantId == user.Id)
+                .OrderByDescending(mt => mt.Id)
+                .FirstOrDefault();
+
+            ViewBag.TotalElecCons = meterreadings.Consumption;
+            ViewBag.TotalWaterCons = meterreadings.WaterConsumption;
+
+
+            var meterReadings = _context.MeterReadings
+                .Select(mt => new
+                {
+                Title = "Meter Reading Submitted",
+                Description = $"Room {mt.RoomMeter.RoomId} submitted a meter reading",
+                Date = mt.ReadingDate
+                })
+                .ToList();
+
+            var paymentsAct = _context.Payments
+                .Select(p => new
+                {
+                    Title = "Payment Transaction",
+                    Description = $"You submitted a payment of ₱{p.TotalPaid}.",
+                    Date = p.CreatedAt
+                })
+                .ToList();
+
+            var recentActivities = paymentsAct
+                .Union(meterReadings)
+                .OrderByDescending(a => a.Date)
+                .Take(10)
+                .ToList();
+
+            ViewBag.RecentActivities = recentActivities;
             return View();
         }
 
