@@ -25,6 +25,70 @@ namespace MyProjectIT15.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
+            // Active Rooms Count
+            var room = _context.Rooms
+                .Where(r => r.Status == "Active")
+                .ToList();
+            ViewBag.RoomCount = room.Count;
+
+            var availroom = _context.Rooms
+                .Where(r => r.Status == "Active" &&
+                 !_context.UserRooms.Any(ur => ur.RoomId == r.Id && ur.Status == "Active"))
+                .ToList();
+            ViewBag.AvailRoomCount = availroom.Count;
+
+            var payments = _context.Payments
+                .ToList();
+            ViewBag.TotalPaymentCount = payments.Count;
+
+            var paymentspaid = _context.Payments
+                .Where(p => p.Status == "Paid")
+                .ToList();
+            ViewBag.TotalPaidPaymentCount = paymentspaid.Count;
+
+            // Total Rooms Count
+            var rooms = _context.Rooms.ToList();
+            ViewBag.TotalRoomCount = rooms.Count;
+
+            // Tenants Count
+            var tenants = _context.Users
+                .Where(u => u.EmailConfirmed == true && _context.UserRoles
+                    .Any(ur => ur.UserId == u.Id && ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Tenant").Id))
+                .ToList();
+            ViewBag.TenantCount = tenants.Count;
+
+            // New Tenants (last 5 days)
+            var newTenants = _context.Users
+                .Where(u => u.EmailConfirmed == true && u.CreatedAt >= DateTime.Now.AddDays(-5) && _context.UserRoles
+                    .Any(ur => ur.UserId == u.Id && ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Tenant").Id))
+                .Select(u => new
+                {
+                    Title = "New Tenant Added",
+                    Description = $"{u.UserName} assigned to a room",
+                    Date = u.CreatedAt
+                });
+
+            // Meter Readings (current month)
+            var meterReadings = _context.MeterReadings
+                .Where(mt => mt.ReadingDate.Year == DateTime.Now.Year && mt.ReadingDate.Month == DateTime.Now.Month)
+                .Select(mt => new
+                {
+                    Title = "Meter Reading Submitted",
+                    Description = $"Room {mt.RoomMeter.RoomId} submitted a meter reading",
+                    Date = mt.ReadingDate
+                });
+
+            // Room Updates (using CreatedAt as a placeholder for update time)
+            
+
+            // Combine and order by the most recent date
+            var recentActivities = newTenants.AsEnumerable()
+                .Union(meterReadings.AsEnumerable())
+                .OrderByDescending(a => a.Date)
+                .Take(10)
+                .ToList();
+
+            ViewBag.RecentActivities = recentActivities;
             return View();
         }
         [Authorize(Roles = "tenant")]
@@ -527,6 +591,12 @@ namespace MyProjectIT15.Controllers
             TempData["ShowSuccess"] = true;
             TempData["Success"] = "Tenant has been activated.";
             return RedirectToAction("Tenants");
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> AdminDashboard()
+        {
+            return View();
         }
 
 

@@ -1,52 +1,297 @@
 ﻿@{
     ViewData["Title"] = "Admin Page";
 }
+<div class="container py-4">
+    <!-- Welcome Card -->
+    <div class="card p-4 shadow-sm mb-4">
+        <div class="row align-items-center">
+            <!-- Left side: icon and welcome message -->
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="d-flex align-items-center">
+                    <img src="~/images/ZetwoyA1_mcLMbix.png" alt="Icon" class="me-3" style="width: 80px; height: 80px;">
+                    <div>
+                        <h4 class="mb-1 fw-bold">Welcome to Admin Page</h4>
+                        <small class="text-muted">Manage rooms, tenants, reports, and more from your control panel.</small>
+                    </div>
+                </div>
+            </div>
 
-<!-- Welcome Section -->
-<div class="container text-center mt-5">
-    <h1 class="display-4">Welcome to Admin Page</h1>
-    <p class="lead">Manage rooms, tenants, reports, and more from your control panel.</p>
-    <a class="btn btn-primary btn-lg mt-3" asp-action="Room" asp-controller="AdminPage">Manage Rooms</a>
-</div>
+            <!-- Right side: quick stats and actions -->
+            <div class="col-md-6">
+                <div class="text-md-end">
+                    <!-- Stats with badges -->
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-md-end align-items-center mb-1">
+                            <span class="me-2 fw-semibold">Total Rooms:</span>
+                            <span class="badge bg-primary rounded-pill px-3 py-2">@ViewBag.TotalRoomCount</span>
+                        </div>
+                        <div class="d-flex justify-content-md-end align-items-center">
+                            <span class="me-2 fw-semibold">Active Tenants:</span>
+                            <span class="badge bg-success rounded-pill px-3 py-2">@ViewBag.TenantCount</span>
+                        </div>
+                    </div>
 
-<!-- Feature Cards -->
-<div class="container mt-5">
-    <div class="row text-center">
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Rooms</h5>
-                    <p class="card-text">Add, edit, or delete available rooms.</p>
-                    <a class="btn btn-outline-primary" asp-action="Room" asp-controller="AdminPage">View Rooms</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Meter</h5>
-                    <p class="card-text">Manage meter, Meter Reading, and billing.</p>
-                    <a class="btn btn-outline-primary" asp-action="Index" asp-controller="Meter">Manage Meter</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Tenants</h5>
-                    <p class="card-text">Manage tenant info and track occupancy.</p>
-                    <a class="btn btn-outline-primary" asp-action="Tenants" asp-controller="AdminPage">View Tenants</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">Reports</h5>
-                    <p class="card-text">Generate rental, payment, or activity reports.</p>
-                    <a class="btn btn-outline-primary" asp-action="Reports" asp-controller="AdminPage">Generate Reports</a>
+                    <!-- Primary action button -->
+                    <div class="d-grid gap-2 d-md-block">
+                        <a class="btn btn-primary" asp-action="Room" asp-controller="AdminPage">
+                            <i class="bi bi-house-door me-2"></i>Manage Rooms
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="row g-4 mb-4">
+        <!-- Rooms Card -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card p-4 shadow-sm h-100">
+                <div class="mb-3">
+                    <div class="p-2 rounded d-inline-block" style="background-color: #ede7f6;">
+                        <i class="bi bi-house-door-fill" style="font-size: 1.5rem; color: #5e35b1;"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="fw-medium d-block">Active Rooms</span>
+                </div>
+                <div class="mb-2">
+                    <h1 class="fw-bold m-0">@ViewBag.RoomCount</h1>
+                </div>
+                <div>
+                    <small class="text-muted">Out of @ViewBag.TotalRoomCount total rooms</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meter Card -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card p-4 shadow-sm h-100">
+                <div class="mb-3">
+                    <div class="p-2 rounded d-inline-block" style="background-color: #f1f8e9;">
+                        <i class="bi bi-lightning-charge-fill" style="font-size: 1.5rem; color: #7cb342;"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="fw-medium d-block">Meter Readings</span>
+                </div>
+                <div class="mb-2">
+                    <h1 class="fw-bold m-0">@ViewBag.TotalMeterReadCount</h1>
+                </div>
+                <div>
+                    <small class="text-muted">For current billing cycle</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tenants Card -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card p-4 shadow-sm h-100">
+                <div class="mb-3">
+                    <div class="p-2 rounded d-inline-block" style="background-color: #fff3e0;">
+                        <i class="bi bi-people-fill" style="font-size: 1.5rem; color: #fb8c00;"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="fw-medium d-block">New Tenants</span>
+                </div>
+                <div class="mb-2">
+                    <h1 class="fw-bold m-0">@ViewBag.NewTenantCount</h1>
+                </div>
+                <div>
+                    <small class="text-muted">This past 5 days</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Card -->
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card p-4 shadow-sm h-100">
+                <div class="mb-3">
+                    <div class="p-2 rounded d-inline-block" style="background-color: #e0f7fa;">
+                        <i class="bi bi-file-earmark-text-fill" style="font-size: 1.5rem; color: #00acc1;"></i>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <span class="fw-medium d-block">Open Reports</span>
+                </div>
+                <div class="mb-2">
+                    <h1 class="fw-bold m-0">3</h1>
+                </div>
+                <div>
+                    <small class="text-muted">Requiring attention</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Access Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <h5>Quick Access</h5>
+            <small class="text-muted">Manage different sections of the system</small>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="p-3 mb-3 bg-primary bg-opacity-10 rounded-circle d-inline-block">
+                        <i class="bi bi-house-door-fill text-primary" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Rooms</h5>
+                    <p class="card-text">Add, edit, or delete available rooms.</p>
+                    <a class="btn btn-outline-primary w-100" asp-action="Room" asp-controller="AdminPage">
+                        View Rooms
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="p-3 mb-3 bg-success bg-opacity-10 rounded-circle d-inline-block">
+                        <i class="bi bi-lightning-charge-fill text-success" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Meter</h5>
+                    <p class="card-text">Manage meter, readings, and billing.</p>
+                    <a class="btn btn-outline-success w-100" asp-action="Index" asp-controller="Meter">
+                        Manage Meter
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="p-3 mb-3 bg-warning bg-opacity-10 rounded-circle d-inline-block">
+                        <i class="bi bi-people-fill text-warning" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Tenants</h5>
+                    <p class="card-text">Manage tenant info and occupancy.</p>
+                    <a class="btn btn-outline-warning w-100" asp-action="Tenants" asp-controller="AdminPage">
+                        View Tenants
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                    <div class="p-3 mb-3 bg-info bg-opacity-10 rounded-circle d-inline-block">
+                        <i class="bi bi-file-earmark-text-fill text-info" style="font-size: 1.5rem;"></i>
+                    </div>
+                    <h5 class="card-title">Reports</h5>
+                    <p class="card-text">Generate rental and payment reports.</p>
+                    <a class="btn btn-outline-info w-100" asp-action="Reports" asp-controller="AdminPage">
+                        Generate Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Recent Activity</h5>
+            <small class="text-muted">Latest system activities</small>
+        </div>
+        <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+            <ul class="list-group list-group-flush">
+                @if (ViewBag.RecentActivities != null)
+                {
+                    foreach (var activity in ViewBag.RecentActivities)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div>
+                                <strong>@activity.Title</strong>
+                                <div class="small text-muted">@activity.Description</div>
+                            </div>
+                            <span class="badge bg-primary rounded-pill">
+                                @{
+                                    var dateTime = Convert.ToDateTime(activity.Date);
+                                    var timeSpan = DateTime.Now - dateTime;
+
+                                    string timeAgo = timeSpan.TotalSeconds < 60 ? "Just now" :
+                                    timeSpan.TotalMinutes < 60 ? $"{(int)timeSpan.TotalMinutes} mins ago" :
+                                    timeSpan.TotalHours < 24 ? $"{(int)timeSpan.TotalHours} hours ago" :
+                                    timeSpan.TotalDays < 7 ? $"{(int)timeSpan.TotalDays} days ago" :
+                                    timeSpan.TotalDays < 30 ? $"{(int)(timeSpan.TotalDays / 7)} weeks ago" :
+                                    timeSpan.TotalDays < 365 ? $"{(int)(timeSpan.TotalDays / 30)} months ago" :
+                                    $"{(int)(timeSpan.TotalDays / 365)} years ago";
+
+                                    @timeAgo
+                                }
+                            </span>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li class="list-group-item">No recent activities.</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+
+    <!-- Quick Stats Table -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-0">Quick Overview</h5>
+                <small class="text-muted">Summary of current status</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <th>Category</th>
+                            <th>Total</th>
+                            <th>Available</th>
+                            <th>Paid</th>
+                            <th>Pending</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rooms</td>
+                            <td>@ViewBag.RoomCount</td>
+                            <td>@ViewBag.AvailRoomCount</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Tenants</td>
+                            <td>@ViewBag.TenantCount</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Payments</td>
+                            <td>@ViewBag.TotalPaymentCount</td>
+                            <td>-</td>
+                            <td>@ViewBag.TotalPaidPaymentCount</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>Reports</td>
+                            <td>15</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+<!-- Bootstrap Icons CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">

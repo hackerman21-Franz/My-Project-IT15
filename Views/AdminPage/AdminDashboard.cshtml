@@ -1,0 +1,298 @@
+﻿
+@{
+
+    <div class="container py-4">
+        <!-- Header -->
+        <!-- Custom Grid Layout -->
+        <div class="d-flex flex-wrap mb-4 justify-content-start">
+            <!-- Wide Card (Single Row) -->
+            <div class="flex-grow-0" style="width: 100%; max-width: 1300px;">
+                <div class="card p-4 shadow-sm" style="width: 100%;">
+                    <!-- Wide Card Content -->
+                    <div class="mb-3">
+                        <div class="p-4 rounded d-flex justify-content-between align-items-center ">
+
+                            <!-- Left side: icon and welcome message -->
+                            <div class="d-flex align-items-center">
+                                <img src="~/images/ZetwoyA1_mcLMbix.png" alt="Icon" class="me-3" style="width: 120px; height: 120px;">
+                                <div>
+                                    <h4 class="mb-1 fw-bold">Welcome back, Admin!</h4>
+                                    <small class="text-muted">Manage your dashboard with ease.</small>
+                                </div>
+                            </div>
+
+                            <!-- Right side: quick stats and actions -->
+                            <div class="text-end">
+
+                                <!-- Stats with badges -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-end align-items-center mb-1">
+                                        <span class="me-2 fw-semibold">Total Users:</span>
+                                        <span class="badge bg-primary rounded-pill px-3 py-2">1,205</span>
+                                    </div>
+                                    <div class="d-flex justify-content-end align-items-center">
+                                        <span class="me-2 fw-semibold">Pending Reports:</span>
+                                        <span class="badge bg-danger rounded-pill px-3 py-2">3</span>
+                                    </div>
+                                </div>
+
+                                <!-- Action buttons grouped -->
+                                <div class="btn-group" role="group">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/Users" class="btn btn-sm btn-primary d-flex align-items-center">
+                                            <i class="bi bi-people-fill me-2"></i> Manage Users
+                                        </a>
+                                        <a href="/Reports" class="btn btn-sm btn-secondary d-flex align-items-center">
+                                            <i class="bi bi-file-earmark-text-fill me-2"></i> View Reports
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Small Cards in a Single Row -->
+            <div class="d-flex " style="width: 100%; max-width: 1300px; gap:35px; margin-top:40px;">
+                <!-- First Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #ede7f6;">
+                            <img src="~/images/House.png" alt="House Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Occupied Rooms</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+
+                <!-- Second Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #f1f8e9;">
+                            <img src="~/images/calendarr.png" alt="Calendar Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">New Tenants this Month</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+
+                <!-- Third Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #fff3e0;">
+                            <img src="~/images/Warning.png" alt="Warning Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Pending Payments</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+
+                <!-- Fourth Small Card -->
+                <div class="card card-small p-4 shadow-sm text-start" style="width: 23%; flex-grow: 0;">
+                    <div class="mb-3">
+                        <div class="p-2 rounded d-inline-block" style="background-color: #e0f7fa;">
+                            <img src="~/images/people.png" alt="People Icon" class="icon-img" style="width: 32px; height: 32px;">
+                        </div>
+                    </div>
+                    <div class="mb-2">
+                        <span class="fw-medium d-block">Total Tenants</span>
+                    </div>
+                    <div class="mb-2">
+                        <h1 class="fw-bold m-0">201</h1>
+                    </div>
+                    <div>
+                        <small class="card-text-muted">Small descriptive text</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="myInput" class="form-control" placeholder="Focus me on open" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Overview -->
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+                <h5>Data Overview</h5>
+                <small class="text-muted">Manage your payments and billing information</small>
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                    Data Tables Overview
+                </button>
+                <ul class="dropdown-menu dropdown-menu-lg-end">
+                    <li><a class="dropdown-item" href="#">Data 1</a></li>
+                    <li><a class="dropdown-item" href="#">Data 2</a></li>
+                    <li><a class="dropdown-item" href="#">Data 3</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card p-4 shadow-sm" id="dataoverview-card" style="max-height: 500px; overflow-y: auto;">
+            <!-- User Data Table -->
+            <table class="table table-hover mb-4">
+                <thead class="table-light">
+                    <tr class="table-primary rounded">
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Juan Dela Cruz</td><td>juan@example.com</td><td>Active</td></tr>
+                    <tr><td>2</td><td>Maria Santos</td><td>maria@example.com</td><td>Inactive</td></tr>
+                    <tr><td>3</td><td>Jose Rizal</td><td>rizal@example.com</td><td>Active</td></tr>
+                    <tr><td>4</td><td>Ana Lopez</td><td>ana@example.com</td><td>Pending</td></tr>
+                    <tr><td>5</td><td>Mark Lim</td><td>mark@example.com</td><td>Active</td></tr>
+                    <tr><td>6</td><td>Ella Reyes</td><td>ella@example.com</td><td>Inactive</td></tr>
+                    <tr><td>7</td><td>Carlos Tan</td><td>carlos@example.com</td><td>Active</td></tr>
+                    <tr><td>8</td><td>Lara Dy</td><td>lara@example.com</td><td>Pending</td></tr>
+                    <tr><td>9</td><td>Jorge Lee</td><td>jorge@example.com</td><td>Active</td></tr>
+                    <tr><td>10</td><td>Sofia Chua</td><td>sofia@example.com</td><td>Inactive</td></tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+    <!-- Overall New Tenants -->
+    <div class="mb-4 mt-5">
+        <h5>Overall New Tenants</h5>
+        <small class="text-muted">Manage your payments and billing information</small>
+        <div class="card p-4 shadow-sm mt-2" id="overallnewtenants-card">
+            <div class="mt-4">
+                <h6 class="fw-bold">Monthly Revenue Overview</h6>
+                <small class="text-muted">Total revenue generated per month</small>
+                <canvas id="monthlyRevenueChart" height="90"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-Time Notifications -->
+    <div class="mb-4 mt-5">
+        <h5>Real-Time Notifications</h5>
+        <small class="text-muted">Stay updated on the latest system activities</small>
+        <div class="card p-4 shadow-sm mt-2" style="max-height: 300px; overflow-y: auto;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Payment Received</strong>
+                        <div class="small text-muted">John Doe paid ₱3,500 for Room 204</div>
+                    </div>
+                    <span class="badge bg-success rounded-pill">Just now</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>New Tenant Registered</strong>
+                        <div class="small text-muted">Maria Santos assigned to Room 105</div>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">5 mins ago</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Report Submitted</strong>
+                        <div class="small text-muted">Leaky faucet issue in Room 302</div>
+                    </div>
+                    <span class="badge bg-warning rounded-pill">10 mins ago</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>Tenant Checked Out</strong>
+                        <div class="small text-muted">Carlos Tan checked out of Room 308</div>
+                    </div>
+                    <span class="badge bg-secondary rounded-pill">30 mins ago</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+            const myModal = document.getElementById('exampleModal')
+            const myInput = document.getElementById('myInput')
+
+            myModal.addEventListener('shown.bs.modal', () => {
+                myInput.focus()
+            })
+
+             const ctx = document.getElementById('monthlyRevenueChart').getContext('2d');
+        const monthlyRevenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                datasets: [{
+                    label: 'Revenue (₱)',
+                    data: [12000, 15000, 11000, 18000, 20000, 17000, 22000],
+                    backgroundColor: '#4e73df',
+                    borderRadius: 6,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '₱' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
