@@ -7,19 +7,18 @@
 
 <h3 class="mb-4">@ViewData["Title"]</h3>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <p>Your account contains personal data that you have given us. You can download or delete that data below.</p>
-        <p class="fw-bold text-danger">
-            Deleting this data will permanently remove your account. This action cannot be undone.
-        </p>
+<!-- Removed card and shadow-sm -->
+<div>
+    <p>Your account contains personal data that you have given us. You can download or delete that data below.</p>
+    <p class="fw-bold text-danger">
+        Deleting this data will permanently remove your account. This action cannot be undone.
+    </p>
 
-        <form id="download-data" asp-page="DownloadPersonalData" method="post" class="mb-3">
-            <button class="btn btn-outline-primary" type="submit">Download</button>
-        </form>
+    <form id="download-data" asp-page="DownloadPersonalData" method="post" class="mb-3">
+        <button class="btn btn-outline-primary" type="submit">Download</button>
+    </form>
 
-        <a id="delete" asp-page="DeletePersonalData" class="btn btn-outline-danger">Delete Account</a>
-    </div>
+    <a id="delete" asp-page="DeletePersonalData" class="btn btn-outline-danger">Delete Account</a>
 </div>
 
 @section Scripts {
