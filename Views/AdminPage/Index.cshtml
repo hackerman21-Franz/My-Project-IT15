@@ -3,195 +3,127 @@
 }
 <div class="container py-4">
     <!-- Welcome Card -->
-    <div class="card p-4 shadow-sm mb-4">
-        <div class="row align-items-center">
-            <!-- Left side: icon and welcome message -->
-            <div class="col-md-6 mb-3 mb-md-0">
-                <div class="d-flex align-items-center">
-                    <img src="~/images/ZetwoyA1_mcLMbix.png" alt="Icon" class="me-3" style="width: 80px; height: 80px;">
-                    <div>
-                        <h4 class="mb-1 fw-bold">Welcome to Admin Page</h4>
-                        <small class="text-muted">Manage rooms, tenants, reports, and more from your control panel.</small>
-                    </div>
+    <div class="card shadow-xl rounded-4 p-4 mb-4 bg-white" style="border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+        <div class="row align-items-center g-3">
+            <div class="col-md-6 d-flex align-items-center">
+                <img src="~/images/ZetwoyA1_mcLMbix.png" alt="Icon" class="me-3" style="width: 64px; height: 64px; border-radius: 12px;">
+                <div>
+                    <h4 class="fw-bold mb-1">Welcome to Admin Dashboard</h4>
+                    <p class="text-muted mb-0">Oversee rooms, tenants, usage, and reports in one place.</p>
                 </div>
             </div>
-
-            <!-- Right side: quick stats and actions -->
-            <div class="col-md-6">
-                <div class="text-md-end">
-                    <!-- Stats with badges -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-md-end align-items-center mb-1">
-                            <span class="me-2 fw-semibold">Total Rooms:</span>
-                            <span class="badge bg-primary rounded-pill px-3 py-2">@ViewBag.TotalRoomCount</span>
-                        </div>
-                        <div class="d-flex justify-content-md-end align-items-center">
-                            <span class="me-2 fw-semibold">Active Tenants:</span>
-                            <span class="badge bg-success rounded-pill px-3 py-2">@ViewBag.TenantCount</span>
-                        </div>
+            <div class="col-md-6 text-md-end">
+                <div class="d-flex flex-column align-items-md-end">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="me-2 fw-semibold">Total Rooms</span>
+                        <span class="badge bg-primary bg-opacity-10 text-primary fw-semibold px-3 py-2 rounded-pill">@ViewBag.TotalRoomCount</span>
                     </div>
-
-                    <!-- Primary action button -->
-                    <div class="d-grid gap-2 d-md-block">
-                        <a class="btn btn-primary" asp-action="Room" asp-controller="AdminPage">
-                            <i class="bi bi-house-door me-2"></i>Manage Rooms
-                        </a>
+                    <div class="d-flex align-items-center mb-3">
+                        <span class="me-2 fw-semibold">Active Tenants</span>
+                        <span class="badge bg-success bg-opacity-10 text-success fw-semibold px-3 py-2 rounded-pill">@ViewBag.TenantCount</span>
                     </div>
+                    <a class="btn btn-primary rounded-pill px-4" asp-action="Room" asp-controller="AdminPage">
+                        <i class="bi bi-house-door me-2"></i>Manage Rooms
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Quick Stats Cards -->
+    <!-- Stats Section -->
     <div class="row g-4 mb-4">
-        <!-- Rooms Card -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card p-4 shadow-sm h-100">
-                <div class="mb-3">
-                    <div class="p-2 rounded d-inline-block" style="background-color: #ede7f6;">
-                        <i class="bi bi-house-door-fill" style="font-size: 1.5rem; color: #5e35b1;"></i>
+        @* Active Rooms *@
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-xl p-4 h-100 rounded-4" style="border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                <div class="mb-3 d-flex align-items-center">
+                    <div class="icon-circle bg-light-purple">
+                        <i class="bi bi-house-door-fill text-purple fs-4"></i>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <span class="fw-medium d-block">Active Rooms</span>
-                </div>
-                <div class="mb-2">
-                    <h1 class="fw-bold m-0">@ViewBag.RoomCount</h1>
-                </div>
-                <div>
-                    <small class="text-muted">Out of @ViewBag.TotalRoomCount total rooms</small>
-                </div>
+                <h6 class="fw-medium mb-1">Active Rooms</h6>
+                <h2 class="fw-bold mb-1">@ViewBag.RoomCount</h2>
+                <p class="text-muted mb-0">Out of @ViewBag.TotalRoomCount</p>
             </div>
         </div>
 
-        <!-- Meter Card -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card p-4 shadow-sm h-100">
-                <div class="mb-3">
-                    <div class="p-2 rounded d-inline-block" style="background-color: #f1f8e9;">
-                        <i class="bi bi-lightning-charge-fill" style="font-size: 1.5rem; color: #7cb342;"></i>
+        @* Meter Readings *@
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-xl p-4 h-100 rounded-4" style="border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                <div class="mb-3 d-flex align-items-center">
+                    <div class="icon-circle bg-light-green">
+                        <i class="bi bi-lightning-charge-fill text-success fs-4"></i>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <span class="fw-medium d-block">Meter Readings</span>
-                </div>
-                <div class="mb-2">
-                    <h1 class="fw-bold m-0">@ViewBag.TotalMeterReadCount </h1>
-                </div>
-                <div>
-                    <small class="text-muted">For current billing cycle</small>
-                </div>
+                <h6 class="fw-medium mb-1">Meter Readings</h6>
+                <h2 class="fw-bold mb-1">@ViewBag.TotalMeterReadCount</h2>
+                <p class="text-muted mb-0">Current billing cycle</p>
             </div>
         </div>
 
-        <!-- Tenants Card -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card p-4 shadow-sm h-100">
-                <div class="mb-3">
-                    <div class="p-2 rounded d-inline-block" style="background-color: #fff3e0;">
-                        <i class="bi bi-people-fill" style="font-size: 1.5rem; color: #fb8c00;"></i>
+        @* New Tenants *@
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-xl p-4 h-100 rounded-4" style="border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                <div class="mb-3 d-flex align-items-center">
+                    <div class="icon-circle bg-light-orange">
+                        <i class="bi bi-people-fill text-warning fs-4"></i>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <span class="fw-medium d-block">New Tenants</span>
-                </div>
-                <div class="mb-2">
-                    <h1 class="fw-bold m-0">@ViewBag.NewTenantCount</h1>
-                </div>
-                <div>
-                    <small class="text-muted">This past 5 days</small>
-                </div>
+                <h6 class="fw-medium mb-1">New Tenants</h6>
+                <h2 class="fw-bold mb-1">@ViewBag.NewTenantCount</h2>
+                <p class="text-muted mb-0">Last 5 days</p>
             </div>
         </div>
 
-        <!-- Reports Card -->
-        <div class="col-12 col-sm-6 col-lg-3">
-            <div class="card p-4 shadow-sm h-100">
-                <div class="mb-3">
-                    <div class="p-2 rounded d-inline-block" style="background-color: #e0f7fa;">
-                        <i class="bi bi-file-earmark-text-fill" style="font-size: 1.5rem; color: #00acc1;"></i>
+        @* Open Reports *@
+        <div class="col-sm-6 col-lg-3">
+            <div class="card shadow-xl p-4 h-100 rounded-4" style="border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                <div class="mb-3 d-flex align-items-center">
+                    <div class="icon-circle bg-light-cyan">
+                        <i class="bi bi-file-earmark-text-fill text-info fs-4"></i>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <span class="fw-medium d-block">Open Reports</span>
-                </div>
-                <div class="mb-2">
-                    <h1 class="fw-bold m-0">3</h1>
-                </div>
-                <div>
-                    <small class="text-muted">Requiring attention</small>
-                </div>
+                <h6 class="fw-medium mb-1">Open Reports</h6>
+                <h2 class="fw-bold mb-1">3</h2>
+                <p class="text-muted mb-0">Requiring attention</p>
             </div>
         </div>
     </div>
 
-    <!-- Quick Access Cards -->
+
     <div class="row g-4 mb-4">
         <div class="col-12">
-            <h5>Quick Access</h5>
-            <small class="text-muted">Manage different sections of the system</small>
+            <h5 class="fw-semibold">Quick Access</h5>
+            <p class="text-muted small mb-3">Shortcut to key modules</p>
         </div>
 
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="p-3 mb-3 bg-primary bg-opacity-10 rounded-circle d-inline-block">
-                        <i class="bi bi-house-door-fill text-primary" style="font-size: 1.5rem;"></i>
+        @{
+            var quickLinks = new[] {
+        new { Icon = "house-door-fill", Title = "Rooms", Desc = "Manage all rooms.", Color = "primary", Action = "Room", Controller = "AdminPage" },
+        new { Icon = "lightning-charge-fill", Title = "Meter", Desc = "Track usage and bills.", Color = "success", Action = "Index", Controller = "Meter" },
+        new { Icon = "people-fill", Title = "Tenants", Desc = "View tenant details.", Color = "warning", Action = "Tenants", Controller = "AdminPage" },
+        new { Icon = "file-earmark-text-fill", Title = "Reports", Desc = "Generate reports.", Color = "info", Action = "Reports", Controller = "AdminPage" }
+        };
+        }
+
+        @foreach (var link in quickLinks)
+        {
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="card shadow-xl h-100 text-center p-4 rounded-4" style="border-radius: 15px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                    <div class="bg-@link.Color bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; margin-left: auto; margin-right: auto;">
+                        <i class="bi bi-@link.Icon text-@link.Color fs-4"></i>
                     </div>
-                    <h5 class="card-title">Rooms</h5>
-                    <p class="card-text">Add, edit, or delete available rooms.</p>
-                    <a class="btn btn-outline-primary w-100" asp-action="Room" asp-controller="AdminPage">
-                        View Rooms
+                    <h6 class="fw-semibold">@link.Title</h6>
+                    <p class="text-muted small mb-3">@link.Desc</p>
+                    <a asp-action="@link.Action" asp-controller="@link.Controller" class="btn btn-outline-@link.Color w-100 rounded-pill">
+                        Open
                     </a>
                 </div>
             </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="p-3 mb-3 bg-success bg-opacity-10 rounded-circle d-inline-block">
-                        <i class="bi bi-lightning-charge-fill text-success" style="font-size: 1.5rem;"></i>
-                    </div>
-                    <h5 class="card-title">Meter</h5>
-                    <p class="card-text">Manage meter, readings, and billing.</p>
-                    <a class="btn btn-outline-success w-100" asp-action="Index" asp-controller="Meter">
-                        Manage Meter
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="p-3 mb-3 bg-warning bg-opacity-10 rounded-circle d-inline-block">
-                        <i class="bi bi-people-fill text-warning" style="font-size: 1.5rem;"></i>
-                    </div>
-                    <h5 class="card-title">Tenants</h5>
-                    <p class="card-text">Manage tenant info and occupancy.</p>
-                    <a class="btn btn-outline-warning w-100" asp-action="Tenants" asp-controller="AdminPage">
-                        View Tenants
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-            <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                    <div class="p-3 mb-3 bg-info bg-opacity-10 rounded-circle d-inline-block">
-                        <i class="bi bi-file-earmark-text-fill text-info" style="font-size: 1.5rem;"></i>
-                    </div>
-                    <h5 class="card-title">Reports</h5>
-                    <p class="card-text">Generate rental and payment reports.</p>
-                    <a class="btn btn-outline-info w-100" asp-action="Reports" asp-controller="AdminPage">
-                        Generate Reports
-                    </a>
-                </div>
-            </div>
-        </div>
+        }
     </div>
+    
+</div>
+
 
     <!-- Recent Activity -->
     <div class="card shadow-sm mb-4">
@@ -295,3 +227,34 @@
 </div>
 <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+<style>
+    .icon-circle {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-light-purple {
+        background-color: #ede7f6;
+    }
+
+    .text-purple {
+        color: #5e35b1;
+    }
+
+    .bg-light-green {
+        background-color: #f1f8e9;
+    }
+
+    .bg-light-orange {
+        background-color: #fff3e0;
+    }
+
+    .bg-light-cyan {
+        background-color: #e0f7fa;
+    }
+
+</style>
