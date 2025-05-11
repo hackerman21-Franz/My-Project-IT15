@@ -30,7 +30,6 @@
                             <th class="text-center" colspan="3">Electric</th>
                             <th class="text-center" colspan="3">Water</th>
                             <th class="text-nowrap">Done By</th>
-                            <th class="text-nowrap">Actions</th>
                         </tr>
                         <tr>
                             <th colspan="4"></th>
@@ -66,16 +65,7 @@
                                     <td class="text-end">@meterReading.WaterCurrentReading</td>
                                     <td class="text-end fw-bold text-info">@meterReading.WaterConsumption</td>
                                     <td class="text-nowrap">@meterReading.User?.FirstName @meterReading.User?.LastName</td>
-                                    <td>
-                                        <div class="d-flex gap-1">
-                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@meterReading.Id">
-                                                <i class="bi bi-pencil"></i>Edit
-                                            </a>
-                                            <a class="btn btn-sm btn-outline-success" asp-action="Print" asp-route-id="@meterReading.Id">
-                                                <i class="bi bi-check-circle"></i>Print
-                                            </a>
-                                        </div>
-                                    </td>
+                                    
                                 </tr>
                             }
                         }

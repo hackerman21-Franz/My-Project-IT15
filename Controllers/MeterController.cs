@@ -35,6 +35,38 @@ namespace MyProjectIT15.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Index()
         {
+            var meter = _context.Meters
+                .Where(m => m.Status == "Active")
+                .ToList();
+            ViewBag.ActiveMeter = meter.Count;
+
+            var newmeter = _context.Meters
+                .Where(m => m.Status == "Active" && m.CreatedAt.Year == DateTime.Now.Year && m.CreatedAt.Month == DateTime.Now.Month)
+                .ToList();
+            ViewBag.NewMeter = newmeter.Count;
+
+            var avgElecCons = _context.MeterReadings
+                .Average(m => m.CurrentReading);
+
+            var avgWaterCons = _context.MeterReadings
+                .Average(m => m.WaterCurrentReading);
+
+            ViewBag.AvgElecCons = (int)avgElecCons;
+            ViewBag.AvgWaterCons = (int)avgWaterCons;
+
+            var monthbill = _context.Payments
+                .Where(m => m.Status == "paid"
+                    && m.CreatedAt.Year == DateTime.Now.Year
+                    && m.CreatedAt.Month == DateTime.Now.Month)
+                .Sum(m => m.TotalPaid);
+
+            ViewBag.MonthBill = Math.Round(monthbill, 2);
+
+            var unpaid = _context.Billings
+                .Where(b => b.Status != "Unpaid")
+                .ToList();
+            ViewBag.UnpaidBill = unpaid.Count;
+
             return View();
         }
 

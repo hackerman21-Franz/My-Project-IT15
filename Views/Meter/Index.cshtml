@@ -1,36 +1,257 @@
 ﻿@{
-    ViewData["Title"] = "Manage Meters";
+    ViewData["Title"] = "Meter Management Dashboard";
     var ocrText = ViewBag.OcrResult as string;
     var error = ViewBag.Error as string;
 }
 
-<div class="container my-3">
-    <div class="row g-2">
-        <div class="col-12 col-md-auto">
-            <a asp-controller="Meter" asp-action="MeterReading" class="btn btn-primary w-100">
-                Meter Reading
-            </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<div class="dashboard-container">
+    <!-- Enhanced Header Section -->
+    <div class="dashboard-header bg-white p-4 rounded-3 shadow-sm mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h2 class="mb-2">
+                    <i class="bi bi-speedometer2 me-2 text-primary"></i>
+                    <span class="text-gradient">Meter Management</span>
+                </h2>
+                <p class="text-muted mb-0">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Manage all meter operations and monitor consumption analytics
+                </p>
+            </div>
+            <div class="mt-2 mt-md-0">
+                <div class="d-flex align-items-center">
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 me-2">
+                        <i class="bi bi-activity me-1"></i> Activities
+                    </span>
+                    <a asp-controller="AdminPage" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i> Go back
+                    </a>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-auto">
-            <a asp-controller="Meter" asp-action="Meter" class="btn btn-outline-primary w-100">
-                View Meters
-            </a>
+    </div>
+
+    <!-- Stats Overview Row -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="stat-card bg-white p-3 rounded-3 shadow-sm h-100">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon bg-primary bg-opacity-10 text-primary rounded-3 p-3 me-3">
+                        <i class="bi bi-lightning-charge fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-muted">Active Meters</h6>
+                        <h3 class="mb-0 fw-bold">@ViewBag.ActiveMeter</h3>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-success bg-opacity-10 text-success">
+                        <i class="bi bi-arrow-up me-1"></i> @ViewBag.NewMeter new this month
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-auto">
-            <a asp-controller="Meter" asp-action="Billings" class="btn btn-success w-100">
-                View Billings
-            </a>
+        <div class="col-md-4">
+            <div class="stat-card bg-white p-3 rounded-3 shadow-sm h-100">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon bg-info bg-opacity-10 text-info rounded-3 p-3 me-3">
+                        <i class="bi bi-graph-up fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-muted">Avg. Consumption</h6>
+                        <h3 class="mb-0 fw-bold">@ViewBag.AvgElecCons kWh / @ViewBag.AvgWaterCons m³</h3>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                        <i class="bi bi-graph-up me-1"></i> This month
+                    </span>
+                </div>
+            </div>
         </div>
-        <div class="col-12 col-md-auto">
-            <a asp-controller="AdminPage" asp-action="Index" class="btn btn-outline-secondary w-100">
-                Back
-            </a>
+        <div class="col-md-4">
+            <div class="stat-card bg-white p-3 rounded-3 shadow-sm h-100">
+                <div class="d-flex align-items-center">
+                    <div class="stat-icon bg-success bg-opacity-10 text-success rounded-3 p-3 me-3">
+                        <i class="bi bi-cash fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0 text-muted">Monthly Revenue</h6>
+                        <h3 class="mb-0 fw-bold">₱ @ViewBag.MonthBill</h3>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                        <i class="bi bi-exclamation-triangle me-1"></i>  unpaid bills
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Action Cards Section -->
+    <div class="row g-4">
+        <!-- Meter Reading Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="action-card card border-0 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="icon-wrapper bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+                            <i class="bi bi-speedometer2 fs-3 text-primary"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Meter Reading</h5>
+                            <p class="text-muted small mb-2">Monthly Reading</p>
+                        </div>
+                    </div>
+                    <p class="card-text mb-4">Record new meter readings and submit consumption data for accurate billing.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary">
+                                <i class="bi bi-check-circle me-1"></i> Operational
+                            </span>
+                        </div>
+                        <a asp-controller="Meter" asp-action="MeterReading" class="btn btn-primary btn-sm px-3">
+                            <i class="bi bi-plus-circle me-1"></i> View Readings
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Meters Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="action-card card border-0 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="icon-wrapper bg-info bg-opacity-10 p-3 rounded-3 me-3">
+                            <i class="bi bi-hdd-stack fs-3 text-info"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Meter Inventory</h5>
+                            <p class="text-muted small mb-2">24 active meters</p>
+                        </div>
+                    </div>
+                    <p class="card-text mb-4">Manage all meter devices, view status, and update configurations.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-warning bg-opacity-10 text-warning">
+                                <i class="bi bi-exclamation-triangle me-1"></i> Check meters
+                            </span>
+                        </div>
+                        <a asp-controller="Meter" asp-action="Meter" class="btn btn-outline-info btn-sm px-3">
+                            <i class="bi bi-list-ul me-1"></i> View All
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Billings Card -->
+        <div class="col-md-6 col-lg-4">
+            <div class="action-card card border-0 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="icon-wrapper bg-success bg-opacity-10 p-3 rounded-3 me-3">
+                            <i class="bi bi-cash-stack fs-3 text-success"></i>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-1">Billing Center</h5>
+                            <p class="text-muted small mb-2">₱ @ViewBag.MonthBill this month</p>
+                        </div>
+                    </div>
+                    <p class="card-text mb-4">View billing history, generate reports, and manage customer payments.</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-danger bg-opacity-10 text-danger">
+                                <i class="bi bi-clock-history me-1"></i> @ViewBag.UnpaidBill unpaid billing
+                            </span>
+                        </div>
+                        <a asp-controller="Meter" asp-action="Billings" class="btn btn-success btn-sm px-3">
+                            <i class="bi bi-graph-up me-1"></i> View Bills
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-0 pt-0">
+                    <div class="progress" style="height: 4px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 90%"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+<style>
+    .dashboard-container {
+        padding: 2rem;
+        min-height: 100vh;
+    }
 
+    .text-gradient {
+        background: linear-gradient(90deg, #0d6efd, #20c997);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 
+    .dashboard-header {
+        border-left: 4px solid #0d6efd;
+    }
 
+    .action-card {
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        background-color: white;
+    }
 
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
 
+    .icon-wrapper {
+        transition: transform 0.3s ease;
+    }
+
+    .action-card:hover .icon-wrapper {
+        transform: scale(1.1);
+    }
+
+    .stat-card {
+        transition: all 0.3s ease;
+        border-left: 3px solid transparent;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.08) !important;
+        }
+
+    .stat-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover .stat-icon {
+        transform: rotate(5deg);
+    }
+
+    .progress {
+        border-radius: 2px;
+    }
+</style>

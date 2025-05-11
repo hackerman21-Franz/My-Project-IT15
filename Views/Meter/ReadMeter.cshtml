@@ -38,7 +38,7 @@
 
                 <div class="mb-3">
                     <label asp-for="PreviousReading" class="form-label">Electricity Previous Reading</label>
-                    <input asp-for="PreviousReading" class="form-control" type="number" min="0" required />
+                    <input asp-for="PreviousReading" class="form-control" type="number" min="0" required readonly />
                     <span asp-validation-for="PreviousReading" class="text-danger"></span>
                 </div>
 
@@ -50,7 +50,7 @@
 
                 <div class="mb-3">
                     <label asp-for="WaterPreviousReading" class="form-label">Water Previous Reading</label>
-                    <input asp-for="WaterPreviousReading" class="form-control" type="number" min="0" required />
+                    <input asp-for="WaterPreviousReading" class="form-control" type="number" min="0" required readonly />
                     <span asp-validation-for="WaterPreviousReading" class="text-danger"></span>
                 </div>
 
