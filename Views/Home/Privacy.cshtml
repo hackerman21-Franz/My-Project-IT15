@@ -1,6 +1,205 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "About Us";
 }
-<h1>@ViewData["Title"]</h1>
+<!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+<style>
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://via.placeholder.com/1920x600') center/cover no-repeat;
+        min-height: 400px;
+    }
 
-<p>Use this page to detail your site's privacy policy.</p>
+    .team-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 5px solid #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-card {
+        transition: transform 0.3s ease;
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .section-title {
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: #0d6efd;
+    }
+</style>
+    <!-- About Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="section-title">Our Story</h2>
+
+                    <p class="lead">Founded in 2010, we started as a small team with big dreams.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in dui mauris. Vivamus hendrerit arcu sed erat molestie vehicula. Sed auctor neque eu tellus rhoncus ut eleifend nibh porttitor. Ut in nulla enim.</p>
+                    <p>Phasellus molestie magna non est bibendum non venenatis nisl tempor. Suspendisse dictum feugiat nisl ut dapibus. Mauris iaculis porttitor posuere.</p>
+                </div>
+                <div class="col-lg-6">
+                <img src="https://img.freepik.com/free-photo/observation-urban-building-business-steel_1127-2397.jpg" alt="Our Office" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission and Goals -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center section-title mb-5">Our Mission & Goals</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card info-card h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-bullseye fs-1 text-primary"></i>
+                            </div>
+                            <h3 class="h5">Our Mission</h3>
+                            <p>To provide innovative solutions that empower businesses and improve lives through technology and exceptional service.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card info-card h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-eye fs-1 text-primary"></i>
+                            </div>
+                            <h3 class="h5">Our Vision</h3>
+                            <p>To be the global leader in our industry, recognized for our commitment to quality, innovation, and customer satisfaction.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card info-card h-100">
+                        <div class="card-body text-center">
+                            <div class="mb-3">
+                                <i class="bi bi-star fs-1 text-primary"></i>
+                            </div>
+                            <h3 class="h5">Our Values</h3>
+                            <p>Integrity, Innovation, Excellence, Teamwork, and Customer Focus drive everything we do.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center section-title mb-5">Meet Our Team</h2>
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 text-center">
+                        <div class="card-body">
+                        <img src="https://cornerstoneent.ph/wp-content/uploads/2023/10/Piolo-Pascual-Artist-photo-2023-for-new-website.jpg" alt="Team Member" class="rounded-circle team-img mb-3">
+                            <h3 class="h5">Franz Boniparte E. Robles</h3>
+                            <p class="text-muted">CEO & Founder</p>
+                            <p>With over 15 years of experience, Franz leads our company with vision and passion.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 text-center">
+                        <div class="card-body">
+                        <img src="https://pbs.twimg.com/profile_images/1008650588697944064/2OghK9Sl_400x400.jpg" alt="Team Member" class="rounded-circle team-img mb-3">
+                            <h3 class="h5">Jhon Carl Nayao</h3>
+                            <p class="text-muted">Marketing Director</p>
+                            <p>Carl's creative strategies have helped our brand reach millions worldwide.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 text-center">
+                        <div class="card-body">
+                        <img src="https://image.tmdb.org/t/p/w500/onUO1sqbUUVkXxPVRVlzVmW3HcK.jpg" alt="Team Member" class="rounded-circle team-img mb-3">
+                            <h3 class="h5">Ralph Joseph Quinones</h3>
+                            <p class="text-muted">CTO</p>
+                            <p>Ralph's technical expertise drives our innovation and product development.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card border-0 text-center">
+                        <div class="card-body">
+                        <img src="https://malaya.com.ph/wp-content/uploads/2024/02/422382319_1384287302293799_8913833318276300466_n.jpg" alt="Team Member" class="rounded-circle team-img mb-3">
+                            <h3 class="h5">Elton Deib De Ono</h3>
+                            <p class="text-muted">Customer Success</p>
+                            <p>Elton ensures our clients receive exceptional support and service.</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <a href="#" class="text-dark"><i class="bi bi-twitter"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-linkedin"></i></a>
+                                <a href="#" class="text-dark"><i class="bi bi-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Info -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="section-title mb-4">Contact Information</h2>
+                    <div class="mb-4">
+                        <h3 class="h5">Office</h3>
+                        <p><i class="bi bi-geo-alt-fill me-2"></i> Yuem Ave, Purok 6<br>San Dawa, Mcdawa Road</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="h5">Contact Details</h3>
+                        <p><i class="bi bi-telephone-fill me-2"></i>0999-312-3412</p>
+                        <p><i class="bi bi-envelope-fill me-2"></i> RJF@company.com</p>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="h5">Office Hours</h3>
+                        <p><i class="bi bi-clock-fill me-2"></i> Monday - Friday: 9:00 AM - 5:00 PM</p>
+                        <p><i class="bi bi-clock-fill me-2"></i> Saturday - Sunday: Closed</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.158317259142!2d-122.4194155846822!3d37.77492997975938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
