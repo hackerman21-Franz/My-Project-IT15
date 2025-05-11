@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyProjectIT15.Models;
 using MyProjectIT15.Services;
+using System.Globalization;
 
 namespace MyProjectIT15.Controllers
 {
@@ -696,8 +697,88 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
+        public IActionResult Reports(DateTime? startDate, DateTime? endDate)
+        {
+            var payments = _context.Payments
+                .ToList();
+            ViewBag.TotalPaymentCount = payments.Count;
 
+            var billings = _context.Billings
+                .Where(b => b.Status.Trim().ToLower() == "paid")
+                .ToList();
+            ViewBag.TotalBillingCount = billings.Count;
 
+            var averageBillAmount = _context.Billings
+                .Where(b => b.Status.Trim().ToLower() == "paid")
+                .Average(b => (decimal?)b.TotalAmount ?? 0);  // Calculate the average
+
+            ViewBag.AverageBillAmount = Math.Round(averageBillAmount, 2);
+
+            // Total bill amount (all paid billings)
+            var totalBillAmount = _context.Billings
+                .Where(b => b.Status.Trim().ToLower() == "paid")
+                .Sum(b => (decimal?)b.TotalAmount ?? 0);
+            ViewBag.TotalBillAmount = totalBillAmount;
+
+            // Most recent paid billing
+            var billing = _context.Billings
+                .Where(b => b.Status.Trim().ToLower() == "paid")
+                .OrderByDescending(b => b.Id)
+                .FirstOrDefault();
+
+            if (billing != null)
+            {
+                ViewBag.LatestBillAmount = billing.TotalAmount;
+                ViewBag.DueDate = billing.DueDate.ToString("MMMM dd, yyyy");
+            }
+            else
+            {
+                ViewBag.LatestBillAmount = 0;
+                ViewBag.DueDate = "N/A";
+            }
+
+            var query = _context.Billings
+                .Where(b => b.Status.Trim().ToLower() == "paid");
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(b => b.Payments.Any(p => p.CreatedAt >= startDate.Value));
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(b => b.Payments.Any(p => p.CreatedAt <= endDate.Value));
+            }
+            var combinedData = query
+                .OrderByDescending(b => b.Id)
+                .GroupJoin(_context.Payments
+                    .Where(p => p.Status.Trim().ToLower() == "paid"),
+                    billing => billing.Id,
+                    payment => payment.BillingId,
+                    (billing, payments) => new
+                    {
+                        billing.Id,
+                        billing.User.FirstName,
+                        billing.User.LastName,
+                        billing.MeterReading.RoomMeter.Room.Room_Number,
+                        billing.TotalAmount,
+                        billing.Status,
+                        Payments = payments.Select(payment => new
+                        {
+                            payment.CreatedAt,
+                            payment.PaymentMethod
+                        }).ToList()
+                    })
+                .ToList();
+            // Calculate the sum of TotalAmount
+            var totalAmount = combinedData.Sum(b => b.TotalAmount);
+            ViewBag.TotalBillAmount = totalAmount;
+
+            ViewBag.CombinedData = combinedData;
+
+            return View();
+        }
 
     }
 
