@@ -1,64 +1,76 @@
 ﻿@model RoomDto
-@{
-}
-<div class="row">
-	<div class="col-md-8 mx-auto rounded border p-3">
-		<h2 class="text-center mb-5">New Room</h2>
 
-		<form method="post" enctype="multipart/form-data">
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Room Number</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Room_Number" type="number" />
-					<span asp-validation-for="Room_Number" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Room Type</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Room_Type" />
-					<span asp-validation-for="Room_Type" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Monthly Rent</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Monthly_Rent" type="number" />
-					<span asp-validation-for="Monthly_Rent" class="text-danger"></span>
-				</div>
-			</div>
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="bg-white shadow p-5 rounded-4" style="width: 100%; max-width: 480px;">
+        <h3 class="text-center fw-bold mb-1">Add New Room</h3>
+        <p class="text-center text-muted mb-4 small">
+            Enter the room number, type, monthly rent,<br />image, and status.
+        </p>
 
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Image</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="ImageFile" />
-					<span asp-validation-for="ImageFile" class="text-danger"></span>
-				</div>
-			</div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">Room Number</label>
+                <input class="form-control" asp-for="Room_Number" type="number" />
+                <span asp-validation-for="Room_Number" class="text-danger small"></span>
+            </div>
 
+            <div class="mb-3">
+                <label class="form-label">Room Type</label>
+                <input class="form-control" asp-for="Room_Type" />
+                <span asp-validation-for="Room_Type" class="text-danger small"></span>
+            </div>
 
-			<div class="row mb-3 d-none">
-				<label class="col-sm-4 col-form-label">Status</label>
-				<div class="col-sm-8">
-					<select class="form-select" asp-for="Status">
-						<option value="Active">Active</option>
-						<option value="Under Construction">Under Constraction</option>
-					</select>
-				</div>
-			</div>
+            <div class="mb-3">
+                <label class="form-label">Monthly Rent</label>
+                <input class="form-control" asp-for="Monthly_Rent" type="number" />
+                <span asp-validation-for="Monthly_Rent" class="text-danger small"></span>
+            </div>
 
-			<div class="row">
-				<div class="offset-sm-4 col-sm-4 d-grid">
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</div>
-				<div class=" col-sm-4 d-grid">
-					<a class="btn btn-outline-primary" asp-action="room" asp-controller="AdminPage">
-						Cancel
-					</a>
-				</div>
+            <div class="mb-3">
+                <label class="form-label">Image</label>
+                <input class="form-control" asp-for="ImageFile" type="file" />
+                <span asp-validation-for="ImageFile" class="text-danger small"></span>
+            </div>
 
-			</div>
-		</form>
-	</div>
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" asp-for="Status">
+                    <option value="Active">Active</option>
+                    <option value="Under Construction">Under Construction</option>
+                </select>
+            </div>
+
+            <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="d-grid">
+                <a asp-action="room" asp-controller="AdminPage" class="btn btn-light text-primary">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
 
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: #2a62ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #1a4ed8;
+        }
+
+    .btn-light {
+        background: #f1f5f9;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+</style>
