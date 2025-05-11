@@ -45,14 +45,19 @@ namespace MyProjectIT15.Controllers
                 .ToList();
             ViewBag.NewMeter = newmeter.Count;
 
+            // Average Electricity Consumption
             var avgElecCons = _context.MeterReadings
-                .Average(m => m.CurrentReading);
+                .Where(m => m.CurrentReading > 0)  // Ensure we only calculate for non-zero readings
+                .Average(m => (int)m.CurrentReading);  // Cast to decimal if it's int
 
+            // Average Water Consumption
             var avgWaterCons = _context.MeterReadings
-                .Average(m => m.WaterCurrentReading);
+                .Where(m => m.WaterCurrentReading > 0)  // Ensure we only calculate for non-zero readings
+                .Average(m => (int)m.WaterCurrentReading);
 
-            ViewBag.AvgElecCons = (int)avgElecCons;
-            ViewBag.AvgWaterCons = (int)avgWaterCons;
+
+            ViewBag.AvgElecCons = (int)avgElecCons; // Cast to int
+            ViewBag.AvgWaterCons = (int)avgWaterCons; // Cast to int
 
             var monthbill = _context.Payments
                 .Where(m => m.Status == "paid"
@@ -62,8 +67,9 @@ namespace MyProjectIT15.Controllers
 
             ViewBag.MonthBill = Math.Round(monthbill, 2);
 
+            // Unpaid Bills Count
             var unpaid = _context.Billings
-                .Where(b => b.Status != "Unpaid")
+                .Where(b => b.Status == "Unpaid") // Fix condition to only include unpaid
                 .ToList();
             ViewBag.UnpaidBill = unpaid.Count;
 
