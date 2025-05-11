@@ -22,62 +22,149 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="container py-5 min-vh-100 d-flex justify-content-center align-items-center">
-        <div class="card shadow-lg rounded-4 p-4 w-100" style="max-width: 700px;">
-            <div class="text-center mb-4">
-                <h1 class="display-5 fw-bold">Welcome!</h1>
-                <p class="text-muted">You are logged in as <span class="badge bg-secondary text-uppercase">@User.Identity?.Name</span></p>
-            </div>
+    <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-center bg-opacity-10 px-0">
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden w-100 mx-2 position-relative" style="max-width: 650px;">
+            <!-- Decorative elements - smaller on mobile -->
+            <div class="position-absolute top-0 end-0 bg-primary bg-opacity-10" style="width: 120px; height: 120px; border-radius: 50%; transform: translate(50%, -50%);"></div>
+            <div class="position-absolute bottom-0 start-0 bg-primary bg-opacity-10" style="width: 90px; height: 90px; border-radius: 50%; transform: translate(-50%, 50%);"></div>
 
-            <div class="row g-3 justify-content-center">
-                @if (User.IsInRole("admin"))
-                {
-                    <div class="col-12 col-md-6">
-                        <a class="btn btn-outline-primary w-100 btn-lg" asp-controller="AdminPage" asp-action="Index">
-                            <i class="bi bi-speedometer2 me-2"></i> Admin Dashboard
-                        </a>
+            <div class="card-body p-3 p-md-5 text-center position-relative">
+                <!-- Animated checkmark - smaller on mobile -->
+                <div class="mb-3 mb-md-4">
+                    <div class="icon-check bg-primary bg-opacity-10 text-primary rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg>
                     </div>
-                    <div class="col-12 col-md-6">
-                        <a class="btn btn-outline-dark w-100 btn-lg" asp-controller="AdminPage" asp-action="ViewAssignedTenants">
-                            <i class="bi bi-person-bounding-box me-2"></i> Assigned Tenants
-                        </a>
-                    </div>
+                </div>
+                @{
+                    var firstName = ViewData["FirstName"] as string;
                 }
-                else if (User.IsInRole("owner"))
-                {
-                    <div class="col-12 col-md-6">
-                        <a class="btn btn-outline-success w-100 btn-lg" asp-controller="AdminPage" asp-action="Owner">
-                            <i class="bi bi-house-check me-2"></i> Owner Panel
-                        </a>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <a class="btn btn-outline-warning w-100 btn-lg" asp-controller="AdminPage" asp-action="Rooms">
-                            <i class="bi bi-door-open me-2"></i> Manage Rooms
-                        </a>
-                    </div>
-                }
-                else if (User.IsInRole("tenant"))
-                {
-                    <div class="col-12 col-md-6">
-                        <a class="btn btn-outline-info w-100 btn-lg" asp-controller="AdminPage" asp-action="Tenant">
-                            <i class="bi bi-person-circle me-2"></i> Tenant Dashboard
-                        </a>
-                    </div>
-                    <div class="col-12 col-md-6">
-                        <a class="btn btn-outline-secondary w-100 btn-lg" asp-controller="Tenant" asp-action="MyRoom">
-                            <i class="bi bi-house-door me-2"></i> My Room
-                        </a>
-                    </div>
-                }
-            </div>
 
-            <div class="text-center mt-4">
-                <p class="small">
-                    Learn about <a href="https://learn.microsoft.com/aspnet/core" target="_blank">building Web apps with ASP.NET Core</a>.
+                <h1 class="display-5 fw-bold mb-2 mb-md-3 text-gradient text-primary">
+                    Welcome, <span class="text-dark">@firstName</span>!
+                </h1>
+                <!-- Make the "logged in" paragraph responsive -->
+                <p class="text-muted mb-3 mb-md-4 fs-5 d-none d-md-block">
+                    You are logged in as
+                    <span class="badge bg-primary bg-opacity-25 text-primary px-2 px-md-3 py-1 py-md-2 text-uppercase fs-6 fw-normal border border-primary border-opacity-25">
+                        @User.Identity?.Name
+                    </span>
+                </p>
+
+                <!-- Animated progress bar -->
+                <div class="mt-4 mt-md-5 mb-3 mb-md-4">
+                    <div class="progress" style="height: 6px; border-radius: 3px;">
+                        <div id="progressBar" class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Make the countdown paragraph responsive -->
+                <p class="text-muted mb-0 fs-6 d-none d-md-block">
+                    Redirecting you to dashboard in
+                    <span id="countdown" class="fw-bold text-dark">3</span> seconds...
                 </p>
             </div>
         </div>
     </div>
+
+
+
+<style>
+    /* Global Keyframes Definition */
+    @@keyframes bounce {
+        0%, 100% {
+            transform: scale(1);
+        }
+        30% {
+            transform: scale(1.2);
+        }
+        50% {
+            transform: scale(0.9);
+        }
+        70% {
+            transform: scale(1.1);
+        }
+        90% {
+            transform: scale(0.95);
+        }
+    }
+
+    .icon-check {
+        display: inline-block;
+        animation: bounce 0.6s ease-in-out;
+    }
+
+    .text-gradient {
+        background: linear-gradient(45deg, #0d6efd, #00b4d8);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 576px) {
+        .card-body {
+            padding: 1.5rem !important;
+        }
+        h1.display-5 {
+            font-size: 2.2rem !important;
+        }
+        .fs-5 {
+            font-size: 1rem !important;
+        }
+        .fs-6 {
+            font-size: 0.875rem !important;
+        }
+
+        /* Reduce the size of the checkmark on smaller screens */
+        .icon-check {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* Adjust the background circle sizes */
+        .position-absolute.top-0.end-0 {
+            width: 90px;
+            height: 90px;
+        }
+        .position-absolute.bottom-0.start-0 {
+            width: 70px;
+            height: 70px;
+        }
+    }
+</style>
+
+<script>
+    let seconds = 3;
+    const countdownElement = document.getElementById("countdown");
+    const progressBar = document.getElementById("progressBar");
+
+    const redirect = () => {
+        @* Determine the target URL based on the role *@
+        let url = "@Url.Action("Index", "Home")"; // Fallback
+        if ("@User.IsInRole("admin")" === "True") {
+            url = "@Url.Action("Index", "AdminPage")";
+        } else if ("@User.IsInRole("owner")" === "True") {
+            url = "@Url.Action("Owner", "AdminPage")";
+        } else if ("@User.IsInRole("tenant")" === "True") {
+            url = "@Url.Action("Tenant", "AdminPage")";
+        }
+        window.location.href = url;
+    };
+
+    const countdown = setInterval(() => {
+        seconds--;
+        countdownElement.textContent = seconds;
+        progressBar.style.width = `${(3 - seconds) * 33.33}%`;
+        
+        if (seconds <= 0) {
+            clearInterval(countdown);
+            redirect();
+        }
+    }, 1000);
+</script>
+
 
 }
 else
