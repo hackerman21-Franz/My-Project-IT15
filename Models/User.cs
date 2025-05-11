@@ -8,6 +8,8 @@ namespace MyProjectIT15.Models
         public String MiddleName { get; set; } = "";
         public String LastName { get; set; } = "";
         public String Address { get; set; } = "";
+
+
         public DateTime CreatedAt { get; set; }
 
 
