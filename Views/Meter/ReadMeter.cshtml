@@ -3,11 +3,11 @@
 @{
     ViewBag.Title = "Read Meter";
 }
-<!-- Display all validation errors here -->
+
 @if (!ViewData.ModelState.IsValid)
 {
-    <div class="alert alert-danger">
-        <ul>
+    <div class="alert alert-danger rounded-3 shadow-sm p-3 mb-4">
+        <ul class="mb-0">
             @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
             {
                 <li>@error.ErrorMessage</li>
@@ -16,63 +16,87 @@
     </div>
 }
 
-<div class="container py-4">
-    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="bg-white p-5 rounded-4 shadow-sm" style="width: 100%; max-width: 600px;">
+        <h3 class="text-center fw-bold mb-1">@ViewBag.Title</h3>
+        <p class="text-center text-muted mb-4 small">
+            Enter the current meter readings for water and electricity.
+        </p>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <form asp-action="ReadMeter" method="post" class="shadow p-4 rounded bg-light">
-                <div class="mb-3">
-                    <label asp-for="RoomMeterId" class="form-label">Select Meter</label>
-                    <select asp-for="RoomMeterId" asp-items="Model.RoomMeters" class="form-select" required onchange="window.location.href='@Url.Action("ReadMeter")?roomMeterId=' + this.value;">
-                        <option value="">-- Select a Room --</option>
-                    </select>
-                    <span asp-validation-for="RoomMeterId" class="text-danger"></span>
-                </div>
+        <form asp-action="ReadMeter" method="post">
+            <div class="mb-3">
+                <label asp-for="RoomMeterId" class="form-label">Select Meter</label>
+                <select asp-for="RoomMeterId" asp-items="Model.RoomMeters" class="form-select" required onchange="window.location.href='@Url.Action("ReadMeter")?roomMeterId=' + this.value;">
+                    <option value="">-- Select a Room --</option>
+                </select>
+                <span asp-validation-for="RoomMeterId" class="text-danger small"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="ReadingDate" class="form-label">Reading Date</label>
-                    <input asp-for="ReadingDate" class="form-control" type="date" />
-                    <span asp-validation-for="ReadingDate" class="text-danger"></span>
-                </div>
+            <div class="mb-3">
+                <label asp-for="ReadingDate" class="form-label">Reading Date</label>
+                <input asp-for="ReadingDate" class="form-control" type="date" />
+                <span asp-validation-for="ReadingDate" class="text-danger small"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="PreviousReading" class="form-label">Electricity Previous Reading</label>
-                    <input asp-for="PreviousReading" class="form-control" type="number" min="0" required readonly />
-                    <span asp-validation-for="PreviousReading" class="text-danger"></span>
-                </div>
+            <div class="mb-3">
+                <label asp-for="PreviousReading" class="form-label">Electricity Previous Reading</label>
+                <input asp-for="PreviousReading" class="form-control" type="number" min="0" readonly />
+                <span asp-validation-for="PreviousReading" class="text-danger small"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="CurrentReading" class="form-label">Electricity Current Reading</label>
-                    <input asp-for="CurrentReading" class="form-control" type="number" min="0" required />
-                    <span asp-validation-for="CurrentReading" class="text-danger"></span>
-                </div>
+            <div class="mb-3">
+                <label asp-for="CurrentReading" class="form-label">Electricity Current Reading</label>
+                <input asp-for="CurrentReading" class="form-control" type="number" min="0" required />
+                <span asp-validation-for="CurrentReading" class="text-danger small"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="WaterPreviousReading" class="form-label">Water Previous Reading</label>
-                    <input asp-for="WaterPreviousReading" class="form-control" type="number" min="0" required readonly />
-                    <span asp-validation-for="WaterPreviousReading" class="text-danger"></span>
-                </div>
+            <div class="mb-3">
+                <label asp-for="WaterPreviousReading" class="form-label">Water Previous Reading</label>
+                <input asp-for="WaterPreviousReading" class="form-control" type="number" min="0" readonly />
+                <span asp-validation-for="WaterPreviousReading" class="text-danger small"></span>
+            </div>
 
-                <div class="mb-3">
-                    <label asp-for="WaterCurrentReading" class="form-label">Water Current Reading</label>
-                    <input asp-for="WaterCurrentReading" class="form-control" type="number" min="0" required />
-                    <span asp-validation-for="WaterCurrentReading" class="text-danger"></span>
-                </div>
+            <div class="mb-4">
+                <label asp-for="WaterCurrentReading" class="form-label">Water Current Reading</label>
+                <input asp-for="WaterCurrentReading" class="form-control" type="number" min="0" required />
+                <span asp-validation-for="WaterCurrentReading" class="text-danger small"></span>
+            </div>
 
-                <div class="d-flex justify-content-between">
-                    <a asp-action="MeterReading" class="btn btn-outline-secondary">Back</a>
-                    <button type="submit" class="btn btn-primary">
-                        Submit Reading
-                    </button>
-                </div>
-            </form>
-        </div>
+            <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-primary">Submit Reading</button>
+            </div>
+            <div class="d-grid">
+                <a asp-action="MeterReading" class="btn btn-light text-primary">Back</a>
+            </div>
+        </form>
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
     }
+
+    .btn-primary {
+        background: #2a62ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #1a4ed8;
+        }
+
+    .btn-light {
+        background: #f1f5f9;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+</style>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

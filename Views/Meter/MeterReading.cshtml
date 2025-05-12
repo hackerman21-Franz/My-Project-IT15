@@ -4,42 +4,45 @@
     ViewBag.Title = "Meter Reading";
 }
 
-<div class="container-fluid py-4">
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h2 class="h5 mb-0">@ViewBag.Title</h2>
-            <div>
-                <a class="btn btn-light btn-sm me-2" asp-controller="Meter" asp-action="ReadMeter">
-                    <i class="bi bi-plus-lg me-1"></i> New Reading
-                </a>
-                <a class="btn btn-outline-light btn-sm" asp-controller="Meter" asp-action="Index">
-                    <i class="bi bi-arrow-left me-1"></i> Back
-                </a>
-            </div>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+        <div>
+            <h2 class="fw-bold mb-0">@ViewBag.Title</h2>
+            <p class="text-muted small mb-0">Track electric and water consumption for each tenant room.</p>
         </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a class="btn btn-primary rounded px-3" asp-controller="Meter" asp-action="ReadMeter">
+                <i class="bi bi-plus-lg me-1"></i> New Reading
+            </a>
+            <a class="btn btn-outline-secondary rounded px-3" asp-controller="Meter" asp-action="Index">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back
+            </a>
+        </div>
+    </div>
 
+    <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover table-bordered mb-0">
-                    <thead class="table-light">
+                <table class="table table-hover table-borderless align-middle mb-0">
+                    <thead class="bg-light text-secondary small text-uppercase">
                         <tr>
-                            <th class="text-nowrap">ID</th>
-                            <th class="text-nowrap">Room</th>
+                            <th>ID</th>
+                            <th>Room</th>
                             <th>Tenant</th>
-                            <th class="text-nowrap">Date</th>
+                            <th>Date</th>
                             <th class="text-center" colspan="3">Electric</th>
                             <th class="text-center" colspan="3">Water</th>
-                            <th class="text-nowrap">Done By</th>
+                            <th>Done By</th>
                         </tr>
-                        <tr>
+                        <tr class="text-muted text-center small">
                             <th colspan="4"></th>
-                            <th class="small text-muted text-nowrap">Prev</th>
-                            <th class="small text-muted text-nowrap">Current</th>
-                            <th class="small text-muted text-nowrap">Used</th>
-                            <th class="small text-muted text-nowrap">Prev</th>
-                            <th class="small text-muted text-nowrap">Current</th>
-                            <th class="small text-muted text-nowrap">Used</th>
-                            <th colspan="2"></th>
+                            <th>Prev</th>
+                            <th>Current</th>
+                            <th>Used</th>
+                            <th>Prev</th>
+                            <th>Current</th>
+                            <th>Used</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,22 +60,21 @@
                                             : "No Tenant"
                                             )
                                     </td>
-                                    <td class="text-nowrap">@meterReading.ReadingDate.ToString("MMM dd, yyyy")</td>
+                                    <td>@meterReading.ReadingDate.ToString("MMM dd, yyyy")</td>
                                     <td class="text-end">@meterReading.PreviousReading</td>
                                     <td class="text-end">@meterReading.CurrentReading</td>
-                                    <td class="text-end fw-bold text-primary">@meterReading.Consumption</td>
+                                    <td class="text-end fw-semibold text-primary">@meterReading.Consumption</td>
                                     <td class="text-end">@meterReading.WaterPreviousReading</td>
                                     <td class="text-end">@meterReading.WaterCurrentReading</td>
-                                    <td class="text-end fw-bold text-info">@meterReading.WaterConsumption</td>
-                                    <td class="text-nowrap">@meterReading.User?.FirstName @meterReading.User?.LastName</td>
-                                    
+                                    <td class="text-end fw-semibold text-info">@meterReading.WaterConsumption</td>
+                                    <td>@meterReading.User?.FirstName @meterReading.User?.LastName</td>
                                 </tr>
                             }
                         }
                         else
                         {
                             <tr>
-                                <td colspan="12" class="text-center py-4 text-muted">No meter readings found</td>
+                                <td colspan="11" class="text-center py-4 text-muted">No meter readings found</td>
                             </tr>
                         }
                     </tbody>
@@ -81,3 +83,20 @@
         </div>
     </div>
 </div>
+
+<style>
+    .table th,
+    .table td {
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+        .table td.text-end {
+            text-align: end;
+        }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4em 0.7em;
+    }
+</style>

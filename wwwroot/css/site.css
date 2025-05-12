@@ -18,8 +18,9 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
-  /*overflow:hidden;*/
+    margin-bottom: 60px;
+    /*overflow:hidden;*/
+    background-color: #f8f9fa;
 }
 
 .card-hover {

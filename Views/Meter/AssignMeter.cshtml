@@ -1,36 +1,60 @@
 ﻿@model RoomMeterDto
 
-<div class="row">
-    <div class="col-md-8 mx-auto rounded border p-3">
-        <h2 class="text-center mb-4">Assign Room Meters</h2>
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="bg-white shadow p-5 rounded-4" style="width: 100%; max-width: 480px;">
+        <h3 class="text-center fw-bold mb-1">Assign Room Meter</h3>
+        <p class="text-center text-muted mb-4 small">
+            Select a room and meter to assign from the dropdowns below.
+        </p>
 
         <form method="post" asp-action="AssignMeter" asp-controller="Meter">
             <div class="mb-3">
-                <label asp-for="RoomId" class="form-label"></label>
-                <select asp-for="RoomId" asp-items="@(new SelectList(ViewBag.Rooms, "Id", "Room_Number"))" class="form-select">
+                <label class="form-label" asp-for="RoomId">Select Room</label>
+                <select class="form-select" asp-for="RoomId" asp-items="@(new SelectList(ViewBag.Rooms, "Id", "Room_Number"))">
                     <option value="" selected disabled>-- Select Room --</option>
                 </select>
-                <span asp-validation-for="RoomId" class="text-danger"></span>
+                <span asp-validation-for="RoomId" class="text-danger small"></span>
             </div>
 
             <div class="mb-3">
-                <label asp-for="MeterId" class="form-label"></label>
-                <select asp-for="MeterId" asp-items="@(new SelectList(ViewBag.Meters, "Id", "Meter_Number"))" class="form-select">
+                <label class="form-label" asp-for="MeterId">Select Meter</label>
+                <select class="form-select" asp-for="MeterId" asp-items="@(new SelectList(ViewBag.Meters, "Id", "Meter_Number"))">
                     <option value="" selected disabled>-- Select Meter --</option>
                 </select>
-                <span asp-validation-for="MeterId" class="text-danger"></span>
+                <span asp-validation-for="MeterId" class="text-danger small"></span>
             </div>
 
-            <div class="row">
-                <div class="col-6 d-grid">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                <div class="col-6 d-grid">
-                    <a asp-action="RoomMeter" asp-controller="Meter" class="btn btn-outline-primary">
-                        Cancel
-                    </a>
-                </div>
+            <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="d-grid">
+                <a asp-action="RoomMeter" asp-controller="Meter" class="btn btn-light text-primary">Cancel</a>
             </div>
         </form>
     </div>
 </div>
+
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: #2a62ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #1a4ed8;
+        }
+
+    .btn-light {
+        background: #f1f5f9;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+</style>

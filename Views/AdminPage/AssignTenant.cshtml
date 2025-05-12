@@ -4,72 +4,100 @@
     ViewBag.Title = "Assign Tenant to Room";
 }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 col-md-10">
-            <div class="card shadow-lg border-0">
-                <div class="card-body">
-                    <h2 class="card-title mb-4 text-center">Assign Tenant to Room</h2>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger rounded-3 shadow-sm p-3 mb-4 mx-auto" style="max-width: 600px;">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p class="mb-0">@error.ErrorMessage</p>
+        }
+    </div>
+}
 
-                    <form asp-action="AssignTenant" method="post">
-                        @Html.AntiForgeryToken()
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="bg-white p-5 rounded-4 shadow-sm" style="width: 100%; max-width: 600px;">
+        <h3 class="text-center fw-bold mb-1">@ViewBag.Title</h3>
+        <p class="text-center text-muted mb-4 small">
+            Assign a tenant to a room and specify rental details below.
+        </p>
 
-                        @if (!ViewData.ModelState.IsValid)
-                        {
-                            <div class="alert alert-danger">
-                                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                                {
-                                    <p class="mb-0">@error.ErrorMessage</p>
-                                }
-                            </div>
-                        }
+        <form asp-action="AssignTenant" method="post">
+            @Html.AntiForgeryToken()
 
-                        <div class="mb-3">
-                            <label class="form-label">Room</label>
-                            <select asp-for="RoomId" asp-items="@(new SelectList(ViewBag.Rooms, "Id", "Room_Number"))" class="form-select">
-                                <option value="" selected disabled>-- Select Room --</option>
-                            </select>
-                        </div>
+            <div class="mb-3">
+                <label class="form-label">Room</label>
+                <select asp-for="RoomId" asp-items="@(new SelectList(ViewBag.Rooms, "Id", "Room_Number"))" class="form-select">
+                    <option value="" selected disabled>-- Select Room --</option>
+                </select>
+                <span asp-validation-for="RoomId" class="text-danger small"></span>
+            </div>
 
-                        <div class="mb-3">
-                            <label class="form-label">Tenant</label>
-                            <select asp-for="TenantId" asp-items="@(new SelectList(ViewBag.Users, "Id", "Email"))" class="form-select">
-                                <option value="" selected disabled>-- Select Tenant --</option>
-                            </select>
-                        </div>
+            <div class="mb-3">
+                <label class="form-label">Tenant</label>
+                <select asp-for="TenantId" asp-items="@(new SelectList(ViewBag.Users, "Id", "Email"))" class="form-select">
+                    <option value="" selected disabled>-- Select Tenant --</option>
+                </select>
+                <span asp-validation-for="TenantId" class="text-danger small"></span>
+            </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Start Date</label>
-                                <input asp-for="StartDate" type="date" class="form-control" />
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">End Date</label>
-                                <input asp-for="EndDate" type="date" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select asp-for="Status" class="form-select">
-                                <option value="" selected disabled>-- Select Status --</option>
-                                <option value="Pending">Pending</option>
-                                <option value="Active">Active</option>
-                            </select>
-                        </div>
-                        <div class="row">
-                            <div class="col-6 d-grid">
-                                <button type="submit" class="btn btn-primary">Assign</button>
-                            </div>
-                            <div class="col-6 d-grid">
-                                <a class="btn btn-outline-secondary" asp-action="ViewAssignedTenants" asp-controller="AdminPage">Cancel</a>
-                            </div>
-                        </div>
-
-
-                    </form>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Start Date</label>
+                    <input asp-for="StartDate" type="date" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">End Date</label>
+                    <input asp-for="EndDate" type="date" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger small"></span>
                 </div>
             </div>
-        </div>
+
+            <div class="mb-4">
+                <label class="form-label">Status</label>
+                <select asp-for="Status" class="form-select">
+                    <option value="" selected disabled>-- Select Status --</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Active">Active</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger small"></span>
+            </div>
+
+            <div class="d-grid mb-2">
+                <button type="submit" class="btn btn-primary">Assign</button>
+            </div>
+            <div class="d-grid">
+                <a asp-action="ViewAssignedTenants" asp-controller="AdminPage" class="btn btn-light text-primary">Cancel</a>
+            </div>
+        </form>
     </div>
 </div>
+
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: #2a62ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #1a4ed8;
+        }
+
+    .btn-light {
+        background: #f1f5f9;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+</style>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

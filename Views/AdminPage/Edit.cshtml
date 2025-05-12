@@ -1,83 +1,124 @@
 ﻿@model RoomDto
+
 @{
+    ViewBag.Title = "Edit Room Information";
 }
-<div class="row">
-	<div class="col-md-8 mx-auto rounded border p-3">
-		<h2 class="text-center mb-5">Edit Room Information</h2>
 
-		<form method="post" enctype="multipart/form-data">
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">ID</label>
-				<div class="col-sm-8">
-					<input class="form-control-plaintext" readonly value="@ViewData["RoomId"]" type="number" />
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Room Number</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Room_Number" type="number" />
-					<span asp-validation-for="Room_Number" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Room Type</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Room_Type" />
-					<span asp-validation-for="Room_Type" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Monthly Rent</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Monthly_Rent" type="number" />
-					<span asp-validation-for="Monthly_Rent" class="text-danger"></span>
-				</div>
-			</div>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger rounded-3 shadow-sm p-3 mb-4 mx-auto" style="max-width: 600px;">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p class="mb-0">@error.ErrorMessage</p>
+        }
+    </div>
+}
 
-			<div class="row mb-3">
-				<div class="offset-sm-4 col-sm-8">
-					<img src="/rooms/@ViewData["ImageFileName"]"  width="150" />
-				</div>
-			</div>
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="bg-white p-5 rounded-4 shadow-sm" style="width: 100%; max-width: 600px;">
+        <h3 class="text-center fw-bold mb-1">@ViewBag.Title</h3>
+        <p class="text-center text-muted mb-4 small">
+            Edit room information below.
+        </p>
 
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Image</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="ImageFile" />
-					<span asp-validation-for="ImageFile" class="text-danger"></span>
-				</div>
-			</div>
+        <form method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
 
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Status</label>
-				<div class="col-sm-8">
-					<select class="form-select" asp-for="Status">
-						<option value="Active">Active</option>
-						<option value="Under Maintainance">Under Maintainance</option>
-					</select>
-					<span asp-validation-for="Status" class="text-danger"></span>
-				</div>
-			</div>
+            <!-- Room ID -->
+            <div class="mb-3">
+                <label class="form-label">Room ID</label>
+                <input class="form-control-plaintext" readonly value="@ViewData["RoomId"]" />
+            </div>
 
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Created At</label>
-				<div class="col-sm-8">
-					<input class="form-control-plaintext" readonly value="@ViewData["CreatedAt"]" />
-				</div>
-			</div>
+            <!-- Room Number and Type -->
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Room Number</label>
+                    <input class="form-control" asp-for="Room_Number" type="number" />
+                    <span asp-validation-for="Room_Number" class="text-danger small"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Room Type</label>
+                    <input class="form-control" asp-for="Room_Type" />
+                    <span asp-validation-for="Room_Type" class="text-danger small"></span>
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="offset-sm-4 col-sm-4 d-grid">
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</div>
-				<div class=" col-sm-4 d-grid">
-					<a class="btn btn-outline-primary" asp-action="room" asp-controller="AdminPage">
-						Cancel
-					</a>
-				</div>
+            <!-- Monthly Rent -->
+            <div class="mb-3">
+                <label class="form-label">Monthly Rent</label>
+                <input class="form-control" asp-for="Monthly_Rent" type="number" />
+                <span asp-validation-for="Monthly_Rent" class="text-danger small"></span>
+            </div>
 
-			</div>
-		</form>
-	</div>
+            <!-- Current Image -->
+            <div class="mb-3">
+                <label class="form-label">Current Image</label>
+                <img src="/rooms/@ViewData["ImageFileName"]" width="120" class="rounded shadow-sm mb-2" />
+            </div>
+
+            <!-- Upload New Image -->
+            <div class="mb-3">
+                <label class="form-label">Upload New Image</label>
+                <input class="form-control" asp-for="ImageFile" type="file" />
+                <span asp-validation-for="ImageFile" class="text-danger small"></span>
+            </div>
+
+            <!-- Status -->
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" asp-for="Status">
+                    <option value="Active">Active</option>
+                    <option value="Under Maintainance">Under Maintainance</option>
+                </select>
+                <span asp-validation-for="Status" class="text-danger small"></span>
+            </div>
+
+            <!-- Created At -->
+            <div class="mb-3">
+                <label class="form-label">Created At</label>
+                <input class="form-control-plaintext" readonly value="@ViewData["CreatedAt"]" />
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row">
+                <div class="col-6 d-grid">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+                <div class="col-6 d-grid">
+                    <a class="btn btn-light text-primary" asp-action="room" asp-controller="AdminPage">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: #2a62ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #1a4ed8;
+        }
+
+    .btn-light {
+        background: #f1f5f9;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    /* Optional: Adjust the form labels for better alignment */
+    .col-form-label {
+        font-weight: bold;
+    }
+</style>
