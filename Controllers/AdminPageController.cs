@@ -724,20 +724,32 @@ namespace MyProjectIT15.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Reports(DateTime? startDate, DateTime? endDate)
         {
-            var payments = _context.Payments
-                .ToList();
+            // Check if there are no payments
+            var payments = _context.Payments.ToList();
             ViewBag.TotalPaymentCount = payments.Count;
 
+            if (payments.Count == 0)
+            {
+                ViewBag.NoPaymentsMessage = "No payment records available.";
+            }
+
+            // Check if there are no billings
             var billings = _context.Billings
                 .Where(b => b.Status.Trim().ToLower() == "paid")
                 .ToList();
             ViewBag.TotalBillingCount = billings.Count;
 
+            if (billings.Count == 0)
+            {
+                ViewBag.NoBillingsMessage = "No paid billing records available.";
+            }
+
+            // Check if there are no paid billings for average calculation
             var averageBillAmount = _context.Billings
                 .Where(b => b.Status.Trim().ToLower() == "paid")
-                .Average(b => (decimal?)b.TotalAmount ?? 0);  // Calculate the average
+                .Average(b => (decimal?)b.TotalAmount ?? 0); // Calculate the average
 
-            ViewBag.AverageBillAmount = Math.Round(averageBillAmount, 2);
+            ViewBag.AverageBillAmount = (billings.Count > 0) ? Math.Round(averageBillAmount, 2) : 0;
 
             // Total bill amount (all paid billings)
             var totalBillAmount = _context.Billings
@@ -765,15 +777,18 @@ namespace MyProjectIT15.Controllers
             var query = _context.Billings
                 .Where(b => b.Status.Trim().ToLower() == "paid");
 
+            // Filter by start date if provided
             if (startDate.HasValue)
             {
                 query = query.Where(b => b.Payments.Any(p => p.CreatedAt >= startDate.Value));
             }
 
+            // Filter by end date if provided
             if (endDate.HasValue)
             {
                 query = query.Where(b => b.Payments.Any(p => p.CreatedAt <= endDate.Value));
             }
+
             var combinedData = query
                 .OrderByDescending(b => b.Id)
                 .GroupJoin(_context.Payments
@@ -795,6 +810,13 @@ namespace MyProjectIT15.Controllers
                         }).ToList()
                     })
                 .ToList();
+
+            // Check if combined data is empty
+            if (combinedData.Count == 0)
+            {
+                ViewBag.NoDataMessage = "No data available for the selected date range.";
+            }
+
             // Calculate the sum of TotalAmount
             var totalAmount = combinedData.Sum(b => b.TotalAmount);
             ViewBag.TotalBillAmount = totalAmount;
@@ -803,6 +825,7 @@ namespace MyProjectIT15.Controllers
 
             return View();
         }
+
 
     }
 
