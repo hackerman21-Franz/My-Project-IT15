@@ -16,7 +16,11 @@
 
             <div class="mb-4">
                 <label class="form-label">Meter Type</label>
-                <input class="form-control" asp-for="MeterType" />
+                <select class="form-select" asp-for="MeterType">
+                    <option value="" selected disabled>-- Select Meter Type --</option>
+                    <option value="Water">Water</option>
+                    <option value="Electric">Electric</option>
+                </select>
                 <span asp-validation-for="MeterType" class="text-danger small"></span>
             </div>
 
