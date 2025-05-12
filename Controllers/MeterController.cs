@@ -456,6 +456,7 @@ namespace MyProjectIT15.Controllers
             return RedirectToAction("RoomMeter");
         }
 
+        [Authorize(Roles = "admin")]
         public IActionResult MeterReading()
         {
             var meterReadings = _context.MeterReadings
@@ -676,6 +677,7 @@ namespace MyProjectIT15.Controllers
             return View(billings);
         }
 
+        [Authorize(Roles = "tenant")]
         public async Task<IActionResult> UserBillings()
         {
             var currentUser = await _userManager.GetUserAsync(User);
@@ -693,6 +695,7 @@ namespace MyProjectIT15.Controllers
             return View(billings);
         }
 
+        [Authorize(Roles = "tenant")]
         public async Task<IActionResult> UserBillingHistory()
         {
             var currentUser = await _userManager.GetUserAsync(User);
@@ -710,6 +713,7 @@ namespace MyProjectIT15.Controllers
             return View(billings);
         }
 
+        [Authorize(Roles = "tenant")]
         public async Task<IActionResult> UserPaymentHistory()
         {
             var currentUser = await _userManager.GetUserAsync(User);

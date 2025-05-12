@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MyProjectIT15.Models.UserRoom>
 
 @{
-    ViewBag.Title = "Assigned Tenants to Rooms";
+    ViewBag.Title = "Tenant Room";
 }
 
 <div class="container py-4">
@@ -10,7 +10,7 @@
     <div class="d-flex justify-content mb-3">
         <a id="assignTenantBtn" class="btn btn-primary mx-2" asp-controller="AdminPage" asp-action="AssignTenant">
             <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true" id="spinner"></span>
-            <i class="bi bi-plus-lg"></i> Assign Tenant
+            <i class="bi bi-plus-lg"></i> Assign Tenant Room
         </a>
         <a class="btn btn-outline-secondary" asp-controller="AdminPage" asp-action="room">
             <span class="spinner-border spinner-border-sm me-2 d-none" role="status" aria-hidden="true" id="spinner"></span>

@@ -32,6 +32,15 @@ namespace MyProjectIT15.Controllers
                 .ToList() ?? new List<Room>();
             ViewBag.RoomCount = room.Count;
 
+            var bill = _context.Billings
+                .Where(r => r.Status == "Unpaid")
+                .ToList() ?? new List<Billing>();
+            ViewBag.billCount = bill.Count;
+
+            var totalbill = _context.Billings
+                .ToList() ?? new List<Billing>();
+            ViewBag.totalbillCount = totalbill.Count;
+
             var availroom = _context.Rooms
                 .Where(r => r.Status == "Active" &&
                  !_context.UserRooms.Any(ur => ur.RoomId == r.Id && ur.Status == "Active"))

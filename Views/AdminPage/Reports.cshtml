@@ -9,7 +9,10 @@
             <h1 class="h3 fw-bold mb-0">Financial Reports</h1>
             <p class="text-muted mb-0">Track paid bills and total income</p>
         </div>
+        <div class="btn-group">
         <button type="button" class="btn btn-primary" onclick="generatePDF()"><i class="bi bi-download me-2"></i>Export Report</button>
+        <a class="btn btn-secondary" asp-action="Index" asp-controller="AdminPage">Go Back</a>
+        </div>
     </div>
     <script>
         function generatePDF() {
