@@ -78,6 +78,7 @@ namespace MyProjectIT15.Controllers
 
             // Meter Readings (current month)
             var meterreadings = _context.MeterReadings
+                .Include(mt => mt.RoomMeter)  // Include the related RoomMeter entity
                 .Where(mt => mt.ReadingDate != null &&
                              mt.ReadingDate.Year == DateTime.Now.Year &&
                              mt.ReadingDate.Month == DateTime.Now.Month)
@@ -231,7 +232,6 @@ namespace MyProjectIT15.Controllers
         {
             var rooms = _context.Rooms
                 .OrderByDescending(p => p.Id)
-                .Where(r => r.Status == "Active")
                 .ToList();
             return View(rooms);
         }
