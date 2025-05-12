@@ -186,7 +186,8 @@ namespace MyProjectIT15.Controllers
 
             // Meter Reading Activities
             var meterReadings = _context.MeterReadings
-                .Select(mt => new
+				.Where(mt => mt.UserRoom.TenantId == user.Id)
+				.Select(mt => new
                 {
                     Title = "Meter Reading Submitted",
                     Description = $"Room {(mt.RoomMeter != null ? mt.RoomMeter.RoomId.ToString() : "Unknown")} submitted a meter reading",
@@ -196,7 +197,8 @@ namespace MyProjectIT15.Controllers
 
             // Payment Activities
             var paymentsAct = _context.Payments
-                .Select(p => new
+				.Where(p => p.UserId == user.Id)
+				.Select(p => new
                 {
                     Title = "Payment Transaction",
                     Description = $"You submitted a payment of ₱{p.TotalPaid:N2}.",
