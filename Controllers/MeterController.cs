@@ -48,16 +48,17 @@ namespace MyProjectIT15.Controllers
             // Average Electricity Consumption
             var avgElecCons = _context.MeterReadings
                 .Where(m => m.CurrentReading > 0)  // Ensure we only calculate for non-zero readings
-                .Average(m => (int)m.CurrentReading);  // Cast to decimal if it's int
+                .ToList();  // Get the readings as a list
+
+            ViewBag.AvgElecCons = avgElecCons.Any() ? (int)avgElecCons.Average(m => m.CurrentReading) : 0;  // Default to 0 if no readings
 
             // Average Water Consumption
             var avgWaterCons = _context.MeterReadings
                 .Where(m => m.WaterCurrentReading > 0)  // Ensure we only calculate for non-zero readings
-                .Average(m => (int)m.WaterCurrentReading);
+                .ToList();  // Get the readings as a list
 
+            ViewBag.AvgWaterCons = avgWaterCons.Any() ? (int)avgWaterCons.Average(m => m.WaterCurrentReading) : 0;  // Default to 0 if no readings
 
-            ViewBag.AvgElecCons = (int)avgElecCons; // Cast to int
-            ViewBag.AvgWaterCons = (int)avgWaterCons; // Cast to int
 
             var monthbill = _context.Payments
                 .Where(m => m.Status == "paid"
