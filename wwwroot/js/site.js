@@ -15,9 +15,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-document.getElementById("assignTenantBtn").addEventListener("click", function () {
-    // Show spinner and disable button when "Assign Tenant" is clicked
-    document.getElementById("spinner").classList.remove("d-none");
-    this.setAttribute("disabled", "true");
-});
 
