@@ -1,65 +1,92 @@
 ﻿@model MeterDto
-@{
-}
-<div class="row">
-	<div class="col-md-8 mx-auto rounded border p-3">
-		<h2 class="text-center mb-5">New Room</h2>
 
-		<form method="post" enctype="multipart/form-data">
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">ID</label>
-				<div class="col-sm-8">
-					<input class="form-control-plaintext" readonly value="@ViewData["MeterId"]" type="number" />
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Meter Number</label>
-				<div class="col-sm-8">
-					<input class="form-control" asp-for="Meter_Number" type="number" required/>
-					<span asp-validation-for="Meter_Number" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Meter Type</label>
-				<div class="col-sm-8">
-					<select class="form-select" asp-for="MeterType" required>
-						<option value="Water">Water</option>
-						<option value="Electric">Electric</option>
-					</select>
-					<span asp-validation-for="MeterType" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Status</label>
-				<div class="col-sm-8">
-					<select asp-for="Status" class="form-select" required>
-						<option value="" selected disabled>-- Select Status --</option>
-						<option value="Active">Active</option>
-						<option value="For Replacement">For Replacement</option>
-					</select>
-					<span asp-validation-for="Status" class="text-danger"></span>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-sm-4 col-form-label">Created At</label>
-				<div class="col-sm-8">
-					<input class="form-control-plaintext" readonly value="@ViewData["CreatedAt"]" />
-				</div>
-			</div>
+<div class="min-vh-100 d-flex justify-content-center align-items-center">
+    <div class="bg-white p-5 rounded-4 shadow-sm" style="width: 100%; max-width: 800px;">
+        <h3 class="text-center fw-bold mb-1">Edit Meter Details</h3>
+        <p class="text-center text-muted mb-4 small">
+            Update the meter information below.
+        </p>
 
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">ID</label>
+                <div class="col-sm-8">
+                    <input class="form-control-plaintext" readonly value="@ViewData["MeterId"]" type="number" />
+                </div>
+            </div>
 
-			<div class="row">
-				<div class="offset-sm-4 col-sm-4 d-grid">
-					<button type="submit" class="btn btn-primary">Submit</button>
-				</div>
-				<div class=" col-sm-4 d-grid">
-					<a class="btn btn-outline-primary" asp-action="Meter" asp-controller="Meter">
-						Cancel
-					</a>
-				</div>
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">Meter Number</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="Meter_Number" type="number" required />
+                    <span asp-validation-for="Meter_Number" class="text-danger small"></span>
+                </div>
+            </div>
 
-			</div>
-		</form>
-	</div>
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">Meter Type</label>
+                <div class="col-sm-8">
+                    <select class="form-select" asp-for="MeterType" required>
+                        <option value="Water">Water</option>
+                        <option value="Electric">Electric</option>
+                    </select>
+                    <span asp-validation-for="MeterType" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-3 row">
+                <label class="col-sm-4 col-form-label">Status</label>
+                <div class="col-sm-8">
+                    <select asp-for="Status" class="form-select" required>
+                        <option value="" selected disabled>-- Select Status --</option>
+                        <option value="Active">Active</option>
+                        <option value="For Replacement">For Replacement</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger small"></span>
+                </div>
+            </div>
+
+            <div class="mb-4 row">
+                <label class="col-sm-4 col-form-label">Created At</label>
+                <div class="col-sm-8">
+                    <input class="form-control-plaintext" readonly value="@ViewData["CreatedAt"]" />
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a asp-action="Meter" asp-controller="Meter" class="btn btn-light text-primary me-md-2">Cancel</a>
+            </div>
+        </form>
+    </div>
 </div>
 
+<style>
+    .form-control,
+    .form-select {
+        border-radius: 0.5rem;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: #2a62ff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background: #1a4ed8;
+        }
+
+    .btn-light {
+        background: #f1f5f9;
+    }
+
+    .rounded-4 {
+        border-radius: 1rem !important;
+    }
+
+    .form-control-plaintext {
+        padding: 0.375rem 0;
+        font-size: 0.95rem;
+    }
+</style>
