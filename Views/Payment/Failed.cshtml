@@ -2,12 +2,36 @@
     ViewBag.Title = "Payment Failed";
 }
 
-<div class="container py-5 text-center">
-    <div class="card p-4 shadow-sm rounded-4">
-        <h2 class="text-success fw-bold mb-3">Payment Failed</h2>
-        <p class="lead">Your payment has been cancelled.</p>
-        <a class="btn btn-primary mt-4" asp-controller="Meter" asp-action="UserBillings">
-            Back to My Bills
-        </a>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="text-center" style="max-width: 600px; width: 100%;">
+        <div class="card border-0 shadow-sm rounded-4 py-5 px-4">
+            <h2 class="fw-bold text-danger mb-3">Payment Failed</h2>
+            <p class="text-muted mb-2">Your payment has been cancelled or could not be completed.</p>
+            <p class="text-muted">Please try again or contact support if the issue persists.</p>
+
+            <hr class="my-4" />
+
+            <a class="btn btn-blue px-4 py-2 rounded-pill fw-semibold" asp-controller="Meter" asp-action="UserBillings">
+                <i class="bi bi-arrow-left me-1"></i> Back to My Bills
+            </a>
+        </div>
     </div>
 </div>
+
+<style>
+    body {
+        background-color: #f8f9fc;
+    }
+
+    .btn-blue {
+        background-color: #0d6efd;
+        border: none;
+        color: white;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-blue:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+</style>
