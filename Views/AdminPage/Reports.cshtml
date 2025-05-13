@@ -196,19 +196,26 @@
                         </tr>
                     </thead>
                     <tbody id="billingTable">
-                        @foreach (var item in ViewBag.CombinedData)
+                        @if (ViewBag.CombinedData.Count == 0)
                         {
-                            @foreach (var payment in item.Payments)
+                            <p>No data available.</p>
+                        }
+                        else
+                        {
+                            @foreach (var item in ViewBag.CombinedData)
                             {
-                                <tr>
-                                    <td>@item.Id</td> <!-- Bill ID -->
-                                    <td>@item.FirstName @item.LastName</td> <!-- Tenant (Full Name) -->
-                                    <td>@item.Room_Number</td> <!-- Room Number -->
-                                    <td>@payment.CreatedAt.ToString("MMMM dd, yyyy")</td> <!-- Date Paid -->
-                                    <td>₱@item.TotalAmount</td> <!-- Amount -->
-                                    <td>@payment.PaymentMethod</td> <!-- Payment Method -->
-                                    <td>@item.Status</td> <!-- Billing Status -->
-                                </tr>
+                                @foreach (var payment in item.Payments)
+                                {
+                                    <tr>
+                                        <td>@item.Id</td> <!-- Bill ID -->
+                                        <td>@item.FirstName @item.LastName</td> <!-- Tenant (Full Name) -->
+                                        <td>@item.Room_Number</td> <!-- Room Number -->
+                                        <td>@payment.CreatedAt.ToString("MMMM dd, yyyy")</td> <!-- Date Paid -->
+                                        <td>₱@item.TotalAmount</td> <!-- Amount -->
+                                        <td>@payment.PaymentMethod</td> <!-- Payment Method -->
+                                        <td>@item.Status</td> <!-- Billing Status -->
+                                    </tr>
+                                }
                             }
                         }
                     </tbody>

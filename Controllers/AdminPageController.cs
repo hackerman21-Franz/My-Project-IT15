@@ -721,113 +721,141 @@ namespace MyProjectIT15.Controllers
             return View();
         }
 
-        [Authorize(Roles = "admin")]
-        public IActionResult Reports(DateTime? startDate, DateTime? endDate)
-        {
-            // Check if there are no payments
-            var payments = _context.Payments.ToList();
-            ViewBag.TotalPaymentCount = payments.Count;
+		[Authorize(Roles = "admin")]
+		public IActionResult Reports(DateTime? startDate, DateTime? endDate)
+		{
+			try
+			{
+				// Check if Payments table exists and is not empty
+				if (_context.Payments != null && _context.Payments.Any())
+				{
+					var payments = _context.Payments.ToList();
+					ViewBag.TotalPaymentCount = payments.Count;
+				}
+				else
+				{
+					ViewBag.TotalPaymentCount = "No payment records available.";
+				}
 
-            if (payments.Count == 0)
-            {
-                ViewBag.NoPaymentsMessage = "No payment records available.";
-            }
+				// Check if Billings table exists and is not empty
+				if (_context.Billings != null && _context.Billings.Any())
+				{
+					var billings = _context.Billings
+						.Where(b => b.Status.Trim().ToLower() == "paid")
+						.ToList();
+					ViewBag.TotalBillingCount = billings.Count;
 
-            // Check if there are no billings
-            var billings = _context.Billings
-                .Where(b => b.Status.Trim().ToLower() == "paid")
-                .ToList();
-            ViewBag.TotalBillingCount = billings.Count;
+					if (billings.Count == 0)
+					{
+						ViewBag.NoBillingsMessage = "No paid billing records available.";
+					}
 
-            if (billings.Count == 0)
-            {
-                ViewBag.NoBillingsMessage = "No paid billing records available.";
-            }
+					// Calculate average bill amount if there are paid billings
+					if (billings.Count > 0)
+					{
+						var averageBillAmount = _context.Billings
+							.Where(b => b.Status.Trim().ToLower() == "paid")
+							.Average(b => (decimal?)b.TotalAmount ?? 0);
+						ViewBag.AverageBillAmount = Math.Round(averageBillAmount, 2);
+					}
+					else
+					{
+						ViewBag.AverageBillAmount = 0;
+					}
 
-            // Check if there are no paid billings for average calculation
-            var averageBillAmount = _context.Billings
-                .Where(b => b.Status.Trim().ToLower() == "paid")
-                .Average(b => (decimal?)b.TotalAmount ?? 0); // Calculate the average
+					// Calculate total bill amount for all paid billings
+					var totalBillAmount = _context.Billings
+						.Where(b => b.Status.Trim().ToLower() == "paid")
+						.Sum(b => (decimal?)b.TotalAmount ?? 0);
+					ViewBag.TotalBillAmount = totalBillAmount;
 
-            ViewBag.AverageBillAmount = (billings.Count > 0) ? Math.Round(averageBillAmount, 2) : 0;
+					// Get the most recent paid billing
+					var billing = _context.Billings
+						.Where(b => b.Status.Trim().ToLower() == "paid")
+						.OrderByDescending(b => b.Id)
+						.FirstOrDefault();
 
-            // Total bill amount (all paid billings)
-            var totalBillAmount = _context.Billings
-                .Where(b => b.Status.Trim().ToLower() == "paid")
-                .Sum(b => (decimal?)b.TotalAmount ?? 0);
-            ViewBag.TotalBillAmount = totalBillAmount;
+					if (billing != null)
+					{
+						ViewBag.LatestBillAmount = billing.TotalAmount;
+						ViewBag.DueDate = billing.DueDate.ToString("MMMM dd, yyyy");
+					}
+					else
+					{
+						ViewBag.LatestBillAmount = 0;
+						ViewBag.DueDate = "N/A";
+					}
 
-            // Most recent paid billing
-            var billing = _context.Billings
-                .Where(b => b.Status.Trim().ToLower() == "paid")
-                .OrderByDescending(b => b.Id)
-                .FirstOrDefault();
+					// Filter and group billing data based on the date range
+					var query = _context.Billings
+						.Where(b => b.Status.Trim().ToLower() == "paid");
 
-            if (billing != null)
-            {
-                ViewBag.LatestBillAmount = billing.TotalAmount;
-                ViewBag.DueDate = billing.DueDate.ToString("MMMM dd, yyyy");
-            }
-            else
-            {
-                ViewBag.LatestBillAmount = 0;
-                ViewBag.DueDate = "N/A";
-            }
+					if (startDate.HasValue)
+					{
+						query = query.Where(b => b.Payments.Any(p => p.CreatedAt >= startDate.Value));
+					}
 
-            var query = _context.Billings
-                .Where(b => b.Status.Trim().ToLower() == "paid");
+					if (endDate.HasValue)
+					{
+						query = query.Where(b => b.Payments.Any(p => p.CreatedAt <= endDate.Value));
+					}
 
-            // Filter by start date if provided
-            if (startDate.HasValue)
-            {
-                query = query.Where(b => b.Payments.Any(p => p.CreatedAt >= startDate.Value));
-            }
+					var combinedData = query
+						.OrderByDescending(b => b.Id)
+						.GroupJoin(_context.Payments
+							.Where(p => p.Status.Trim().ToLower() == "paid"),
+							billing => billing.Id,
+							payment => payment.BillingId,
+							(billing, payments) => new
+							{
+								billing.Id,
+								billing.User.FirstName,
+								billing.User.LastName,
+								billing.MeterReading.RoomMeter.Room.Room_Number,
+								billing.TotalAmount,
+								billing.Status,
+								Payments = payments.Select(payment => new
+								{
+									payment.CreatedAt,
+									payment.PaymentMethod
+								}).ToList()
+							})
+						.ToList();
 
-            // Filter by end date if provided
-            if (endDate.HasValue)
-            {
-                query = query.Where(b => b.Payments.Any(p => p.CreatedAt <= endDate.Value));
-            }
+					// Check if combined data is empty
+					if (combinedData.Count == 0)
+					{
+						ViewBag.NoDataMessage = "No data available for the selected date range.";
+					}
 
-            var combinedData = query
-                .OrderByDescending(b => b.Id)
-                .GroupJoin(_context.Payments
-                    .Where(p => p.Status.Trim().ToLower() == "paid"),
-                    billing => billing.Id,
-                    payment => payment.BillingId,
-                    (billing, payments) => new
-                    {
-                        billing.Id,
-                        billing.User.FirstName,
-                        billing.User.LastName,
-                        billing.MeterReading.RoomMeter.Room.Room_Number,
-                        billing.TotalAmount,
-                        billing.Status,
-                        Payments = payments.Select(payment => new
-                        {
-                            payment.CreatedAt,
-                            payment.PaymentMethod
-                        }).ToList()
-                    })
-                .ToList();
+					// Calculate the sum of TotalAmount from combined data
+					var totalAmount = combinedData.Sum(b => b.TotalAmount);
+					ViewBag.TotalBillAmount = totalAmount;
+					ViewBag.CombinedData = combinedData;
+				}
+				else
+				{
+					ViewBag.TotalBillingCount = "No billing records available.";
+					ViewBag.AverageBillAmount = 0;
+					ViewBag.TotalBillAmount = 0;
+					ViewBag.LatestBillAmount = 0;
+					ViewBag.DueDate = "N/A";
+					ViewBag.NoDataMessage = "No data available as the billing table is empty.";
+					ViewBag.CombinedData = new List<object>();
+				}
+			}
+			catch (Exception ex)
+			{
+				ViewBag.ErrorMessage = $"An error occurred while generating the report: {ex.Message}";
+				return View("Error");
+			}
 
-            // Check if combined data is empty
-            if (combinedData.Count == 0)
-            {
-                ViewBag.NoDataMessage = "No data available for the selected date range.";
-            }
-
-            // Calculate the sum of TotalAmount
-            var totalAmount = combinedData.Sum(b => b.TotalAmount);
-            ViewBag.TotalBillAmount = totalAmount;
-
-            ViewBag.CombinedData = combinedData;
-
-            return View();
-        }
+			return View();
+		}
 
 
-    }
+
+	}
 
 
 }
