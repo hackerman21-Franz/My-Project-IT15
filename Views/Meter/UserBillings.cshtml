@@ -4,295 +4,133 @@
     ViewBag.Title = "My Bills";
 }
 
-<div class="container py-4">
-    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
-            <a class="btn btn-primary me-2" asp-controller="Meter" asp-action="UserBillingHistory">
-                <i class="bi bi-plus-lg"></i> Billing History
+            <h2 class="fw-bold mb-0">@ViewBag.Title</h2>
+            <p class="text-muted small mb-0">View and track your latest billing information and payment status.</p>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+            <a class="btn btn-primary rounded px-4" asp-controller="Meter" asp-action="UserBillingHistory">
+                <i class="bi bi-receipt me-1"></i> Billing History
             </a>
-            <a class="btn btn-outline-primary me-2" asp-controller="Meter" asp-action="UserPaymentHistory">
-                <i class="bi bi-plus-lg"></i> Payment History
+            <a class="btn btn-outline-primary rounded px-4" asp-controller="Meter" asp-action="UserPaymentHistory">
+                <i class="bi bi-credit-card me-1"></i> Payment History
             </a>
-            <a class="btn btn-outline-primary" asp-controller="AdminPage" asp-action="tenant">
-                <i class="bi bi-people"></i> Back
+            <a class="btn btn-outline-secondary rounded px-4" asp-controller="AdminPage" asp-action="Tenant">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back
             </a>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle shadow-sm">
-            <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Tenant Name</th>
-                    <th>Room Meter ID</th>
-                    <th>Reading Date</th>
-                    <th>Due Date</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                    <th style="width: 150px;">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var billing in Model)
-                    {
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless align-middle mb-0">
+                    <thead class="bg-light text-secondary small text-uppercase">
                         <tr>
-                            <td>@billing.Id</td>
-                            <td>
-                                @(
-                                    billing.User != null
-                                    ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}"
-                                    : "No Tenant"
-                                    )
-                            </td>
-                            <td>@billing.MeterReading?.RoomMeterId</td> <!-- assuming Room_Number property -->
-                            <td>@billing.ReadingDate.ToString("MMM dd, yyyy")</td>
-                            <td>@billing.DueDate</td>
-                            <td>₱ @billing.TotalAmount.ToString("N2")</td>
-                            <td>@billing.Status</td>
-                            <td>
-                                <!-- Trigger the modal with the button -->
-                                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#Modal_@billing.Id">
-                                    <i class="bi bi-x-circle"></i> View Details
-                                </button>
-                                <!-- Modal -->
-                                <div class="modal fade" id="Modal_@billing.Id" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg modal-dialog-centered">
-                                        <div class="modal-content border-0 shadow-lg rounded-4">
-                                            <div class="modal-header bg-light border-bottom-0">
-                                                <h5 class="modal-title fw-bold" id="deactivateModalLabel">Billing Details</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
+                            <th>ID</th>
+                            <th>Tenant Name</th>
+                            <th>Room Meter ID</th>
+                            <th>Reading Date</th>
+                            <th>Due Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var billing in Model)
+                            {
+                                <tr>
+                                    <td>@billing.Id</td>
+                                    <td>
+                                        @(
+                                            billing.User != null
+                                            ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}"
+                                            : "No Tenant"
+                                            )
+                                    </td>
+                                    <td>@billing.MeterReading?.RoomMeterId</td>
+                                    <td>@billing.ReadingDate.ToString("MMM dd, yyyy")</td>
+                                    <td>@billing.DueDate.ToString("MMM dd, yyyy")</td>
+                                    <td>₱ @billing.TotalAmount.ToString("N2")</td>
+                                    <td>
+                                        <span class="badge @(billing.Status.ToLower() == "paid" ? "bg-success" : "bg-warning text-dark") rounded-pill">
+                                            @billing.Status
+                                        </span>
+                                    </td>
+                                    <td class="text-end">
+                                        <button type="button" class="btn btn-sm btn-success rounded" data-bs-toggle="modal" data-bs-target="#Modal_@billing.Id">
+                                            <i class="bi bi-eye me-1"></i> View
+                                        </button>
 
-                                            <div class="modal-body">
-                                                @{
-                                                    var monthlyRent = billing.MeterReading?.RoomMeter?.Room?.Monthly_Rent; 
-
-                                                    var current = billing.MeterReading?.CurrentReading ?? 0;
-                                                    var previous = billing.MeterReading?.PreviousReading ?? 0;
-                                                    var rate = 13.0127m;
-                                                    var calculatedTotal = Math.Round((current - previous) * rate, 2);
-
-                                                    var watercurrent = billing.MeterReading?.WaterCurrentReading ?? 0;
-                                                    var waterprevious = billing.MeterReading?.WaterPreviousReading ?? 0;
-                                                    var waterConsumption = watercurrent - waterprevious;
-
-                                                    decimal watercalculatedTotal = 0m;
-                                                    decimal waterrate = 0m; // last applied rate
-
-                                                    if (waterConsumption > 0)
-                                                    {
-                                                        int remaining = waterConsumption;
-
-                                                        // First 10 cubic meters is always ₱235.60 (minimum charge)
-                                                        watercalculatedTotal += 235.60m;
-                                                        remaining -= 10;
-
-                                                        // Next 10 cubic meters (11–20)
-                                                        if (remaining > 0)
-                                                        {
-                                                            int tier2 = Math.Min(10, remaining);
-                                                            watercalculatedTotal += tier2 * 24.70m;
-                                                            remaining -= tier2;
-                                                        }
-
-                                                        // Next 10 cubic meters (21–30)
-                                                        if (remaining > 0)
-                                                        {
-                                                            int tier3 = Math.Min(10, remaining);
-                                                            watercalculatedTotal += tier3 * 31.90m;
-                                                            remaining -= tier3;
-                                                        }
-
-                                                        // Next 10 cubic meters (31–40)
-                                                        if (remaining > 0)
-                                                        {
-                                                            int tier4 = Math.Min(10, remaining);
-                                                            watercalculatedTotal += tier4 * 42.40m;
-                                                            remaining -= tier4;
-                                                        }
-
-                                                        // Above 40 cubic meters
-                                                        if (remaining > 0)
-                                                        {
-                                                            watercalculatedTotal += remaining * 61.80m;
-                                                        }
-
-                                                        // Set waterrate based on total consumption
-                                                        if (waterConsumption > 40)
-                                                            waterrate = 61.80m;
-                                                        else if (waterConsumption > 30)
-                                                            waterrate = 42.40m;
-                                                        else if (waterConsumption > 20)
-                                                            waterrate = 31.90m;
-                                                        else if (waterConsumption > 10)
-                                                            waterrate = 24.70m;
-                                                        else
-                                                            waterrate = 23.56m; // Just a placeholder for <10 — it won't be used in actual calc
-
-                                                        watercalculatedTotal = Math.Round(watercalculatedTotal, 2);
-                                                    }
-                                                    else
-                                                    {
-                                                        // No consumption? Still minimum bill.
-                                                        watercalculatedTotal = 235.60m;
-                                                        waterrate = 23.56m;
-                                                    }
-
-
-                                                }
-
-
-                                                <div class="row justify-content-center">
-                                                    <div class="col-12 col-md-10">
-                                                        <div class="card shadow-sm border-0 rounded-3">
-                                                            <div class="card-body px-4 py-3">
-
-                                                                <!-- Header -->
-                                                                <div class="mb-4 text-center">
-                                                                    <h5 class="fw-bold">Billing Statement</h5>
-                                                                    <small class="text-muted">Billing Reference #: @billing.Id</small>
-                                                                </div>
-
-                                                                <hr class="my-2" />
-
-                                                                <!-- Tenant Information -->
-                                                                <div class="mb-3">
-                                                                    <h6 class="fw-semibold">Tenant Information</h6>
-                                                                    <p class="mb-1"><strong>Name:</strong> @(billing.User != null ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}" : "No Tenant Assigned")</p>
-                                                                    <p class="mb-1"><strong>Room Meter ID:</strong> @billing.MeterReading?.RoomMeterId</p>
-                                                                    <p class="mb-1"><strong>Reading Date:</strong> @billing.ReadingDate.ToString("MMM dd, yyyy")</p>
-                                                                </div>
-
-                                                                <hr class="my-2" />
-
-                                                                <!-- Meter Readings -->
-                                                                <div class="mb-3">
-                                                                    <h6 class="fw-semibold">Electricity Meter Reading Details</h6>
-                                                                    <div class="row">
-                                                                        <div class="col-sm-4"><strong>Previous Reading:</strong><br />@previous</div>
-                                                                        <div class="col-sm-4"><strong>Current Reading:</strong><br />@current</div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <hr class="my-2" />
-
-                                                                <!-- Meter Readings -->
-                                                                <div class="mb-3">
-                                                                    <h6 class="fw-semibold">Water Meter Reading Details</h6>
-                                                                    <div class="row">
-                                                                        <div class="col-sm-4"><strong>Previous Reading:</strong><br />@waterprevious</div>
-                                                                        <div class="col-sm-4"><strong>Current Reading:</strong><br />@watercurrent</div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <hr class="my-2" />
-
-                                                                <!-- Billing Summary -->
-                                                                <div class="mb-3">
-                                                                    <h6 class="fw-semibold">Billing Summary</h6>
-                                                                    <div class="row">
-                                                                        <div class="col-sm-4">
-                                                                            <strong>Room Monthly Rent:</strong><br />₱ @(monthlyRent?.ToString("N0") ?? "0")
-                                                                        </div>
-
-                                                                        <hr class="my-3" />
-
-                                                                        <div class="col-sm-4"><strong>Rate per kWh:</strong><br />₱ @rate</div>
-                                                                        <div class="col-sm-4"><strong>Consumption:</strong><br />@(current - previous) kWh</div>
-                                                                        <div class="col-sm-4"><strong>Calculated Total:</strong><br />₱ @calculatedTotal</div>
-
-                                                                        <hr class="my-3" />
-
-                                                                        <div class="col-sm-4"><strong>Rate per Cubic meter:</strong><br />₱ @waterrate</div>
-                                                                        <div class="col-sm-4"><strong>Consumption:</strong><br />@(watercurrent - waterprevious) m³</div>
-                                                                        <div class="col-sm-4"><strong>Calculated Total:</strong><br />₱ @watercalculatedTotal</div>
-
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <hr class="my-2" />
-
-                                                                <!-- Payment Details -->
-                                                                <div class="mb-3">
-                                                                    <h6 class="fw-semibold">Payment Details</h6>
-                                                                    <div class="col">
-                                                                        <div class="col-sm-6"><strong>Due Date:</strong><br />@billing.DueDate.ToString("MMM dd, yyyy")</div>
-                                                                        <div class="col-sm-6"><strong>Total Amount to Pay:</strong><br />₱ @billing.TotalAmount.ToString("N2")</div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <hr class="my-2" />
-
-                                                                <!-- Notes -->
-                                                                <div class="mt-2 text-sm">
-                                                                    <p class="text-muted">
-                                                                        <strong>Note:</strong> Please settle your payment on or before the due date to avoid service disruption or penalties.
-                                                                    </p>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="Modal_@billing.Id" tabindex="-1" aria-labelledby="billingModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                <div class="modal-content border-0 shadow-lg rounded-4">
+                                                    <div class="modal-header bg-light border-bottom-0">
+                                                        <h5 class="modal-title fw-bold" id="billingModalLabel">Billing Details</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Your detailed billing logic here -->
+                                                        <p><strong>Tenant:</strong> @(billing.User != null ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}" : "N/A")</p>
+                                                        <p><strong>Meter ID:</strong> @billing.MeterReading?.RoomMeterId</p>
+                                                        <p><strong>Electric Reading Date:</strong> @billing.ReadingDate.ToString("MMM dd, yyyy")</p>
+                                                        <p><strong>Due Date:</strong> @billing.DueDate.ToString("MMM dd, yyyy")</p>
+                                                        <p><strong>Total Amount:</strong> ₱ @billing.TotalAmount.ToString("N2")</p>
+                                                        <p class="text-muted small">More detailed breakdown can be added here.</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
-
-                                            <div class="modal-footer border-top-0">
-                                                <form method="post" asp-action="Create" asp-controller="Payment">
-                                                    <input type="hidden" name="amount" value="@billing.TotalAmount" />
-                                                    <input type="hidden" name="billingId" value="@billing.Id" />
-                                                    <button type="submit" class="btn btn-success">
-                                                        <i class="bi bi-wallet2"></i> Pay Bills
-                                                    </button>
-                                                </form>
-                                                <button type="button" class="btn btn-primary" onclick="generatePDF(@billing.Id)">Print</button>
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-
-                                                <script>
-                                                    function generatePDF(billingId) {
-                                                        // Select the correct modal content dynamically based on the billing ID
-                                                        const modalContent = document.querySelector(`#Modal_${billingId} .modal-content`).cloneNode(true);
-
-                                                        // Remove the footer (buttons) from the cloned content
-                                                        const footer = modalContent.querySelector('.modal-footer');
-                                                        if (footer) footer.remove();
-
-                                                        // PDF options
-                                                        const options = {
-                                                            margin: 10,
-                                                            filename: `billing_details_${billingId}.pdf`,
-                                                            image: { type: 'jpeg', quality: 0.98 },
-                                                            html2canvas: { scale: 2 },
-                                                            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                                                        };
-
-                                                        // Generate the PDF from the correctly selected modal content
-                                                        html2pdf().set(options).from(modalContent).save();
-                                                    }
-                                                </script>
-                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-
-                            </td>
-                        </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="8" class="text-center">No billings found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">No billing records available.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle;
+    }
+
+    .card {
+        overflow: hidden;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4em 0.7em;
+    }
+
+    .btn-sm i {
+        vertical-align: middle;
+    }
+</style>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>

@@ -4,63 +4,90 @@
     ViewBag.Title = "Billing History";
 }
 
-<div class="container py-4">
-    <h2 class="text-center mb-4 fw-bold">@ViewBag.Title</h2>
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
         <div>
-            <a class="btn btn-outline-primary" asp-controller="Meter" asp-action="UserBillings">
-                <i class="bi bi-people"></i> Back
+            <h2 class="fw-bold mb-0">@ViewBag.Title</h2>
+            <p class="text-muted small mb-0">View your complete history of billings and dues.</p>
+        </div>
+
+        <div>
+            <a class="btn btn-outline-primary rounded px-4" asp-controller="Meter" asp-action="UserBillings">
+                <i class="bi bi-arrow-left-circle me-1"></i> Back
             </a>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle shadow-sm">
-            <thead class="table-light">
-                <tr>
-                    <th>ID</th>
-                    <th>Tenant Name</th>
-                    <th>Room Meter ID</th>
-                    <th>Reading Date</th>
-                    <th>Due Date</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                    @*       <th style="width: 150px;">Actions</th> *@
-                </tr>
-            </thead>
-            <tbody>
-                @if (Model != null && Model.Any())
-                {
-                    foreach (var billing in Model)
-                    {
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover table-borderless align-middle mb-0">
+                    <thead class="bg-light text-secondary small text-uppercase">
                         <tr>
-                            <td>@billing.Id</td>
-                            <td>
-                                @(
-                                    billing.User != null
-                                    ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}"
-                                    : "No Tenant"
-                                    )
-                            </td>
-                            <td>@billing.MeterReading?.RoomMeterId</td> <!-- assuming Room_Number property -->
-                            <td>@billing.ReadingDate.ToString("yyyy-MM-dd")</td>
-                            <td>@billing.DueDate</td>
-                            <td>₱ @billing.TotalAmount.ToString("N2")</td>
-                            <td>@billing.Status</td>
-                            @*   <td>
-                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@billing.Id">Void Billing</a>
-                    </td> *@
+                            <th>ID</th>
+                            <th>Tenant Name</th>
+                            <th>Room Meter ID</th>
+                            <th>Reading Date</th>
+                            <th>Due Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
                         </tr>
-                    }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="8" class="text-center">No billings found.</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var billing in Model)
+                            {
+                                <tr>
+                                    <td>@billing.Id</td>
+                                    <td>
+                                        @(
+                                            billing.User != null
+                                            ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}"
+                                            : "No Tenant"
+                                            )
+                                    </td>
+                                    <td>@billing.MeterReading?.RoomMeterId</td>
+                                    <td>@billing.ReadingDate.ToString("MMM dd, yyyy")</td>
+                                    <td>@billing.DueDate.ToString("MMM dd, yyyy")</td>
+                                    <td>₱ @billing.TotalAmount.ToString("N2")</td>
+                                    <td>
+                                        <span class="badge @(billing.Status.ToLower() == "paid" ? "bg-success" : "bg-warning text-dark") rounded-pill">
+                                            @billing.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">No billing records found.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+    .btn {
+        font-size: 0.9rem;
+    }
+
+    .table th,
+    .table td {
+        vertical-align: middle;
+    }
+
+    .card {
+        overflow: hidden;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.4em 0.7em;
+    }
+</style>
