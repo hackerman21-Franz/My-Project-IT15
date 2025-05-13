@@ -1,13 +1,7 @@
-
-
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html, body {
@@ -17,8 +11,18 @@ html, body {
     padding: 0;
 }
 
+/* Focus outline for form elements and buttons */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
 
-.card-hover {
+/* Card hover effects */
+.card-hover,
+.feature-card {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -27,39 +31,32 @@ html, body {
         box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
     }
 
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
 
+/* Top section text */
 .top-texts {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     gap: 5px;
+    text-align: center;
+    padding: 0 15px;
 }
 
     .top-texts h1 {
-        width: 1000px;
         color: #2571FF;
-        font-family: Pacifico;
-        font-size: 100px;
-        font-style: normal;
+        font-family: Pacifico, cursive;
+        font-size: clamp(2.5rem, 6vw, 5rem); /* Responsive font size */
         font-weight: 400;
+        margin: 0;
     }
 
-.text-muted{
-    width:600px;
-    margin:0 auto;
-
-
+/* Optional muted text section */
+.text-muted {
+    max-width: 90%;
+    margin: 0 auto;
 }
-.feature-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-    .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    }
-
-
-
-
