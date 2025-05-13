@@ -735,6 +735,7 @@ namespace MyProjectIT15.Controllers
 				else
 				{
 					ViewBag.TotalPaymentCount = "No payment records available.";
+                    return View();
 				}
 
 				// Check if Billings table exists and is not empty
