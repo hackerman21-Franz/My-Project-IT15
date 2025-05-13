@@ -26,12 +26,20 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGet()
         {
             await _signInManager.SignOutAsync();
+            // Set no-cache headers directly
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
             return LocalRedirect("/");
            
         }
         public async Task<IActionResult> OnPost()
         {
             await _signInManager.SignOutAsync();
+            // Set no-cache headers directly
+            Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+            Response.Headers["Pragma"] = "no-cache";
+            Response.Headers["Expires"] = "0";
             return LocalRedirect("/");
         }
     }

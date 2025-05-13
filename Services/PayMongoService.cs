@@ -39,9 +39,11 @@ namespace MyProjectIT15.Services
                 },
                         payment_method_types = paymentMethods,
                         reference_number = referenceNumber,
-                        success_url = $"https://localhost:7252/Payment/VerifyPayment?ref={referenceNumber}",
+                        //success_url = $"https://localhost:7252/Payment/VerifyPayment?ref={referenceNumber}",
+                        success_url = $"https://rjfpower.runasp.net/Payment/VerifyPayment?ref={referenceNumber}",
                         //cancel_url = "https://localhost:7252/Payment/Failed"
-                        cancel_url = $"https://localhost:7252/Payment/Failed?reference={referenceNumber}"
+                        //cancel_url = $"https://localhost:7252/Payment/Failed?reference={referenceNumber}"
+                        cancel_url = $"https://rjfpower.runasp.net/Payment/Failed?reference={referenceNumber}"
 
                     }
                 }
