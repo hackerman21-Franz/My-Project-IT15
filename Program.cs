@@ -36,7 +36,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddDefaultIdentity<User>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Lockout duration
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30); // Lockout duration
     options.Lockout.MaxFailedAccessAttempts = 3; // Maximum failed attempts
     options.Lockout.AllowedForNewUsers = true;   // Enable lockout for new users
 } )

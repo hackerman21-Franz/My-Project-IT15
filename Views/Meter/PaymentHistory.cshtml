@@ -18,6 +18,27 @@
         </div>
     </div>
 
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-body p-3">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <label class="form-label">Search Payments</label>
+                    <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, billing ID, reference no., date (MMM dd, yyyy), or method">
+                     </div>
+                </div>
+                <div class="col-md-4 mt-2 mt-md-0">
+                    <label class="form-label">Filter by Status</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="All">All Statuses</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Failed">Failed</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="card shadow-sm border-0 rounded-4">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -29,27 +50,29 @@
                             <th>Billing ID</th>
                             <th>Reference No.</th>
                             <th>Payment Date</th>
+                            <th>Payment Method</th>
                             <th>Total Paid</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="paymentTableBody">
                         @if (Model != null && Model.Any())
                         {
                             foreach (var payment in Model)
                             {
-                                <tr>
+                                <tr data-status="@payment.Status.ToLower()">
                                     <td>@payment.Id</td>
-                                    <td>
+                                    <td data-searchable="@($"{payment.User?.FirstName} {payment.User?.MiddleName} {payment.User?.LastName}")">
                                         @(
                                             payment.User != null
                                             ? $"{payment.User.FirstName} {payment.User.MiddleName} {payment.User.LastName}"
                                             : "No Tenant"
                                             )
                                     </td>
-                                    <td>@payment.BillingId</td>
-                                    <td>@payment.ReferenceNumber</td>
-                                    <td>@payment.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                    <td data-searchable="@payment.BillingId">@payment.BillingId</td>
+                                    <td data-searchable="@payment.ReferenceNumber">@payment.ReferenceNumber</td>
+                                    <td data-searchable="@payment.CreatedAt.ToString("MMM dd, yyyy")">@payment.CreatedAt.ToString("MMM dd, yyyy")</td>
+                                    <td data-searchable="@payment.PaymentMethod">@payment.PaymentMethod</td>
                                     <td>₱ @payment.TotalPaid.ToString("N2")</td>
                                     <td>
                                         <span class="badge @(payment.Status.ToLower() == "confirmed" ? "bg-success" : "bg-warning text-dark") rounded-pill">
@@ -62,7 +85,7 @@
                         else
                         {
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">No payment records found.</td>
+                                <td colspan="8" class="text-center text-muted py-4">No payment records found.</td>
                             </tr>
                         }
                     </tbody>
@@ -71,6 +94,63 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            const statusFilter = document.getElementById('statusFilter');
+            const paymentTableBody = document.getElementById('paymentTableBody');
+            const rows = paymentTableBody.querySelectorAll('tr[data-status]');
+
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const statusValue = statusFilter.value.toLowerCase();
+
+                rows.forEach(row => {
+                    const rowStatus = row.getAttribute('data-status');
+                    const cells = row.querySelectorAll('td[data-searchable]');
+                    let searchMatch = false;
+                    let statusMatch = statusValue === 'all' || rowStatus === statusValue;
+
+                    // If there's a search term, check for matches
+                    if (searchTerm) {
+                        cells.forEach(cell => {
+                            const cellText = cell.getAttribute('data-searchable').toLowerCase();
+                            if (cellText.includes(searchTerm)) {
+                                searchMatch = true;
+                            }
+                        });
+                    } else {
+                        searchMatch = true; // No search term means show all (if status matches)
+                    }
+
+                    row.style.display = (searchMatch && statusMatch) ? '' : 'none';
+                });
+
+                // Show/hide the "no records" message if all rows are filtered out
+                const visibleRows = paymentTableBody.querySelectorAll('tr[data-status][style=""]');
+                const noRecordsRow = paymentTableBody.querySelector('tr[colspan]');
+
+                if (noRecordsRow) {
+                    noRecordsRow.style.display = visibleRows.length === 0 ? '' : 'none';
+                }
+            }
+
+            searchInput.addEventListener('input', filterTable);
+            statusFilter.addEventListener('change', filterTable);
+
+            clearSearch.addEventListener('click', function() {
+                searchInput.value = '';
+                filterTable();
+            });
+
+            // Initial filter in case there's a default status selected
+            filterTable();
+        });
+    </script>
+}
 
 <style>
     .btn {

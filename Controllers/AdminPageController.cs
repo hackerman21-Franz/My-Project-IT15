@@ -68,11 +68,11 @@ namespace MyProjectIT15.Controllers
                 .ToList() ?? new List<User>();
             ViewBag.TenantCount = tenants.Count;
 
-            var newtenants = _context.Users
-                .Where(u => u.EmailConfirmed == true && u.CreatedAt >= DateTime.Now.AddDays(-5) && tenantRole != null &&
+            var alltenants = _context.Users
+                .Where(u =>tenantRole != null &&
                     _context.UserRoles.Any(ur => ur.UserId == u.Id && ur.RoleId == tenantRole.Id))
                 .ToList() ?? new List<User>();
-            ViewBag.NewTenantCount = newtenants.Count;
+            ViewBag.AllTenantCount = alltenants.Count;
 
             // New Tenants (last 5 days)
             var newTenants = _context.Users
@@ -223,13 +223,30 @@ namespace MyProjectIT15.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Tenants()
         {
+            // Get the tenant role by name (ensure we get the complete Role object)
+            var tenantRole = _context.Roles.FirstOrDefault(r => r.Name == "Tenant");
+
+            // If tenantRole is null, return an empty list
+            if (tenantRole == null)
+            {
+                return View(new List<User>());
+            }
+
+            // Check if RoleId is null or invalid in UserRoles table
             var tenants = _context.Users
                 .Where(u => _context.UserRoles
-                    .Any(ur => ur.UserId == u.Id && ur.RoleId == _context.Roles.FirstOrDefault(r => r.Name == "Tenant").Id))
+                    .Any(ur => ur.UserId == u.Id && ur.RoleId != null && ur.RoleId == tenantRole.Id))  // Ensure RoleId is not null
                 .ToList();
 
             return View(tenants);
         }
+
+
+
+
+
+
+
 
 
         [Authorize(Roles = "owner")]
@@ -308,10 +325,17 @@ namespace MyProjectIT15.Controllers
 				ModelState.AddModelError("ImageFile", "The image file is required");
 			}
 
-			if (!ModelState.IsValid)
+            if (_context.Rooms.Any(r => r.Room_Number == roomDto.Room_Number && r.Status == "Active"))
+            {
+                ModelState.AddModelError("Room_Number", "The room number must be unique from active rooms.");
+                return View(roomDto);
+            }
+
+            if (!ModelState.IsValid)
 			{
 				return View(roomDto);
 			}
+
 
 			string newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
 			newFileName += Path.GetExtension(roomDto.ImageFile!.FileName);
@@ -329,8 +353,8 @@ namespace MyProjectIT15.Controllers
 				Monthly_Rent = roomDto.Monthly_Rent,
 				ImageFileName = newFileName,
 				Status = roomDto.Status,
-				CreatedAt = DateTime.Now,
-				UserId = user?.Id // optional chaining in case user is null
+                CreatedAt = DateTime.UtcNow.AddHours(8),
+                UserId = user?.Id // optional chaining in case user is null
 			};
 
 			_context.Rooms.Add(room);

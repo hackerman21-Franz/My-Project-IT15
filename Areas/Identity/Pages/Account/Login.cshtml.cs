@@ -130,7 +130,7 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     // Show the lockout message directly on the login page
-                    ModelState.AddModelError(string.Empty, "Your account has been locked due to multiple failed login attempts. Please try again after 5 minutes.");
+                    ModelState.AddModelError(string.Empty, "Your account has been locked due to multiple failed login attempts. Please try again after 30 minutes.");
                     return Page();
                 }
                 else

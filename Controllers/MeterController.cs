@@ -50,14 +50,14 @@ namespace MyProjectIT15.Controllers
                 .Where(m => m.CurrentReading > 0)  // Ensure we only calculate for non-zero readings
                 .ToList();  // Get the readings as a list
 
-            ViewBag.AvgElecCons = avgElecCons.Any() ? (int)avgElecCons.Average(m => m.CurrentReading) : 0;  // Default to 0 if no readings
+            ViewBag.AvgElecCons = avgElecCons.Any() ? (int)avgElecCons.Average(m => m.Consumption) : 0;  // Default to 0 if no readings
 
             // Average Water Consumption
             var avgWaterCons = _context.MeterReadings
                 .Where(m => m.WaterCurrentReading > 0)  // Ensure we only calculate for non-zero readings
                 .ToList();  // Get the readings as a list
 
-            ViewBag.AvgWaterCons = avgWaterCons.Any() ? (int)avgWaterCons.Average(m => m.WaterCurrentReading) : 0;  // Default to 0 if no readings
+            ViewBag.AvgWaterCons = avgWaterCons.Any() ? (int)avgWaterCons.Average(m => m.WaterConsumption) : 0;  // Default to 0 if no readings
 
 
             var monthbill = _context.Payments
@@ -111,8 +111,8 @@ namespace MyProjectIT15.Controllers
 				Meter_Number = meterDto.Meter_Number,
                 MeterType = meterDto.MeterType,
                 Status = "Active",
-				CreatedAt = DateTime.Now,
-				UserId = user?.Id // optional chaining in case user is null
+                CreatedAt = DateTime.UtcNow.AddHours(8),
+                UserId = user?.Id // optional chaining in case user is null
 			};
 
 			_context.Meters.Add(meter);
@@ -568,6 +568,17 @@ namespace MyProjectIT15.Controllers
                 return View(meterReadingDto);
             }
 
+            if (meterReadingDto.PreviousReading > meterReadingDto.CurrentReading)
+            {
+                ModelState.AddModelError("", "The Current Electricity Reading should be greater than the previous reading.");
+                return View(meterReadingDto);
+            }
+            if (meterReadingDto.WaterPreviousReading > meterReadingDto.WaterCurrentReading)
+            {
+                ModelState.AddModelError("", "The Current Water Reading should be greater than the previous reading.");
+                return View(meterReadingDto);
+            }
+
 
             // Calculate electric consumption and amount
             var electricConsumption = meterReadingDto.CurrentReading - meterReadingDto.PreviousReading;
@@ -637,7 +648,7 @@ namespace MyProjectIT15.Controllers
                 MeterReadingId = meterReading.Id, // Link the new meter reading
                 ReadingDate = meterReadingDto.ReadingDate,
                 DueDate = meterReadingDto.ReadingDate.AddDays(14),
-                TotalAmount = calculateTotalAmount + MonthlyRent,
+                TotalAmount = calculateTotalAmount,
                 Status = "Unpaid"
             };
 

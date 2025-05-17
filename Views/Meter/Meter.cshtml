@@ -17,9 +17,21 @@
             <a class="btn btn-outline-primary rounded px-4" asp-controller="Meter" asp-action="RoomMeter">
                 <i class="bi bi-diagram-3"></i> Assign Rooms
             </a>
-            <a class="btn btn-link text-decoration-none px-4" asp-controller="Meter" asp-action="Index">
-                <i class="bi bi-arrow-left-circle"></i> Back
-            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-body p-3">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <label class="form-label">Filter by Meter Type</label>
+                    <select id="meterTypeFilter" class="form-select">
+                        <option value="All">All</option>
+                        <option value="Water">Water</option>
+                        <option value="Electric">Electric</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -38,10 +50,10 @@
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="meterTableBody">
                         @foreach (var meter in Model)
                         {
-                            <tr>
+                            <tr data-meter-type="@meter.MeterType">
                                 <td>@meter.Id</td>
                                 <td>@meter.Meter_Number</td>
                                 <td>@meter.MeterType</td>
@@ -54,10 +66,10 @@
                                 <td>@meter.CreatedAt.ToString("MMM dd, yyyy")</td>
                                 <td class="text-end">
                                     <div class="d-flex justify-content-end gap-2 flex-wrap">
-                                        <a class="btn btn-sm btn-success rounded" asp-controller="Meter" asp-action="Edit" asp-route-id="@meter.Id" title="Edit">
+                                        <a class="btn btn-sm btn-outline-primary rounded" asp-controller="Meter" asp-action="Edit" asp-route-id="@meter.Id" title="Edit">
                                             <i class="bi bi-pencil me-1"></i> Edit
                                         </a>
-                                        <button class="btn btn-sm btn-danger rounded" title="Deactivate" data-bs-toggle="modal" data-bs-target="#deactivateModal_@meter.Id">
+                                        <button class="btn btn-sm btn-outline-danger rounded" title="Deactivate" data-bs-toggle="modal" data-bs-target="#deactivateModal_@meter.Id">
                                             <i class="bi bi-x-circle me-1"></i> Deactivate
                                         </button>
                                     </div>
@@ -84,7 +96,6 @@
                                         </div>
                                     </div>
                                 </td>
-
                             </tr>
                         }
                     </tbody>
@@ -93,6 +104,30 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const meterTypeFilter = document.getElementById('meterTypeFilter');
+            const meterTableBody = document.getElementById('meterTableBody');
+            const rows = meterTableBody.querySelectorAll('tr');
+
+            meterTypeFilter.addEventListener('change', function() {
+                const selectedType = this.value;
+
+                rows.forEach(row => {
+                    const rowType = row.getAttribute('data-meter-type');
+
+                    if (selectedType === 'All' || rowType === selectedType) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+}
 
 <style>
     .btn {

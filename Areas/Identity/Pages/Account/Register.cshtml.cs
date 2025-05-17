@@ -74,6 +74,7 @@ namespace MyProjectIT15.Areas.Identity.Pages.Account
             [Required]
            public string FirstName { get; set; }
 
+            [Required]
             public string MiddleName { get; set; }
 
             [Required]

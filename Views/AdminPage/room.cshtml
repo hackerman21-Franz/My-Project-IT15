@@ -8,15 +8,15 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">@ViewBag.Title</h2>
         <div>
-            <a class="btn btn-primary me-2 rounded-pill" asp-controller="AdminPage" asp-action="Create">
+            <a class="btn btn-primary me-2 rounded px-4" asp-controller="AdminPage" asp-action="Create">
                 <i class="bi bi-plus-circle me-1"></i> Add Room
             </a>
-            <a class="btn btn-outline-primary me-2 rounded-pill" asp-controller="AdminPage" asp-action="ViewAssignedTenants">
+            <a class="btn btn-outline-primary me-2 rounded px-4" asp-controller="AdminPage" asp-action="ViewAssignedTenants">
                 <i class="bi bi-people me-1"></i> Assigned Tenants
             </a>
-            <a class="btn btn-outline-secondary rounded-pill" asp-controller="AdminPage" asp-action="Index">
+           @*  <a class="btn btn-outline-secondary rounded px-4" asp-controller="AdminPage" asp-action="Index">
                 <i class="bi bi-arrow-left me-1"></i> Back
-            </a>
+            </a> *@
         </div>
     </div>
 
@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <h5 class="fw-bold text-dark">Room #@room.Room_Number</h5>
                         <p class="mb-1 text-muted"><i class="bi bi-door-open me-1"></i> @room.Room_Type</p>
-                        <p class="mb-1 text-muted"><i class="bi bi-cash-coin me-1"></i> ₱@room.Monthly_Rent.ToString("N0")</p>
+                        @* <p class="mb-1 text-muted"><i class="bi bi-cash-coin me-1"></i> ₱@room.Monthly_Rent.ToString("N0")</p> *@
                         <p class="mb-0 small text-muted"><i class="bi bi-calendar-check me-1"></i> @room.CreatedAt.ToString("MMM dd, yyyy")</p>
                     </div>
                     <div class="card-footer bg-transparent border-0 d-flex justify-content-between px-3 pb-3">

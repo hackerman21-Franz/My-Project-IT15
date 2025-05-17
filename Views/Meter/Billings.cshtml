@@ -15,12 +15,38 @@
             <a class="btn btn-primary rounded px-4" asp-controller="Meter" asp-action="BillingHistory">
                 <i class="bi bi-receipt-cutoff me-1"></i> Billing History
             </a>
-            <a class="btn btn-primary rounded px-4" asp-controller="Meter" asp-action="PaymentHistory">
+            <a class="btn btn-outline-primary rounded px-4" asp-controller="Meter" asp-action="PaymentHistory">
                 <i class="bi bi-wallet2 me-1"></i> Payment History
             </a>
-            <a class="btn btn-outline-secondary rounded px-4" asp-controller="Meter" asp-action="Index">
-                <i class="bi bi-arrow-left-circle me-1"></i> Back
-            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+        <div class="card-body p-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Search</label>
+                    <div class="input-group">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, room meter ID">
+                     </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Status</label>
+                    <select id="statusFilter" class="form-select">
+                        <option value="All">All Statuses</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Unpaid">Unpaid</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Date Range</label>
+                    <div class="input-group">
+                        <input type="date" id="startDate" class="form-control" placeholder="Start date">
+                        <span class="input-group-text">to</span>
+                        <input type="date" id="endDate" class="form-control" placeholder="End date">
+                      </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -39,21 +65,23 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="billingTableBody">
                         @if (Model != null && Model.Any())
                         {
                             foreach (var billing in Model)
                             {
-                                <tr>
+                                <tr data-status="@billing.Status.ToLower()"
+                                    data-reading-date="@billing.ReadingDate.ToString("yyyy-MM-dd")"
+                                    data-due-date="@billing.DueDate.ToString("yyyy-MM-dd")">
                                     <td>@billing.Id</td>
-                                    <td>
+                                    <td data-searchable="@($"{billing.User?.FirstName} {billing.User?.MiddleName} {billing.User?.LastName}")">
                                         @(
                                             billing.User != null
                                             ? $"{billing.User.FirstName} {billing.User.MiddleName} {billing.User.LastName}"
                                             : "No Tenant"
                                             )
                                     </td>
-                                    <td>@billing.MeterReading?.RoomMeterId</td>
+                                    <td data-searchable="@billing.MeterReading?.RoomMeterId">@billing.MeterReading?.RoomMeterId</td>
                                     <td>@billing.ReadingDate.ToString("MMM dd, yyyy")</td>
                                     <td>@billing.DueDate.ToString("MMM dd, yyyy")</td>
                                     <td>₱ @billing.TotalAmount.ToString("N2")</td>
@@ -78,6 +106,96 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearch = document.getElementById('clearSearch');
+            const statusFilter = document.getElementById('statusFilter');
+            const startDate = document.getElementById('startDate');
+            const endDate = document.getElementById('endDate');
+            const clearDates = document.getElementById('clearDates');
+            const billingTableBody = document.getElementById('billingTableBody');
+            const rows = billingTableBody.querySelectorAll('tr[data-status]');
+
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase();
+                const statusValue = statusFilter.value.toLowerCase();
+                const startDateValue = startDate.value;
+                const endDateValue = endDate.value;
+
+                rows.forEach(row => {
+                    const rowStatus = row.getAttribute('data-status');
+                    const readingDate = row.getAttribute('data-reading-date');
+                    const dueDate = row.getAttribute('data-due-date');
+                    const cells = row.querySelectorAll('td[data-searchable]');
+
+                    // Check status filter
+                    const statusMatch = statusValue === 'all' || rowStatus === statusValue;
+
+                    // Check date range filter
+                    let dateMatch = true;
+                    if (startDateValue || endDateValue) {
+                        dateMatch = false;
+                        const rowDate = readingDate; // or dueDate depending on which date you want to filter by
+
+                        if (startDateValue && endDateValue) {
+                            dateMatch = rowDate >= startDateValue && rowDate <= endDateValue;
+                        } else if (startDateValue) {
+                            dateMatch = rowDate >= startDateValue;
+                        } else if (endDateValue) {
+                            dateMatch = rowDate <= endDateValue;
+                        }
+                    }
+
+                    // Check search term
+                    let searchMatch = false;
+                    if (searchTerm) {
+                        cells.forEach(cell => {
+                            const cellText = cell.getAttribute('data-searchable').toLowerCase();
+                            if (cellText.includes(searchTerm)) {
+                                searchMatch = true;
+                            }
+                        });
+                    } else {
+                        searchMatch = true;
+                    }
+
+                    // Show row only if all conditions are met
+                    row.style.display = (statusMatch && dateMatch && searchMatch) ? '' : 'none';
+                });
+
+                // Show/hide "no records" message
+                const visibleRows = billingTableBody.querySelectorAll('tr[data-status][style=""]');
+                const noRecordsRow = billingTableBody.querySelector('tr[colspan]');
+                if (noRecordsRow) {
+                    noRecordsRow.style.display = visibleRows.length === 0 ? '' : 'none';
+                }
+            }
+
+            // Event listeners
+            searchInput.addEventListener('input', filterTable);
+            statusFilter.addEventListener('change', filterTable);
+            startDate.addEventListener('change', filterTable);
+            endDate.addEventListener('change', filterTable);
+
+            clearSearch.addEventListener('click', function () {
+                searchInput.value = '';
+                filterTable();
+            });
+
+            clearDates.addEventListener('click', function () {
+                startDate.value = '';
+                endDate.value = '';
+                filterTable();
+            });
+
+            // Initial filter
+            filterTable();
+        });
+    </script>
+}
+
 <style>
     .btn {
         font-size: 0.9rem;
@@ -99,5 +217,9 @@
 
     .btn-sm i {
         vertical-align: middle;
+    }
+
+    .input-group-text {
+        font-size: 0.875rem;
     }
 </style>
